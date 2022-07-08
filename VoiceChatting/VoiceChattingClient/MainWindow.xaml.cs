@@ -20,9 +20,40 @@ namespace VoiceChattingClient
     /// </summary>
     public partial class MainWindow : Window
     {
+        public bool IsWindowMoving { get; private set; } = false;
+        private Point? windowMoveLastPoint = null;
+
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void OnCloseButtonClick(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
+        private void OnMaximizeButtonClick(object sender, RoutedEventArgs e)
+        {
+            if (WindowState == WindowState.Maximized)
+                WindowState = WindowState.Normal;
+            else WindowState = WindowState.Maximized;
+        }
+
+        private void OnMinimizeButtonClick(object sender, RoutedEventArgs e)
+        {
+            WindowState = WindowState.Minimized;
+        }
+
+        private void OnTopBarDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            OnMaximizeButtonClick(sender, null);
+        }
+
+        private void OnMouseLeftBottonForMoveWindow(object sender, MouseButtonEventArgs e)
+        {
+            base.OnMouseLeftButtonDown(e);
+            base.DragMove();
         }
     }
 }

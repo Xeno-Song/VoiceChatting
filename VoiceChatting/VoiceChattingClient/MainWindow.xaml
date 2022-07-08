@@ -5,19 +5,54 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:VoiceChattingClient"
         mc:Ignorable="d"
+        WindowStyle="None" ResizeMode="CanMinimize" AllowsTransparency="False"
         Title="MainWindow" Height="450" Width="800"
-        Background="#FF3B373C">
+        MinHeight="450" MinWidth="800"
+        Background="#FF3C393C">
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="22"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="300"/>
+            <ColumnDefinition Width="280"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <Grid Grid.Column="0" Margin="0,0,0,0" Background="#FF473C4D">
+        <!-- Top Bar -->
+        <Grid x:Name="TopBar" Grid.Row="0" Grid.ColumnSpan="2" Background="#FF4D4154">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="{Binding ActualHeight, ElementName=TopBar, Mode=OneWay}"/>
+                <ColumnDefinition Width="{Binding ActualHeight, ElementName=TopBar, Mode=OneWay}"/>
+                <ColumnDefinition Width="{Binding ActualHeight, ElementName=TopBar, Mode=OneWay}"/>
+            </Grid.ColumnDefinitions>
+
+            <Label Grid.Row="0" Grid.ColumnSpan="{Binding ColumnDefinitions.Count, ElementName=TopBar, Mode=OneWay}" MouseDoubleClick="OnTopBarDoubleClick" MouseLeftButtonDown="OnMouseLeftBottonForMoveWindow"/>
+            <!-- Maximize, Minimize, Close button -->
+            <Button Grid.Column="1" Margin="2" BorderBrush="{x:Null}" Foreground="{x:Null}" Click="OnMinimizeButtonClick">
+                <Button.Background>
+                    <ImageBrush ImageSource="minimize.png" Stretch="Uniform"/>
+                </Button.Background>
+            </Button>
+            <Button Grid.Column="2" Margin="2" BorderBrush="{x:Null}" Foreground="{x:Null}" Click="OnMaximizeButtonClick">
+                <Button.Background>
+                    <ImageBrush ImageSource="maximize.png" Stretch="Uniform"/>
+                </Button.Background>
+            </Button>
+            <Button Grid.Column="3" Margin="2" BorderBrush="{x:Null}" Foreground="{x:Null}" Click="OnCloseButtonClick">
+                <Button.Background>
+                    <ImageBrush ImageSource="/close.png" Stretch="Uniform"/>
+                </Button.Background>
+            </Button>
+        </Grid>
+        <!-- Left Area -->
+        <Grid Grid.Column="0" Margin="0,0,0,0" Background="#FF3B343E" Grid.Row="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="1*"/>
                 <RowDefinition Height="60"/>
             </Grid.RowDefinitions>
-            <Grid x:Name="UserInfoGrid" Grid.Row="1" Margin="0,0,0,0" Background="#FF2A212E">
+            <!-- Left-Bottom user infos and configure -->
+            <Grid x:Name="UserInfoGrid" Grid.Row="1" Margin="0,0,0,0" Background="#FF2E233A">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="{Binding ActualHeight, ElementName=UserInfoGrid, Mode=OneWay}"/>
                     <ColumnDefinition/>
@@ -29,9 +64,9 @@
                 </Grid.RowDefinitions>
                 <Ellipse Fill="#FFF4F4F5" Grid.Row="0" Grid.RowSpan="2" Margin="8"/>
                 <Label Content="User Account" Grid.Column="1"
-                       FontFamily="{DynamicResource NotoSansBlack}" FontSize="14" HorizontalContentAlignment="Left" VerticalContentAlignment="Bottom" Padding="0"/>
+                       FontFamily="{DynamicResource NotoSansBlack}" FontSize="14" HorizontalContentAlignment="Left" VerticalContentAlignment="Bottom" Padding="0" Foreground="White"/>
                 <Label Content="#1234" Grid.Column="1"
-                       FontFamily="{DynamicResource NotoSansMedium}" FontSize="12" Margin="0" Grid.Row="1" Padding="0,0,5,5" />
+                       FontFamily="{DynamicResource NotoSansMedium}" FontSize="12" Margin="0" Grid.Row="1" Padding="0,0,5,5" Foreground="White" />
                 <Button Margin="0,17,6,17" Grid.Column="2" Grid.RowSpan="2" VerticalContentAlignment="Stretch"
                         HorizontalContentAlignment="Right" Grid.IsSharedSizeScope="True" HorizontalAlignment="Right" 
                         Width="26" BorderBrush="{x:Null}" Foreground="{x:Null}">
@@ -47,7 +82,7 @@
                     </Button.Background>
                 </Button>
                 <Button Margin="0,17,68,17" Grid.Column="2" Grid.RowSpan="2" VerticalContentAlignment="Stretch"
-                    HorizontalContentAlignment="Right" Grid.IsSharedSizeScope="True" BorderBrush="{x:Null}" Foreground="{x:Null}" HorizontalAlignment="Right" Width="26">
+                    HorizontalContentAlignment="Right" Grid.IsSharedSizeScope="True" BorderBrush="{x:Null}" HorizontalAlignment="Right" Width="26" Foreground="{x:Null}">
                     <Button.Background>
                         <ImageBrush ImageSource="microphone-black-shape.png" Stretch="Uniform"/>
                     </Button.Background>

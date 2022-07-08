@@ -24,6 +24,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -108,6 +109,18 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="microphone-black-shape.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="minimize.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="maximize.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\Assets\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="close.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
