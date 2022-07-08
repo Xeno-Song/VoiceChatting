@@ -102,25 +102,22 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="settings.png" />
+    <Resource Include="Resources\Assets\minimize.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="headphone-symbol.png" />
+    <Resource Include="Resources\Assets\maximize.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="microphone-black-shape.png" />
+    <Resource Include="Resources\Assets\close.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="minimize.png" />
+    <Resource Include="Resources\Assets\microphone-white.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="maximize.png" />
+    <Resource Include="Resources\Assets\headphone-white.png" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Resources\Assets\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="close.png" />
+    <Resource Include="Resources\Assets\settings-white.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

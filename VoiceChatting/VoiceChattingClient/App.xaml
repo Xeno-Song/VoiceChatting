@@ -12,7 +12,7 @@
             <FontFamily x:Key="NotoSansRegular">/Resources/Fonts/#Noto Sans KR Regular</FontFamily>
             <FontFamily x:Key="NotoSansThin">/Resources/Fonts/#Noto Sans KR Thin</FontFamily>
 
-	        <ControlTemplate TargetType="Button" x:Key="testButtonTemplate2">
+            <!-- ControlTemplate TargetType="Button" x:Key="testButtonTemplate2">
 		        <Border Name="RootElement">
 			        <Border.Background>
 				        <SolidColorBrush x:Name="BorderBrush" Color="Black"/>
@@ -40,7 +40,7 @@
 				        </VisualStateGroup>
 			        </VisualStateManager.VisualStateGroups>
 		        </Border>
-	        </ControlTemplate>
+	        </ -->
 
 
         </ResourceDictionary>
