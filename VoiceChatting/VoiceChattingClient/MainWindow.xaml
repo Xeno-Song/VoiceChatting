@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:VoiceChattingClient"
+        xmlns:ui="clr-namespace:VoiceChattingClient.UI"
         mc:Ignorable="d"
         WindowStyle="None" ResizeMode="CanResize" AllowsTransparency="False"
         Title="MainWindow" Height="450" Width="800"
@@ -30,7 +31,9 @@
                 <ColumnDefinition Width="{Binding ActualHeight, ElementName=TopBar, Mode=OneWay}"/>
             </Grid.ColumnDefinitions>
 
-            <Label Grid.Row="0" Grid.ColumnSpan="{Binding ColumnDefinitions.Count, ElementName=TopBar, Mode=OneWay}" MouseDoubleClick="OnTopBarDoubleClick" MouseLeftButtonDown="OnMouseLeftBottonForMoveWindow"/>
+            <Label Grid.Row="0" Grid.ColumnSpan="{Binding ColumnDefinitions.Count, ElementName=TopBar, Mode=OneWay}"
+                   Padding="10,0,0,0" Content="Concord" VerticalContentAlignment="Center" FontFamily="{StaticResource NotoSansBlack}" Foreground="#FFEBEBEB"
+                   MouseDoubleClick="OnTopBarDoubleClick" MouseLeftButtonDown="OnMouseLeftBottonForMoveWindow"/>
             <!-- Maximize, Minimize, Close button -->
             <Button Grid.Column="1" Margin="2" BorderBrush="{x:Null}" Foreground="{x:Null}" Click="OnMinimizeButtonClick">
                 <Button.Background>
@@ -59,37 +62,43 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="{Binding ActualHeight, ElementName=UserInfoGrid, Mode=OneWay}"/>
                     <ColumnDefinition/>
-                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="96"/>
+                    <ColumnDefinition Width="5"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="1*"/>
                     <RowDefinition Height="1*"/>
                 </Grid.RowDefinitions>
-                <Ellipse Fill="#FFF4F4F5" Grid.Row="0" Grid.RowSpan="2" Margin="8"/>
+                <Ellipse Fill="#FFF4F4F5" Grid.Row="0" Grid.RowSpan="2" Margin="8,8,8,8"/>
                 <Label Content="User Account" Grid.Column="1"
                        FontFamily="{DynamicResource NotoSansBlack}" FontSize="14" HorizontalContentAlignment="Left" VerticalContentAlignment="Bottom" Padding="0" Foreground="White"/>
                 <Label Content="#1234" Grid.Column="1"
-                       FontFamily="{DynamicResource NotoSansMedium}" FontSize="12" Margin="0" Grid.Row="1" Padding="0,0,5,5" Foreground="White" />
-                <Button Margin="0,17,6,17" Grid.Column="2" Grid.RowSpan="2" VerticalContentAlignment="Stretch"
+                       FontFamily="{DynamicResource NotoSansMedium}" FontSize="12" Grid.Row="1" Padding="0,0,5,5" Foreground="White" />
+                <!-- Setting buttons -->
+
+                <ui:BackgroundVisualizeButton x:Name="buttonSetting" Margin="0,14,0,14" VerticalContentAlignment="Stretch" Grid.Column="2" Grid.RowSpan="2"
                         HorizontalContentAlignment="Right" Grid.IsSharedSizeScope="True" HorizontalAlignment="Right" 
-                        Width="26" BorderBrush="{x:Null}" Foreground="{x:Null}">
-                    <Button.Background>
+                        Width="32" BorderBrush="{x:Null}" NormalBackground="#FF2E233A" MouseOverBackground="#FF1F1727"
+                        ButtonMargin="6,6,6,6" BackgroundRadius="5">
+                    <ui:BackgroundVisualizeButton.ButtonForeground>
                         <ImageBrush ImageSource="/Resources/Assets/settings-white.png" Stretch="Uniform"/>
-                    </Button.Background>
-                </Button>
-                <Button Margin="0,17,37,17" Grid.Column="2" Grid.RowSpan="2" VerticalContentAlignment="Stretch"
-                    HorizontalContentAlignment="Right" Grid.IsSharedSizeScope="True" HorizontalAlignment="Right" 
-                    Width="26" BorderBrush="{x:Null}" Foreground="{x:Null}">
-                    <Button.Background>
+                    </ui:BackgroundVisualizeButton.ButtonForeground>
+                </ui:BackgroundVisualizeButton>
+                <ui:BackgroundVisualizeButton x:Name="buttonHeadset"  Margin="0,14,0,14" Grid.Column="2" Grid.RowSpan="2" VerticalContentAlignment="Stretch"
+                    HorizontalContentAlignment="Right" Grid.IsSharedSizeScope="True" HorizontalAlignment="Center" 
+                    Width="32" BorderBrush="{x:Null}" Foreground="{x:Null}" NormalBackground="#FF2E233A" MouseOverBackground="#FF1F1727"
+                    ButtonMargin="6,6,6,6" BackgroundRadius="5">
+                    <ui:BackgroundVisualizeButton.ButtonForeground>
                         <ImageBrush ImageSource="/Resources/Assets/headphone-white.png" Stretch="Uniform"/>
-                    </Button.Background>
-                </Button>
-                <Button Margin="0,17,68,17" Grid.Column="2" Grid.RowSpan="2" VerticalContentAlignment="Stretch"
-                    HorizontalContentAlignment="Right" Grid.IsSharedSizeScope="True" BorderBrush="{x:Null}" HorizontalAlignment="Right" Width="26" Foreground="{x:Null}">
-                    <Button.Background>
+                    </ui:BackgroundVisualizeButton.ButtonForeground>
+                </ui:BackgroundVisualizeButton>
+                <ui:BackgroundVisualizeButton Margin="0,14,0,14" Grid.Column="2" Grid.RowSpan="2" VerticalContentAlignment="Stretch"
+                    HorizontalContentAlignment="Right" Grid.IsSharedSizeScope="True" BorderBrush="{x:Null}" HorizontalAlignment="Left" Width="32" Foreground="{x:Null}"
+                    ButtonMargin="6,6,6,6" BackgroundRadius="5" NormalBackground="#FF2E233A" MouseOverBackground="#FF1F1727">
+                    <ui:BackgroundVisualizeButton.ButtonForeground>
                         <ImageBrush ImageSource="/Resources/Assets/microphone-white.png" Stretch="Uniform"/>
-                    </Button.Background>
-                </Button>
+                    </ui:BackgroundVisualizeButton.ButtonForeground>
+                </ui:BackgroundVisualizeButton>
             </Grid>
         </Grid>
     </Grid>

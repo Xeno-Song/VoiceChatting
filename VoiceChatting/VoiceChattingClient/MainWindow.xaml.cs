@@ -21,7 +21,6 @@ namespace VoiceChattingClient
     public partial class MainWindow : Window
     {
         public bool IsWindowMoving { get; private set; } = false;
-        private Point? windowMoveLastPoint = null;
 
         public MainWindow()
         {
@@ -54,6 +53,11 @@ namespace VoiceChattingClient
         {
             base.OnMouseLeftButtonDown(e);
             base.DragMove();
+        }
+
+        private void buttonSetting_Click(object sender, RoutedEventArgs e)
+        {
+            int a = 10;
         }
     }
 }

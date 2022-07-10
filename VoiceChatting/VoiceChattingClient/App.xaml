@@ -11,38 +11,6 @@
             <FontFamily x:Key="NotoSansMedium">/Resources/Fonts/#Noto Sans KR Medium</FontFamily>
             <FontFamily x:Key="NotoSansRegular">/Resources/Fonts/#Noto Sans KR Regular</FontFamily>
             <FontFamily x:Key="NotoSansThin">/Resources/Fonts/#Noto Sans KR Thin</FontFamily>
-
-            <!-- ControlTemplate TargetType="Button" x:Key="testButtonTemplate2">
-		        <Border Name="RootElement">
-			        <Border.Background>
-				        <SolidColorBrush x:Name="BorderBrush" Color="Black"/>
-			        </Border.Background>
-
-			        <Grid Margin="4" >
-				        <Grid.Background>
-					        <SolidColorBrush x:Name="ButtonBackground" Color="Aquamarine"/>
-				        </Grid.Background>
-				        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Margin="4,5,4,4"/>
-			        </Grid>
-			        <VisualStateManager.VisualStateGroups>
-				        <VisualStateGroup x:Name="CommonStates">
-					        <VisualState x:Name="Normal"/>
-					        <VisualState x:Name="MouseOver">
-						        <Storyboard>
-							        <ColorAnimation Storyboard.TargetName="ButtonBackground" Storyboard.TargetProperty="Color" To="Red"/>
-						        </Storyboard>
-					        </VisualState>
-					        <VisualState x:Name="Pressed">
-						        <Storyboard>
-							        <ColorAnimation Storyboard.TargetName="ButtonBackground" Storyboard.TargetProperty="Color" To="Red"/>
-						        </Storyboard>
-					        </VisualState>
-				        </VisualStateGroup>
-			        </VisualStateManager.VisualStateGroups>
-		        </Border>
-	        </ -->
-
-
         </ResourceDictionary>
     </Application.Resources>
 </Application>
