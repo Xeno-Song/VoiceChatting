@@ -14,9 +14,10 @@
                    Height="{Binding Height, ElementName=userControl}"
                    RadiusX="{Binding BackgroundRadius, ElementName=userControl}"
                    RadiusY="{Binding BackgroundRadius, ElementName=userControl}" />
-        <Button x:Name="buttonBehavior" Foreground="{x:Null}" BorderBrush="{x:Null}" Panel.ZIndex="1"
-                Background="{Binding ButtonForeground, ElementName=userControl, Mode=OneWay}"
-                Margin="{Binding ButtonMargin, ElementName=userControl, Mode=OneWay}"
+        <Rectangle x:Name="buttonForeground"
+                   Fill="{Binding ButtonForeground, ElementName=userControl, Mode=OneWay}"
+                   Margin="{Binding ButtonMargin, ElementName=userControl, Mode=OneWay}" />
+        <Button x:Name="buttonBehavior" Foreground="{x:Null}" BorderBrush="{x:Null}" Panel.ZIndex="1" Background="Transparent"
                 Click="OnButtonClick">
             <Button.Style>
                 <Style TargetType="Button">

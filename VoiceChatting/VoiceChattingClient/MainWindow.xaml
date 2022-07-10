@@ -35,21 +35,24 @@
                    Padding="10,0,0,0" Content="Concord" VerticalContentAlignment="Center" FontFamily="{StaticResource NotoSansBlack}" Foreground="#FFEBEBEB"
                    MouseDoubleClick="OnTopBarDoubleClick" MouseLeftButtonDown="OnMouseLeftBottonForMoveWindow"/>
             <!-- Maximize, Minimize, Close button -->
-            <Button Grid.Column="1" Margin="2" BorderBrush="{x:Null}" Foreground="{x:Null}" Click="OnMinimizeButtonClick">
-                <Button.Background>
+            <ui:BackgroundVisualizeButton Grid.Column="1" ButtonMargin="3" BorderBrush="{x:Null}" Foreground="{x:Null}" Click="OnMinimizeButtonClick"
+                                          NormalBackground="#FF4D4154" MouseOverBackground="#FF2E233A">
+                <ui:BackgroundVisualizeButton.ButtonForeground>
                     <ImageBrush ImageSource="/Resources/Assets/minimize.png" Stretch="Uniform"/>
-                </Button.Background>
-            </Button>
-            <Button Grid.Column="2" Margin="2" BorderBrush="{x:Null}" Foreground="{x:Null}" Click="OnMaximizeButtonClick">
-                <Button.Background>
+                </ui:BackgroundVisualizeButton.ButtonForeground>
+            </ui:BackgroundVisualizeButton>
+            <ui:BackgroundVisualizeButton Grid.Column="2" ButtonMargin="3" BorderBrush="{x:Null}" Foreground="{x:Null}" Click="OnMaximizeButtonClick"
+                                          NormalBackground="#FF4D4154" MouseOverBackground="#FF2E233A">
+                <ui:BackgroundVisualizeButton.ButtonForeground>
                     <ImageBrush ImageSource="/Resources/Assets/maximize.png" Stretch="Uniform"/>
-                </Button.Background>
-            </Button>
-            <Button Grid.Column="3" Margin="2" BorderBrush="{x:Null}" Foreground="{x:Null}" Click="OnCloseButtonClick">
-                <Button.Background>
+                </ui:BackgroundVisualizeButton.ButtonForeground>
+            </ui:BackgroundVisualizeButton>
+            <ui:BackgroundVisualizeButton Grid.Column="3" ButtonMargin="3" BorderBrush="{x:Null}" Foreground="{x:Null}" Click="OnCloseButtonClick"
+                                          NormalBackground="#FF4D4154" MouseOverBackground="#FF2E233A">
+                <ui:BackgroundVisualizeButton.ButtonForeground>
                     <ImageBrush ImageSource="/Resources/Assets/close.png" Stretch="Uniform"/>
-                </Button.Background>
-            </Button>
+                </ui:BackgroundVisualizeButton.ButtonForeground>
+            </ui:BackgroundVisualizeButton>
         </Grid>
         <!-- Left Area -->
         <Grid Grid.Column="0" Margin="0,0,0,0" Background="#FF3B343E" Grid.Row="1">
