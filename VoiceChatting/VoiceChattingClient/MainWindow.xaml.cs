@@ -55,9 +55,19 @@ namespace VoiceChattingClient
             base.DragMove();
         }
 
-        private void buttonSetting_Click(object sender, RoutedEventArgs e)
+        private void OnButtonSettingClick(object sender, RoutedEventArgs e)
         {
-            int a = 10;
+            MessageBox.Show("Setting Button Clicked");
+        }
+
+        private void OnButtonHeadsetClick(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Headset Button Clicked");
+        }
+
+        private void OnButtonMicrophoneClick(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Microphone Button Clicked");
         }
     }
 }

@@ -79,7 +79,7 @@
                 <ui:BackgroundVisualizeButton x:Name="buttonSetting" Margin="0,14,0,14" VerticalContentAlignment="Stretch" Grid.Column="2" Grid.RowSpan="2"
                         HorizontalContentAlignment="Right" Grid.IsSharedSizeScope="True" HorizontalAlignment="Right" 
                         Width="32" BorderBrush="{x:Null}" NormalBackground="#FF2E233A" MouseOverBackground="#FF1F1727"
-                        ButtonMargin="6,6,6,6" BackgroundRadius="5">
+                        ButtonMargin="6,6,6,6" BackgroundRadius="5" Click="OnButtonSettingClick">
                     <ui:BackgroundVisualizeButton.ButtonForeground>
                         <ImageBrush ImageSource="/Resources/Assets/settings-white.png" Stretch="Uniform"/>
                     </ui:BackgroundVisualizeButton.ButtonForeground>
@@ -87,14 +87,14 @@
                 <ui:BackgroundVisualizeButton x:Name="buttonHeadset"  Margin="0,14,0,14" Grid.Column="2" Grid.RowSpan="2" VerticalContentAlignment="Stretch"
                     HorizontalContentAlignment="Right" Grid.IsSharedSizeScope="True" HorizontalAlignment="Center" 
                     Width="32" BorderBrush="{x:Null}" Foreground="{x:Null}" NormalBackground="#FF2E233A" MouseOverBackground="#FF1F1727"
-                    ButtonMargin="6,6,6,6" BackgroundRadius="5">
+                    ButtonMargin="6,6,6,6" BackgroundRadius="5" Click="OnButtonHeadsetClick">
                     <ui:BackgroundVisualizeButton.ButtonForeground>
                         <ImageBrush ImageSource="/Resources/Assets/headphone-white.png" Stretch="Uniform"/>
                     </ui:BackgroundVisualizeButton.ButtonForeground>
                 </ui:BackgroundVisualizeButton>
                 <ui:BackgroundVisualizeButton Margin="0,14,0,14" Grid.Column="2" Grid.RowSpan="2" VerticalContentAlignment="Stretch"
                     HorizontalContentAlignment="Right" Grid.IsSharedSizeScope="True" BorderBrush="{x:Null}" HorizontalAlignment="Left" Width="32" Foreground="{x:Null}"
-                    ButtonMargin="6,6,6,6" BackgroundRadius="5" NormalBackground="#FF2E233A" MouseOverBackground="#FF1F1727">
+                    ButtonMargin="6,6,6,6" BackgroundRadius="5" NormalBackground="#FF2E233A" MouseOverBackground="#FF1F1727" Click="OnButtonMicrophoneClick">
                     <ui:BackgroundVisualizeButton.ButtonForeground>
                         <ImageBrush ImageSource="/Resources/Assets/microphone-white.png" Stretch="Uniform"/>
                     </ui:BackgroundVisualizeButton.ButtonForeground>

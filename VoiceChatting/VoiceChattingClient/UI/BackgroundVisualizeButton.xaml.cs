@@ -49,6 +49,7 @@ namespace VoiceChattingClient.UI
             get => (Thickness)GetValue(PropertyButtonMargin);
             set => SetValue(PropertyButtonMargin, value);
         }
+        public event RoutedEventHandler Click;
         
 
         public static readonly DependencyProperty PropertyButtonForeground =
@@ -96,5 +97,6 @@ namespace VoiceChattingClient.UI
             backgroundRectangle.Fill = NormalBackground;
         }
 
+        private void OnButtonClick(object sender, RoutedEventArgs e) => Click(this, e);
     }
 }
