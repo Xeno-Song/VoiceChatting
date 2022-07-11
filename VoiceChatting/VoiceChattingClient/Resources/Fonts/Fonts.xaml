@@ -1,0 +1,9 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <FontFamily x:Key="NotoSansBlack">/Resources/Fonts/#Noto Sans KR Black</FontFamily>
+    <FontFamily x:Key="NotoSansBold">/Resources/Fonts/#Noto Sans KR Bold</FontFamily>
+    <FontFamily x:Key="NotoSansLight">/Resources/Fonts/#Noto Sans KR Light</FontFamily>
+    <FontFamily x:Key="NotoSansMedium">/Resources/Fonts/#Noto Sans KR Medium</FontFamily>
+    <FontFamily x:Key="NotoSansRegular">/Resources/Fonts/#Noto Sans KR Regular</FontFamily>
+    <FontFamily x:Key="NotoSansThin">/Resources/Fonts/#Noto Sans KR Thin</FontFamily>
+</ResourceDictionary>
