@@ -80,7 +80,6 @@
                     <Grid Background="{TemplateBinding Background}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*" />
@@ -90,28 +89,6 @@
                         <DockPanel Margin="{TemplateBinding Padding}">
                             <ScrollViewer DockPanel.Dock="Top" HorizontalScrollBarVisibility="Hidden"
                                           VerticalScrollBarVisibility="Hidden" Focusable="false">
-                                <GridViewHeaderRowPresenter Margin="2,0,2,0"
-                                                            Columns="{Binding Path=TemplatedParent.View.Columns,
-                                                                      RelativeSource={RelativeSource TemplatedParent}}"
-                                                            ColumnHeaderContainerStyle="{Binding
-                                                                    Path=TemplatedParent.View.ColumnHeaderContainerStyle,
-                                                                    RelativeSource={RelativeSource TemplatedParent}}"
-                                                            ColumnHeaderTemplate="{Binding
-                                                                    Path=TemplatedParent.View.ColumnHeaderTemplate,
-                                                                    RelativeSource={RelativeSource TemplatedParent}}"
-                                                            ColumnHeaderTemplateSelector="{Binding 
-                                                                    Path=TemplatedParent.View.ColumnHeaderTemplateSelector,
-                                                                    RelativeSource={RelativeSource TemplatedParent}}"
-                                                            AllowsColumnReorder="{Binding
-                                                                    Path=TemplatedParent.View.AllowsColumnReorder,
-                                                                    RelativeSource={RelativeSource TemplatedParent}}"
-                                                            ColumnHeaderContextMenu="{Binding
-                                                                    Path=TemplatedParent.View.ColumnHeaderContextMenu,
-                                                                    RelativeSource={RelativeSource TemplatedParent}}"
-                                                            ColumnHeaderToolTip="{Binding
-                                                                    Path=TemplatedParent.View.ColumnHeaderToolTip,
-                                                                    RelativeSource={RelativeSource TemplatedParent}}"
-                                                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
                             </ScrollViewer>
 
                             <ScrollContentPresenter Name="PART_ScrollContentPresenter"
@@ -130,7 +107,9 @@
                                    Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}" />
 
                         <ScrollBar Name="PART_VerticalScrollBar"
-                                   Grid.Column="1"
+                                   HorizontalAlignment="Right"
+                                   Style="{DynamicResource ModernScrollBar}"
+                                   Grid.Column="0"
                                    Maximum="{TemplateBinding ScrollableHeight}"
                                    ViewportSize="{TemplateBinding ViewportHeight}"
                                    Value="{TemplateBinding VerticalOffset}"
@@ -365,14 +344,18 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ListBoxItem">
-                    <Border x:Name="Border"
-                Padding="2"
-                SnapsToDevicePixels="true"
-                Background="Transparent">
+                    <Border x:Name="Border" Padding="2,1,0,1" SnapsToDevicePixels="true" Background="Transparent">
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup x:Name="CommonStates">
                                 <VisualState x:Name="Normal" />
-                                <VisualState x:Name="MouseOver" />
+                                <VisualState x:Name="MouseOver">
+                                    <Storyboard>
+                                        <ColorAnimationUsingKeyFrames Storyboard.TargetName="Border"
+                                                                      Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)">
+                                            <EasingColorKeyFrame KeyTime="0" Value="LightBlue" />
+                                        </ColorAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
                                 <VisualState x:Name="Disabled" />
                             </VisualStateGroup>
                             <VisualStateGroup x:Name="SelectionStates">
@@ -380,20 +363,16 @@
                                 <VisualState x:Name="Selected">
                                     <Storyboard>
                                         <ColorAnimationUsingKeyFrames Storyboard.TargetName="Border"
-                                                Storyboard.TargetProperty="(Panel.Background).
-                    (SolidColorBrush.Color)">
-                                            <EasingColorKeyFrame KeyTime="0"
-                                         Value="{StaticResource SelectedBackgroundColor}" />
+                                                                      Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)">
+                                            <EasingColorKeyFrame KeyTime="0" Value="{StaticResource SelectedBackgroundColor}" />
                                         </ColorAnimationUsingKeyFrames>
                                     </Storyboard>
                                 </VisualState>
                                 <VisualState x:Name="SelectedUnfocused">
                                     <Storyboard>
                                         <ColorAnimationUsingKeyFrames Storyboard.TargetName="Border"
-                                                Storyboard.TargetProperty="(Panel.Background).
-                    (SolidColorBrush.Color)">
-                                            <EasingColorKeyFrame KeyTime="0"
-                                         Value="{StaticResource SelectedUnfocusedColor}" />
+                                                                      Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)">
+                                            <EasingColorKeyFrame KeyTime="0" Value="{StaticResource SelectedUnfocusedColor}" />
                                         </ColorAnimationUsingKeyFrames>
                                     </Storyboard>
                                 </VisualState>

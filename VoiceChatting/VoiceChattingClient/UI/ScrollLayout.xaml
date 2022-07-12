@@ -6,21 +6,136 @@
              xmlns:local="clr-namespace:VoiceChattingClient.UI"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="200">
+    <UserControl.Resources>
+        <Style x:Key="ScrollViewerStyle1" TargetType="{x:Type ScrollViewer}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ScrollViewer}">
+                        <Grid x:Name="Grid" Background="{TemplateBinding Background}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Rectangle x:Name="Corner" Grid.Column="1" Grid.Row="1"
+                                       Fill="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" />
+                            <ScrollContentPresenter x:Name="PART_ScrollContentPresenter" CanHorizontallyScroll="False"
+                                                    ContentTemplate="{TemplateBinding ContentTemplate}"
+                                                    CanVerticallyScroll="False" Grid.Column="0" Content="{TemplateBinding Content}"
+                                                    CanContentScroll="{TemplateBinding CanContentScroll}"
+                                                    Margin="{TemplateBinding Padding}" Grid.Row="0"/>
+                            <ScrollBar x:Name="PART_VerticalScrollBar"
+                                       AutomationProperties.AutomationId="VerticalScrollBar"
+                                       Cursor="Arrow" Grid.Column="1"
+                                       Maximum="{TemplateBinding ScrollableHeight}"
+                                       Minimum="0" Grid.Row="0"
+                                       Value="{Binding VerticalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                       ViewportSize="{TemplateBinding ViewportHeight}"
+                                       Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"
+                                       Style="{Binding Mode=OneWay, Source={StaticResource ModernScrollBar}}"/>
+                            <ScrollBar x:Name="PART_HorizontalScrollBar"
+                                       AutomationProperties.AutomationId="HorizontalScrollBar" Cursor="Arrow"
+                                       Grid.Column="0" Maximum="{TemplateBinding ScrollableWidth}"
+                                       Minimum="0" Orientation="Horizontal" Grid.Row="1"
+                                       Value="{Binding HorizontalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                       ViewportSize="{TemplateBinding ViewportWidth}"
+                                       Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}"
+                                       Style="{Binding Mode=OneWay, Source={StaticResource ModernScrollBar}}" />
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="false">
+                    <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <ControlTemplate x:Key="ListViewTemplate1" TargetType="{x:Type ListView}">
+            <Grid>
+
+                <VisualStateManager.VisualStateGroups>
+                    <VisualStateGroup x:Name="ValidationStates">
+                        <VisualState x:Name="Valid"/>
+                        <VisualState x:Name="InvalidFocused">
+                            <Storyboard>
+                                <DoubleAnimationUsingKeyFrames Storyboard.TargetName="scrollContentPresenter" Storyboard.TargetProperty="(UIElement.Opacity)">
+                                    <EasingDoubleKeyFrame KeyTime="00:00:00" Value="1"/>
+                                </DoubleAnimationUsingKeyFrames>
+                                <DoubleAnimationUsingKeyFrames Storyboard.TargetName="scrollBar" Storyboard.TargetProperty="(UIElement.Opacity)">
+                                    <EasingDoubleKeyFrame KeyTime="00:00:00" Value="1"/>
+                                </DoubleAnimationUsingKeyFrames>
+                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="scrollBar" Storyboard.TargetProperty="(FrameworkElement.HorizontalAlignment)">
+                                    <DiscreteObjectKeyFrame KeyTime="00:00:00" Value="{x:Static HorizontalAlignment.Right}"/>
+                                </ObjectAnimationUsingKeyFrames>
+                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="scrollBar" Storyboard.TargetProperty="(FrameworkElement.VerticalAlignment)">
+                                    <DiscreteObjectKeyFrame KeyTime="00:00:00" Value="{x:Static VerticalAlignment.Bottom}"/>
+                                </ObjectAnimationUsingKeyFrames>
+                            </Storyboard>
+                        </VisualState>
+                        <VisualState x:Name="InvalidUnfocused"/>
+                    </VisualStateGroup>
+                </VisualStateManager.VisualStateGroups>
+                <ScrollViewer Style="{DynamicResource ScrollViewerStyle1}">
+                    <ItemsPresenter />
+                </ScrollViewer>
+            </Grid>
+        </ControlTemplate>
+        <Style x:Key="ListViewItemContainerStyle1" TargetType="{x:Type ListViewItem}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                        <Grid>
+                            <Border x:Name="Border" Padding="2,1,0,1" SnapsToDevicePixels="true" Background="Transparent">
+                                <VisualStateManager.VisualStateGroups>
+                                    <VisualStateGroup x:Name="CommonStates">
+                                        <VisualState x:Name="Normal" />
+                                        <VisualState x:Name="MouseOver">
+                                            <Storyboard>
+                                                <ColorAnimationUsingKeyFrames Storyboard.TargetName="Border"
+                                                                      Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)">
+                                                    <EasingColorKeyFrame KeyTime="0" Value="LightBlue" />
+                                                </ColorAnimationUsingKeyFrames>
+                                            </Storyboard>
+                                        </VisualState>
+                                        <VisualState x:Name="Disabled" />
+                                    </VisualStateGroup>
+                                    <VisualStateGroup x:Name="SelectionStates">
+                                        <VisualState x:Name="Unselected" />
+                                        <VisualState x:Name="Selected">
+                                            <Storyboard>
+                                                <ColorAnimationUsingKeyFrames Storyboard.TargetName="Border"
+                                                                      Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)">
+                                                    <EasingColorKeyFrame KeyTime="0" Value="LightBlue" />
+                                                </ColorAnimationUsingKeyFrames>
+                                            </Storyboard>
+                                        </VisualState>
+                                        <VisualState x:Name="SelectedUnfocused">
+                                            <Storyboard>
+                                                <ColorAnimationUsingKeyFrames Storyboard.TargetName="Border"
+                                                                      Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)">
+                                                    <EasingColorKeyFrame KeyTime="0" Value="LightCoral" />
+                                                </ColorAnimationUsingKeyFrames>
+                                            </Storyboard>
+                                        </VisualState>
+                                    </VisualStateGroup>
+                                </VisualStateManager.VisualStateGroups>
+                                <GridViewRowPresenter VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                            </Border>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
     <Grid Background="White">
-        <ListView x:Name="ListViewTest" d:ItemsSource="{d:SampleData ItemCount=50}" Style="{Binding Mode=OneWay, Source={x:Static GridView.GridViewScrollViewerStyleKey}}" >
+        <ListView ItemContainerStyle="{DynamicResource ListViewItemContainerStyle1}" Template="{DynamicResource ListViewTemplate1}" x:Name="ListViewTest" d:ItemsSource="{d:SampleData ItemCount=50}" >
             <ListView.View>
                 <GridView>
                     <GridViewColumn DisplayMemberBinding="{Binding Path=FirstName}" Header="First Name" Width="100"/>
-                    <GridViewColumn DisplayMemberBinding="{Binding Path=LastName}" Width="100">
-                        <GridViewColumnHeader>Last Name
-                            <GridViewColumnHeader.ContextMenu>
-                                <ContextMenu Name="LastNameCM">
-                                    <MenuItem Header="Ascending" />
-                                    <MenuItem Header="Descending" />
-                                </ContextMenu>
-                            </GridViewColumnHeader.ContextMenu>
-                        </GridViewColumnHeader>
-                    </GridViewColumn>
                 </GridView>
 
             </ListView.View>
