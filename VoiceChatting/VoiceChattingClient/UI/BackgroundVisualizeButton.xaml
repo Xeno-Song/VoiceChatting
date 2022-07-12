@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:VoiceChattingClient.UI"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800"
+             d:DesignHeight="50" d:DesignWidth="150"
              MouseEnter="OnMouseEnter" MouseLeave="OnMouseLeave" Background="Transparent" Foreground="Transparent">
     <Grid>
         <Rectangle x:Name="backgroundRectangle"
@@ -17,8 +17,8 @@
         <Rectangle x:Name="buttonForeground"
                    Fill="{Binding ButtonForeground, ElementName=userControl, Mode=OneWay}"
                    Margin="{Binding ButtonMargin, ElementName=userControl, Mode=OneWay}" />
-        <Button x:Name="buttonBehavior" Foreground="{x:Null}" BorderBrush="{x:Null}" Panel.ZIndex="1" Background="Transparent"
-                Click="OnButtonClick">
+        <Button x:Name="buttonBehavior" Foreground="{x:Null}" BorderBrush="{x:Null}"
+                Panel.ZIndex="1" Background="Transparent" Click="OnButtonClick">
             <Button.Style>
                 <Style TargetType="Button">
                     <Setter Property="Template">

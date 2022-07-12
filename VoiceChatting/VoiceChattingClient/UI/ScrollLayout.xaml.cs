@@ -28,6 +28,12 @@ namespace VoiceChattingClient.UI
             AddItem("test5", "test5");
             AddItem("test6", "test6");
             AddItem("test7", "test7");
+            AddItem("test7", "test7");
+            AddItem("test7", "test7");
+            AddItem("test7", "test7");
+            AddItem("test7", "test7");
+            AddItem("test7", "test7");
+            AddItem("test7", "test7");
             ListViewTest.Items.Refresh();
         }
 
