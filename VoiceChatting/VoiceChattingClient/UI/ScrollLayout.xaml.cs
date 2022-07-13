@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Windows.Controls;
 
 namespace VoiceChattingClient.UI
@@ -40,6 +41,14 @@ namespace VoiceChattingClient.UI
         public void AddItem(string type, string value)
         {
             items.Add(new Name { FirstName = type, LastName = value });
+        }
+
+
+        private void ListViewTest_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (ListViewTest.SelectedItems.Count == 0) return;
+            Name item = ListViewTest.SelectedItems[0] as Name;
+            Debug.WriteLine("Item Selected - " + item.FirstName);
         }
     }
 }
