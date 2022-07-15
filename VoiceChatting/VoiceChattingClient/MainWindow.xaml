@@ -104,6 +104,6 @@
                 </ui:BackgroundVisualizeButton>
             </Grid>
         </Grid>
-        <ui:ScrollLayout Grid.Column="1" HorizontalAlignment="Left" Margin="138,62,0,0" Grid.Row="1" VerticalAlignment="Top" Width="50" Height="234"/>
+        <ui:ScrollLayout Grid.Column="1" HorizontalAlignment="Left" Margin="138,62,0,0" Grid.Row="1" VerticalAlignment="Top" Width="50" Height="234" ItemMouseOverBackgroundColor="#FF5B5B5B" ItemSelectionBackgroundColor="#FF5B5B5B"/>
     </Grid>
 </Window>

@@ -110,7 +110,7 @@
                             VerticalAlignment="Stretch"
                             Width="Auto"
                             Height="Auto"
-                            Margin="0,1,0,1"
+                            Margin="1,1,1,1"
                             Background="{TemplateBinding Background}" />
                     </Grid>
                     <ControlTemplate.Triggers>
@@ -121,7 +121,7 @@
                                 Value="Auto" />
                             <Setter TargetName="CornerScrollBarRectangle"
                                 Property="Height"
-                                Value="6" />
+                                Value="5" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -132,6 +132,8 @@
         <Setter Property="Stylus.IsFlicksEnabled" Value="false" />
         <Setter Property="Foreground" Value="#ADABAB" />
         <Setter Property="Background" Value="Transparent" />
+        <Setter Property="MinWidth" Value="7" />
+        <Setter Property="MinHeight" Value="7" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ScrollBar}">

@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace VoiceChattingClient.UI
 {
@@ -16,6 +18,30 @@ namespace VoiceChattingClient.UI
         }
 
         private List<Name> items = new List<Name>();
+
+        public Brush ItemMouseOverBackgroundColor
+        {
+            get => (Brush)GetValue(ItemMouseOverBackgroundProperty);
+            set => SetValue(ItemMouseOverBackgroundProperty, value);
+        }
+        public Brush ItemSelectionBackgroundColor
+        {
+            get => (Brush)GetValue(ItemMouseOverBackgroundProperty);
+            set => SetValue(ItemMouseOverBackgroundProperty, value);
+        }
+        public event RoutedEventHandler Click;
+
+
+        public static readonly DependencyProperty ItemMouseOverBackgroundProperty =
+            DependencyProperty.Register(
+                "ItemMouseOverBackground", typeof(Brush),
+                typeof(ScrollLayout),
+                new PropertyMetadata(new SolidColorBrush(Colors.LightGray)));
+        public static readonly DependencyProperty ItemSelectionBackgroundColorProperty =
+            DependencyProperty.Register(
+                "ItemSelectionBackgroundColor", typeof(Brush),
+                typeof(ScrollLayout),
+                new PropertyMetadata(new SolidColorBrush(Colors.LightGray)));
 
         public ScrollLayout()
         {
