@@ -24,13 +24,15 @@ namespace VoiceChattingClient.UI
             get => (Brush)GetValue(ItemMouseOverBackgroundProperty);
             set => SetValue(ItemMouseOverBackgroundProperty, value);
         }
-        public Brush ItemSelectionBackgroundColor
+        public Color ItemSelectionBackgroundColor
         {
-            get => (Brush)GetValue(ItemMouseOverBackgroundProperty);
-            set => SetValue(ItemMouseOverBackgroundProperty, value);
+            get => (Color)GetValue(ItemMouseOverBackgroundProperty);
+            set
+            {
+                SetValue(ItemMouseOverBackgroundProperty, value);
+                this.Resources["ItemSelectionBackgroundColor"] = value;
+            }
         }
-        public event RoutedEventHandler Click;
-
 
         public static readonly DependencyProperty ItemMouseOverBackgroundProperty =
             DependencyProperty.Register(
@@ -39,9 +41,10 @@ namespace VoiceChattingClient.UI
                 new PropertyMetadata(new SolidColorBrush(Colors.LightGray)));
         public static readonly DependencyProperty ItemSelectionBackgroundColorProperty =
             DependencyProperty.Register(
-                "ItemSelectionBackgroundColor", typeof(Brush),
+                "ItemSelectionBackgroundColor", typeof(Color),
                 typeof(ScrollLayout),
-                new PropertyMetadata(new SolidColorBrush(Colors.LightGray)));
+                new PropertyMetadata(Colors.DarkGray));
+
 
         public ScrollLayout()
         {

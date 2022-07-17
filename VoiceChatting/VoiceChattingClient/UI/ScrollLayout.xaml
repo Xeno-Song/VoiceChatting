@@ -7,6 +7,8 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="200">
     <UserControl.Resources>
+        <Color x:Key="ItemMouseOverBackgroundColor">White</Color>
+        <Color x:Key="ItemSelectedBackgroundColor">White</Color>
         <Style x:Key="ModernScrollViewer" TargetType="{x:Type ScrollViewer}">
             <Setter Property="Template">
                 <Setter.Value>
@@ -77,7 +79,7 @@
                         <VisualState x:Name="InvalidUnfocused"/>
                     </VisualStateGroup>
                 </VisualStateManager.VisualStateGroups>
-                <ScrollViewer Style="{DynamicResource ModernScrollViewer}">
+                <ScrollViewer Style="{DynamicResource ModernScrollViewer}" Background="{TemplateBinding Background}">
                     <ItemsPresenter />
                 </ScrollViewer>
             </Grid>
@@ -94,7 +96,7 @@
                                         <Storyboard>
                                             <ColorAnimationUsingKeyFrames Storyboard.TargetName="MouseStateVisualizeRectangle"
                                                                       Storyboard.TargetProperty="(Fill).(SolidColorBrush.Color)">
-                                                <EasingColorKeyFrame KeyTime="0" Value="DarkGray" />
+                                                <EasingColorKeyFrame KeyTime="0" Value="{DynamicResource ItemMouseOverBackgroundColor}"/>
                                             </ColorAnimationUsingKeyFrames>
                                         </Storyboard>
                                     </VisualState>
@@ -106,7 +108,7 @@
                                         <Storyboard>
                                             <ColorAnimationUsingKeyFrames Storyboard.TargetName="SelectStateVisualizeRectangle"
                                                                       Storyboard.TargetProperty="(Fill).(SolidColorBrush.Color)">
-                                                <EasingColorKeyFrame KeyTime="0" Value="DarkGray" />
+                                                <EasingColorKeyFrame KeyTime="0" Value="{DynamicResource ItemSelectedBackgroundColor}" />
                                             </ColorAnimationUsingKeyFrames>
                                         </Storyboard>
                                     </VisualState>
@@ -129,7 +131,9 @@
         <ListView ItemContainerStyle="{DynamicResource ListViewItemLabelContentContainer}"
                   Template="{DynamicResource ListViewTemplate1}"
                   x:Name="ListViewTest" d:ItemsSource="{d:SampleData ItemCount=50}"
-                  SelectionMode="Single" SelectionChanged="ListViewTest_SelectionChanged" >
+                  SelectionMode="Single" SelectionChanged="ListViewTest_SelectionChanged"
+                  Foreground="{Binding Foreground, ElementName=userControl}"
+                  Background="{Binding Background, ElementName=userControl}">
             <ListView.View>
                 <GridView>
                     <GridViewColumn DisplayMemberBinding="{Binding Path=FirstName}" Header="First Name" Width="100"/>
