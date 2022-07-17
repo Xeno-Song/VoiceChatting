@@ -62,6 +62,9 @@
     <Compile Include="UI\BackgroundVisualizeButton.xaml.cs">
       <DependentUpon>BackgroundVisualizeButton.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UI\IPAddressTextBox.xaml.cs">
+      <DependentUpon>IPAddressTextBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\ScrollLayout.xaml.cs">
       <DependentUpon>ScrollLayout.xaml</DependentUpon>
     </Compile>
@@ -90,6 +93,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UI\BackgroundVisualizeButton.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\IPAddressTextBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

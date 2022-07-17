@@ -103,8 +103,22 @@
                     </ui:BackgroundVisualizeButton.ButtonForeground>
                 </ui:BackgroundVisualizeButton>
             </Grid>
-            <ui:ScrollLayout Margin="10,10,10,10" Grid.Row="0" Width="260" Height="340" ItemMouseOverBackgroundColor="#FF5B5B5B"
-                             ItemSelectionBackgroundColor="White" Background="#FF3B343E" Foreground="#FFE2E2E2"/>
+            <Grid Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="25"/>
+                    <RowDefinition Height="35"/>
+                    <RowDefinition Height="10"/>
+                    <RowDefinition Height="25"/>
+                    <RowDefinition Height="35"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <ui:IPAddressTextBox Grid.Row="1" Width="130" Height="20" HorizontalAlignment="Left" VerticalAlignment="Top" Background="#FF594F5D" Foreground="#FFEBEBEB"/>
+                <Label Content="Target IP Address" Padding="0" Width="Auto" VerticalContentAlignment="Bottom" Foreground="#FFEBEBEB"/>
+                <TextBox x:Name="TextBoxTargetPort" HorizontalAlignment="Left" TextWrapping="Wrap" Text="12543"
+                         VerticalAlignment="Top" Width="120" Height="18" Grid.Row="4" Background="#FF594F5D"
+                         SelectionBrush="#FFA483E0" SelectionTextBrush="#FF585858" Foreground="#FFEBEBEB"/>
+                <Label Content="Target Port" Padding="0" Width="Auto" VerticalContentAlignment="Bottom" Foreground="#FFEBEBEB" Grid.Row="3"/>
+            </Grid>
         </Grid>
     </Grid>
 </Window>

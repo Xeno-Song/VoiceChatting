@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
@@ -51,19 +52,19 @@ namespace VoiceChattingClient.UI
             InitializeComponent();
 
             ListViewTest.ItemsSource = items;
-            AddItem("test1", "test1");
-            AddItem("test2", "test2");
-            AddItem("test3", "test3");
-            AddItem("test4", "test4");
-            AddItem("test5", "test5");
-            AddItem("test6", "test6");
-            AddItem("test7", "test7");
-            AddItem("test7", "test7");
-            AddItem("test7", "test7");
-            AddItem("test7", "test7");
-            AddItem("test7", "test7");
-            AddItem("test7", "test7");
-            AddItem("test7", "test7");
+            // AddItem("test1", "test1");
+            // AddItem("test2", "test2");
+            // AddItem("test3", "test3");
+            // AddItem("test4", "test4");
+            // AddItem("test5", "test5");
+            // AddItem("test6", "test6");
+            // AddItem("test7", "test7");
+            // AddItem("test7", "test7");
+            // AddItem("test7", "test7");
+            // AddItem("test7", "test7");
+            // AddItem("test7", "test7");
+            // AddItem("test7", "test7");
+            // AddItem("test7", "test7");
             ListViewTest.Items.Refresh();
         }
 

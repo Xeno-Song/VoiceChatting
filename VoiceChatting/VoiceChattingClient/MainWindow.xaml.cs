@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using System.Text.RegularExpressions;
+using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace VoiceChattingClient
@@ -60,6 +62,16 @@ namespace VoiceChattingClient
 
         private void buttonHeadset_Loaded(object sender, RoutedEventArgs e)
         {
+        }
+
+        private void TextBoxIpAddress_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            string text = (sender as TextBox).Text;
+
+            if (!Regex.IsMatch(text, "^([0-9a-fA-F]{4}:){7}[0-9a-fA-F]{4}$"))
+            {
+                e.Handled = true;
+            }
         }
     }
 }
