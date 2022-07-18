@@ -9,24 +9,26 @@
              MouseEnter="OnMouseEnter" MouseLeave="OnMouseLeave" Background="Transparent" Foreground="Transparent">
     <Grid>
         <Rectangle x:Name="backgroundRectangle"
-                   Fill="{Binding Background, ElementName=userControl}"
+                   Fill="{Binding ButtonBackground, ElementName=userControl}"
                    Width="{Binding Width, ElementName=userControl}"
                    Height="{Binding Height, ElementName=userControl}"
                    RadiusX="{Binding BackgroundRadius, ElementName=userControl}"
                    RadiusY="{Binding BackgroundRadius, ElementName=userControl}" />
-        <Rectangle x:Name="buttonForeground"
-                   Fill="{Binding ButtonForeground, ElementName=userControl, Mode=OneWay}"
-                   Margin="{Binding ButtonMargin, ElementName=userControl, Mode=OneWay}" />
-        <Button x:Name="buttonBehavior" Foreground="{x:Null}" BorderBrush="{x:Null}"
-                Panel.ZIndex="1" Background="Transparent" Click="OnButtonClick">
+        <Button x:Name="buttonBehavior" BorderBrush="{x:Null}" Content="{Binding ButtonContent, ElementName=userControl}"
+                Panel.ZIndex="1" Background="{Binding Background, ElementName=userControl}" Click="OnButtonClick"
+                Foreground="{Binding Foreground, ElementName=userControl}"
+                Padding="{Binding ButtonPadding, ElementName=userControl}">
             <Button.Style>
                 <Style TargetType="Button">
+                    <Setter Property="OverridesDefaultStyle" Value="True"/>
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="Button">
-                                <Border x:Name="baseBorder" Background="{TemplateBinding Background}">
-                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                </Border>
+                                <Grid>
+                                    <Border x:Name="baseBorder" Background="{TemplateBinding Background}" Margin="{TemplateBinding Padding}">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                    </Border>
+                                </Grid>
                                 <ControlTemplate.Triggers />
                             </ControlTemplate>
                         </Setter.Value>

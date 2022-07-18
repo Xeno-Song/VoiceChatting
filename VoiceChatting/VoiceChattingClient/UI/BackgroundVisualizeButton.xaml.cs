@@ -15,11 +15,6 @@ namespace VoiceChattingClient.UI
             get => (Brush)GetValue(PropertyButtonForeground);
             set => SetValue(PropertyButtonForeground, value);
         }
-        public Brush NormalBackground
-        {
-            get => (Brush)GetValue(PropertyNormalBackground);
-            set => SetValue(PropertyNormalBackground, value);
-        }
         public Brush MouseOverBackground
         {
             get => (Brush)GetValue(PropertyMouseOverBackground);
@@ -30,15 +25,20 @@ namespace VoiceChattingClient.UI
             get => (Brush)GetValue(PropertyMouseClickBackground);
             set => SetValue(PropertyMouseClickBackground, value);
         }
+        public Brush ButtonBackground
+        {
+            get => (Brush)GetValue(ButtonBackgroundProperty);
+            set => SetValue(ButtonBackgroundProperty, value);
+        }
         public double BackgroundRadius
         {
             get => (double)GetValue(PropertyBackgroundRadius);
             set => SetValue(PropertyBackgroundRadius, value);
         }
-        public Thickness ButtonMargin
+        public Thickness ButtonPadding
         {
-            get => (Thickness)GetValue(PropertyButtonMargin);
-            set => SetValue(PropertyButtonMargin, value);
+            get => (Thickness)GetValue(PropertyButtonPadding);
+            set => SetValue(PropertyButtonPadding, value);
         }
         public object ButtonContent
         {
@@ -51,11 +51,6 @@ namespace VoiceChattingClient.UI
         public static readonly DependencyProperty PropertyButtonForeground =
             DependencyProperty.Register(
                 "ButtonForeground", typeof(Brush),
-                typeof(BackgroundVisualizeButton),
-                new PropertyMetadata(null));
-        public static readonly DependencyProperty PropertyNormalBackground =
-            DependencyProperty.Register(
-                "NormalBackground", typeof(Brush),
                 typeof(BackgroundVisualizeButton),
                 new PropertyMetadata(null));
         public static readonly DependencyProperty PropertyMouseOverBackground =
@@ -73,14 +68,19 @@ namespace VoiceChattingClient.UI
                 "BackgroundRadius", typeof(double),
                 typeof(BackgroundVisualizeButton),
                 new PropertyMetadata(null));
-        public static readonly DependencyProperty PropertyButtonMargin =
+        public static readonly DependencyProperty PropertyButtonPadding =
              DependencyProperty.Register(
-                "ButtonMargin", typeof(Thickness),
+                "ButtonPadding", typeof(Thickness),
                 typeof(BackgroundVisualizeButton),
                 new PropertyMetadata(null));
         public static readonly DependencyProperty PropertyButtonContent =
              DependencyProperty.Register(
                 "ButtonContent", typeof(object),
+                typeof(BackgroundVisualizeButton),
+                new PropertyMetadata(null));
+        public static readonly DependencyProperty ButtonBackgroundProperty =
+            DependencyProperty.Register(
+                "ButtonBackground", typeof(Brush),
                 typeof(BackgroundVisualizeButton),
                 new PropertyMetadata(null));
 
@@ -95,7 +95,7 @@ namespace VoiceChattingClient.UI
         }
         private void OnMouseLeave(object sender, MouseEventArgs e)
         {
-            backgroundRectangle.Fill = NormalBackground;
+            backgroundRectangle.Fill = ButtonBackground;
         }
 
         private void OnButtonClick(object sender, RoutedEventArgs e) => Click(this, e);

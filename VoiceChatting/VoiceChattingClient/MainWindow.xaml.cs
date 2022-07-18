@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Diagnostics;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -72,6 +73,11 @@ namespace VoiceChattingClient
             {
                 e.Handled = true;
             }
+        }
+
+        private void buttonHostServer_Click(object sender, RoutedEventArgs e)
+        {
+            Debug.WriteLine("Button Clicked");
         }
     }
 }
