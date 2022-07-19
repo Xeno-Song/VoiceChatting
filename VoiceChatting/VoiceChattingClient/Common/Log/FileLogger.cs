@@ -1,0 +1,61 @@
+﻿using log4net;
+using log4net.Appender;
+using log4net.Layout;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace VoiceChattingClient.Common.Log
+{
+    internal class FileLogger : ILogger, IDisposable
+    {
+        internal string FilePath
+        {
+            get => rollingFileAppender.File;
+            set
+            {
+                rollingFileAppender.File = value;
+                rollingFileAppender.ActivateOptions();
+            }
+        }
+
+        public IAppender Appender { get => rollingFileAppender; }
+
+        private RollingFileAppender rollingFileAppender = null;
+
+        internal FileLogger(string filePath)
+        {
+            CreateAppender(filePath);
+        }
+
+        private IAppender CreateAppender(string filePath)
+        {
+            var appender = new RollingFileAppender();
+            appender.Name = Path.GetFileName(filePath);
+            appender.File = filePath;
+            appender.Encoding = Encoding.UTF8;
+            appender.AppendToFile = true;
+            appender.RollingStyle = RollingFileAppender.RollingMode.Size;
+            appender.LockingModel = new RollingFileAppender.MinimalLock();
+            appender.StaticLogFileName = false;
+            appender.MaxSizeRollBackups = 50;
+            appender.MaximumFileSize = "10MB";
+
+            PatternLayout layout = new PatternLayout(
+                "%date [%thread] %level - %message%newline");
+            appender.Layout = layout;
+            appender.ActivateOptions();
+
+            return appender;
+        }
+
+        public void Dispose()
+        {
+            rollingFileAppender.Close();
+            rollingFileAppender = null;
+        }
+    }
+}
