@@ -54,6 +54,7 @@ namespace VoiceChattingClient.Common.Log
 
         public void Dispose()
         {
+            rollingFileAppender.Flush(100);
             rollingFileAppender.Close();
             rollingFileAppender = null;
         }

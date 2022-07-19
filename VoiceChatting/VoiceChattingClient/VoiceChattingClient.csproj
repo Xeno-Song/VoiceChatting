@@ -65,6 +65,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Common\Common.cs" />
+    <Compile Include="Common\Log\ConsoleLogger.cs" />
     <Compile Include="Common\Log\FileLogger.cs" />
     <Compile Include="Common\Log\ILogger.cs" />
     <Compile Include="Overlays\Settings.xaml.cs">
