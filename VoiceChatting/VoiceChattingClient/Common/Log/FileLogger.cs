@@ -28,10 +28,10 @@ namespace VoiceChattingClient.Common.Log
 
         internal FileLogger(string filePath)
         {
-            CreateAppender(filePath);
+            rollingFileAppender = CreateAppender(filePath);
         }
 
-        private IAppender CreateAppender(string filePath)
+        private RollingFileAppender CreateAppender(string filePath)
         {
             var appender = new RollingFileAppender();
             appender.Name = Path.GetFileName(filePath);
