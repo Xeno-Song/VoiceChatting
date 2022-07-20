@@ -1,5 +1,6 @@
 ﻿using log4net;
 using log4net.Appender;
+using log4net.Filter;
 using log4net.Layout;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,9 @@ namespace VoiceChattingClient.Common.Log
 {
     internal class FileLogger : ILogger, IDisposable
     {
+        // TODO : Add logging filter that can apply multiple log filter
+        // https://stackoverflow.com/questions/1299920/how-to-handle-add-to-list-event
+        // https://stackoverflow.com/questions/8926409/log4net-hierarchy-and-logging-levels
         internal string FilePath
         {
             get => rollingFileAppender.File;
@@ -43,7 +47,7 @@ namespace VoiceChattingClient.Common.Log
             appender.StaticLogFileName = false;
             appender.MaxSizeRollBackups = 50;
             appender.MaximumFileSize = "10MB";
-
+            
             PatternLayout layout = new PatternLayout(
                 "%date [%thread] %level - %message%newline");
             appender.Layout = layout;
