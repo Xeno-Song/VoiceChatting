@@ -7,8 +7,9 @@ using System.Threading.Tasks;
 
 namespace VoiceChattingClient.Common.Log
 {
-    internal interface ILogger
+    internal interface ILogger : IDisposable
     {
         IAppender Appender { get; }
+        bool IsDisposed { get; }
     }
 }

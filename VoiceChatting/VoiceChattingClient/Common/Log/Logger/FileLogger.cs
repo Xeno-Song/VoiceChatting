@@ -11,11 +11,8 @@ using System.Threading.Tasks;
 
 namespace VoiceChattingClient.Common.Log
 {
-    internal class FileLogger : ILogger, IDisposable
+    internal class FileLogger : ILogger
     {
-        // TODO : Add logging filter that can apply multiple log filter
-        // https://stackoverflow.com/questions/1299920/how-to-handle-add-to-list-event
-        // https://stackoverflow.com/questions/8926409/log4net-hierarchy-and-logging-levels
         internal string FilePath
         {
             get => rollingFileAppender.File;
@@ -27,6 +24,7 @@ namespace VoiceChattingClient.Common.Log
         }
 
         public IAppender Appender { get => rollingFileAppender; }
+        public bool IsDisposed { get; private set; } = false;
 
         private RollingFileAppender rollingFileAppender = null;
 
@@ -58,6 +56,9 @@ namespace VoiceChattingClient.Common.Log
 
         public void Dispose()
         {
+            if (IsDisposed) return;
+            IsDisposed = true;
+
             rollingFileAppender.Flush(100);
             rollingFileAppender.Close();
             rollingFileAppender = null;

@@ -65,6 +65,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Common\Common.cs" />
+    <Compile Include="Common\Log\Log.cs" />
+    <Compile Include="Common\Log\Logger\AsyncForwarder.cs" />
     <Compile Include="Common\Log\Logger\ConsoleLogger.cs" />
     <Compile Include="Common\Log\Logger\FileLogger.cs" />
     <Compile Include="Common\Log\Logger\ILogger.cs" />
@@ -177,5 +179,6 @@
   <ItemGroup>
     <Resource Include="Resources\Assets\settings-white.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

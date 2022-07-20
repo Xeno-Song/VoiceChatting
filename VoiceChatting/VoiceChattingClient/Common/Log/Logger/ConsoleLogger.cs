@@ -4,9 +4,10 @@ using System;
 
 namespace VoiceChattingClient.Common.Log
 {
-    internal class ConsoleLogger : ILogger, IDisposable
+    internal class ConsoleLogger : ILogger
     {
         public IAppender Appender { get => consoleAppender; }
+        public bool IsDisposed { get; private set; } = false;
         private ConsoleAppender consoleAppender = null;
 
         internal ConsoleLogger()
@@ -27,6 +28,9 @@ namespace VoiceChattingClient.Common.Log
 
         public void Dispose()
         {
+            if (IsDisposed) return;
+            IsDisposed = true;
+
             consoleAppender.Flush(100);
             consoleAppender.Close();
             consoleAppender = null;

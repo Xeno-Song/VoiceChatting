@@ -1,28 +1,19 @@
-﻿using log4net;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using VoiceChattingClient.Common.Log;
 
 namespace VoiceChattingClient.Common
 {
     internal class Common
     {
-        internal static ILog Log { get
-            {
-                if (logger == null)
-                    logger = CreateLogger();
-
-                return logger;
-            }
-            set => logger = value;
-        }
-        private static ILog logger = null;
-
-        private static ILog CreateLogger()
+        private static Logging log = null;
+        internal static Logging Log
         {
-
+            get
+            {
+                if (log == null)
+                    log = new Logging();
+                return log;
+            }
+            private set => log = value;
         }
     }
 }
