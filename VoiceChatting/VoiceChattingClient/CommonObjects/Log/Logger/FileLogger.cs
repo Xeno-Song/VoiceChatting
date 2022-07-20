@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VoiceChattingClient.Common.Log
+namespace VoiceChattingClient.CommonObjects.Log
 {
     internal class FileLogger : ILogger
     {

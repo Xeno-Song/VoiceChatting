@@ -2,7 +2,7 @@
 using log4net.Layout;
 using System;
 
-namespace VoiceChattingClient.Common.Log
+namespace VoiceChattingClient.CommonObjects.Log
 {
     internal class ConsoleLogger : ILogger
     {

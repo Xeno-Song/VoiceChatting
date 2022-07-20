@@ -1,6 +1,6 @@
-﻿using VoiceChattingClient.Common.Log;
+﻿using VoiceChattingClient.CommonObjects.Log;
 
-namespace VoiceChattingClient.Common
+namespace VoiceChattingClient.CommonObjects
 {
     internal class Common
     {

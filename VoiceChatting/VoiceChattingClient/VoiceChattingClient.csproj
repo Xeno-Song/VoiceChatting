@@ -64,12 +64,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Common\Common.cs" />
-    <Compile Include="Common\Log\Log.cs" />
-    <Compile Include="Common\Log\Logger\AsyncForwarder.cs" />
-    <Compile Include="Common\Log\Logger\ConsoleLogger.cs" />
-    <Compile Include="Common\Log\Logger\FileLogger.cs" />
-    <Compile Include="Common\Log\Logger\ILogger.cs" />
+    <Compile Include="CommonObjects\Common.cs" />
+    <Compile Include="CommonObjects\Log\Log.cs" />
+    <Compile Include="CommonObjects\Log\Logger\AsyncForwarder.cs" />
+    <Compile Include="CommonObjects\Log\Logger\ConsoleLogger.cs" />
+    <Compile Include="CommonObjects\Log\Logger\FileLogger.cs" />
+    <Compile Include="CommonObjects\Log\Logger\ILogger.cs" />
     <Compile Include="Overlays\Settings.xaml.cs">
       <DependentUpon>Settings.xaml</DependentUpon>
     </Compile>
