@@ -15,7 +15,8 @@
         MinHeight="450"
         MinWidth="800"
         Background="#FF3C393C"
-        Foreground="{x:Null}">
+        Foreground="{x:Null}"
+        Closed="Window_Closed">
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="0"
                       ResizeBorderThickness="5" />

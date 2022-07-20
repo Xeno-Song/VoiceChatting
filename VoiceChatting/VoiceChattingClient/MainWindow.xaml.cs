@@ -1,8 +1,10 @@
 ﻿using System.Diagnostics;
+using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using VoiceChattingClient.CommonObjects;
 
 namespace VoiceChattingClient
 {
@@ -16,6 +18,24 @@ namespace VoiceChattingClient
         public MainWindow()
         {
             InitializeComponent();
+            InitializeLogFiles();
+        }
+
+        private void InitializeLogFiles()
+        {
+            string logBaseDirectory = "../log/";
+            if (Directory.Exists(logBaseDirectory) == false)
+            {
+                var directory = Directory.CreateDirectory(logBaseDirectory);
+                if (directory.Exists == false)
+                {
+                    MessageBox.Show("Error while initialize log files.");
+                    throw new DirectoryNotFoundException(
+                        "Cannot make log directroy");
+                }
+            }
+
+            Common.Log.CreateLogger("main", logBaseDirectory + "main.log");
         }
 
         private void OnCloseButtonClick(object sender, RoutedEventArgs e)
@@ -48,16 +68,19 @@ namespace VoiceChattingClient
 
         private void OnButtonSettingClick(object sender, RoutedEventArgs e)
         {
+            Common.Log["main"].Info("Setting Button Clicked");
             MessageBox.Show("Setting Button Clicked");
         }
 
         private void OnButtonHeadsetClick(object sender, RoutedEventArgs e)
         {
+            Common.Log["main"].Info("Headset Button Clicked");
             MessageBox.Show("Headset Button Clicked");
         }
 
         private void OnButtonMicrophoneClick(object sender, RoutedEventArgs e)
         {
+            Common.Log["main"].Info("Microphone Button Clicked");
             MessageBox.Show("Microphone Button Clicked");
         }
 
@@ -78,6 +101,11 @@ namespace VoiceChattingClient
         private void buttonHostServer_Click(object sender, RoutedEventArgs e)
         {
             Debug.WriteLine("Button Clicked");
+        }
+
+        private void Window_Closed(object sender, System.EventArgs e)
+        {
+            Common.Log.Dispose();
         }
     }
 }
