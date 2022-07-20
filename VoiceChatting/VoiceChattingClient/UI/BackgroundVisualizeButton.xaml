@@ -1,12 +1,17 @@
-﻿<UserControl x:Name="userControl" x:Class="VoiceChattingClient.UI.BackgroundVisualizeButton"
+﻿<UserControl x:Name="userControl"
+             x:Class="VoiceChattingClient.UI.BackgroundVisualizeButton"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:VoiceChattingClient.UI"
-             mc:Ignorable="d" 
-             d:DesignHeight="50" d:DesignWidth="150"
-             MouseEnter="OnMouseEnter" MouseLeave="OnMouseLeave" Background="Transparent" Foreground="Transparent">
+             mc:Ignorable="d"
+             d:DesignHeight="50"
+             d:DesignWidth="150"
+             MouseEnter="OnMouseEnter"
+             MouseLeave="OnMouseLeave"
+             Background="Transparent"
+             Foreground="Transparent">
     <Grid>
         <Rectangle x:Name="backgroundRectangle"
                    Fill="{Binding ButtonBackground, ElementName=userControl}"
@@ -14,19 +19,27 @@
                    Height="{Binding Height, ElementName=userControl}"
                    RadiusX="{Binding BackgroundRadius, ElementName=userControl}"
                    RadiusY="{Binding BackgroundRadius, ElementName=userControl}" />
-        <Button x:Name="buttonBehavior" BorderBrush="{x:Null}" Content="{Binding ButtonContent, ElementName=userControl}"
-                Panel.ZIndex="1" Background="{Binding Background, ElementName=userControl}" Click="OnButtonClick"
+        <Button x:Name="buttonBehavior"
+                BorderBrush="{x:Null}"
+                Content="{Binding ButtonContent, ElementName=userControl}"
+                Panel.ZIndex="1"
+                Background="{Binding Background, ElementName=userControl}"
+                Click="OnButtonClick"
                 Foreground="{Binding Foreground, ElementName=userControl}"
                 Padding="{Binding ButtonPadding, ElementName=userControl}">
             <Button.Style>
                 <Style TargetType="Button">
-                    <Setter Property="OverridesDefaultStyle" Value="True"/>
+                    <Setter Property="OverridesDefaultStyle"
+                            Value="True" />
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="Button">
                                 <Grid>
-                                    <Border x:Name="baseBorder" Background="{TemplateBinding Background}" Margin="{TemplateBinding Padding}">
-                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                    <Border x:Name="baseBorder"
+                                            Background="{TemplateBinding Background}"
+                                            Margin="{TemplateBinding Padding}">
+                                        <ContentPresenter HorizontalAlignment="Center"
+                                                          VerticalAlignment="Center" />
                                     </Border>
                                 </Grid>
                                 <ControlTemplate.Triggers />

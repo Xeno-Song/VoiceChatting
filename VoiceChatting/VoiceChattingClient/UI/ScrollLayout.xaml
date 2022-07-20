@@ -1,90 +1,118 @@
-﻿<UserControl x:Name="userControl" x:Class="VoiceChattingClient.UI.ScrollLayout"
+﻿<UserControl x:Name="userControl"
+             x:Class="VoiceChattingClient.UI.ScrollLayout"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:VoiceChattingClient.UI"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="200">
+             mc:Ignorable="d"
+             d:DesignHeight="450"
+             d:DesignWidth="200">
     <UserControl.Resources>
         <Color x:Key="ItemMouseOverBackgroundColor">White</Color>
         <Color x:Key="ItemSelectedBackgroundColor">White</Color>
-        <Style x:Key="ModernScrollViewer" TargetType="{x:Type ScrollViewer}">
+        <Style x:Key="ModernScrollViewer"
+               TargetType="{x:Type ScrollViewer}">
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type ScrollViewer}">
-                        <Grid x:Name="Grid" Background="{TemplateBinding Background}">
+                        <Grid x:Name="Grid"
+                              Background="{TemplateBinding Background}">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
-                            <ScrollContentPresenter x:Name="PART_ScrollContentPresenter" CanHorizontallyScroll="True"
+                            <ScrollContentPresenter x:Name="PART_ScrollContentPresenter"
+                                                    CanHorizontallyScroll="True"
                                                     ContentTemplate="{TemplateBinding ContentTemplate}"
-                                                    CanVerticallyScroll="True" Grid.Column="0" Content="{TemplateBinding Content}"
+                                                    CanVerticallyScroll="True"
+                                                    Grid.Column="0"
+                                                    Content="{TemplateBinding Content}"
                                                     CanContentScroll="{TemplateBinding CanContentScroll}"
-                                                    Margin="{TemplateBinding Padding}" Grid.Row="0"/>
+                                                    Margin="{TemplateBinding Padding}"
+                                                    Grid.Row="0" />
                             <ScrollBar x:Name="PART_VerticalScrollBar"
                                        AutomationProperties.AutomationId="VerticalScrollBar"
-                                       Cursor="Arrow" Grid.Column="1"
+                                       Cursor="Arrow"
+                                       Grid.Column="1"
                                        Maximum="{TemplateBinding ScrollableHeight}"
-                                       Minimum="0" Grid.Row="0"
+                                       Minimum="0"
+                                       Grid.Row="0"
                                        Value="{Binding VerticalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
                                        ViewportSize="{TemplateBinding ViewportHeight}"
                                        Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"
-                                       Style="{Binding Mode=OneWay, Source={StaticResource ModernSlimScrollBar}}" Width="7" />
+                                       Style="{Binding Mode=OneWay, Source={StaticResource ModernSlimScrollBar}}"
+                                       Width="7" />
                             <ScrollBar x:Name="PART_HorizontalScrollBar"
-                                       AutomationProperties.AutomationId="HorizontalScrollBar" Cursor="Arrow"
-                                       Grid.Column="0" Maximum="{TemplateBinding ScrollableWidth}"
-                                       Minimum="0" Orientation="Horizontal" Grid.Row="1"
+                                       AutomationProperties.AutomationId="HorizontalScrollBar"
+                                       Cursor="Arrow"
+                                       Grid.Column="0"
+                                       Maximum="{TemplateBinding ScrollableWidth}"
+                                       Minimum="0"
+                                       Orientation="Horizontal"
+                                       Grid.Row="1"
                                        Value="{Binding HorizontalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
                                        ViewportSize="{TemplateBinding ViewportWidth}"
                                        Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}"
                                        Style="{Binding Mode=OneWay, Source={StaticResource ModernSlimScrollBar}}"
-                                       Height="7"/>
+                                       Height="7" />
                         </Grid>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
             <Style.Triggers>
-                <Trigger Property="IsEnabled" Value="false">
-                    <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                <Trigger Property="IsEnabled"
+                         Value="false">
+                    <Setter Property="Foreground"
+                            Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
                 </Trigger>
             </Style.Triggers>
         </Style>
-        <ControlTemplate x:Key="ListViewTemplate1" TargetType="{x:Type ListView}">
+        <ControlTemplate x:Key="ListViewTemplate1"
+                         TargetType="{x:Type ListView}">
             <Grid>
                 <VisualStateManager.VisualStateGroups>
                     <VisualStateGroup x:Name="ValidationStates">
-                        <VisualState x:Name="Valid"/>
+                        <VisualState x:Name="Valid" />
                         <VisualState x:Name="InvalidFocused">
                             <Storyboard>
-                                <DoubleAnimationUsingKeyFrames Storyboard.TargetName="scrollContentPresenter" Storyboard.TargetProperty="(UIElement.Opacity)">
-                                    <EasingDoubleKeyFrame KeyTime="00:00:00" Value="1"/>
+                                <DoubleAnimationUsingKeyFrames Storyboard.TargetName="scrollContentPresenter"
+                                                               Storyboard.TargetProperty="(UIElement.Opacity)">
+                                    <EasingDoubleKeyFrame KeyTime="00:00:00"
+                                                          Value="1" />
                                 </DoubleAnimationUsingKeyFrames>
-                                <DoubleAnimationUsingKeyFrames Storyboard.TargetName="scrollBar" Storyboard.TargetProperty="(UIElement.Opacity)">
-                                    <EasingDoubleKeyFrame KeyTime="00:00:00" Value="1"/>
+                                <DoubleAnimationUsingKeyFrames Storyboard.TargetName="scrollBar"
+                                                               Storyboard.TargetProperty="(UIElement.Opacity)">
+                                    <EasingDoubleKeyFrame KeyTime="00:00:00"
+                                                          Value="1" />
                                 </DoubleAnimationUsingKeyFrames>
-                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="scrollBar" Storyboard.TargetProperty="(FrameworkElement.HorizontalAlignment)">
-                                    <DiscreteObjectKeyFrame KeyTime="00:00:00" Value="{x:Static HorizontalAlignment.Right}"/>
+                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="scrollBar"
+                                                               Storyboard.TargetProperty="(FrameworkElement.HorizontalAlignment)">
+                                    <DiscreteObjectKeyFrame KeyTime="00:00:00"
+                                                            Value="{x:Static HorizontalAlignment.Right}" />
                                 </ObjectAnimationUsingKeyFrames>
-                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="scrollBar" Storyboard.TargetProperty="(FrameworkElement.VerticalAlignment)">
-                                    <DiscreteObjectKeyFrame KeyTime="00:00:00" Value="{x:Static VerticalAlignment.Bottom}"/>
+                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="scrollBar"
+                                                               Storyboard.TargetProperty="(FrameworkElement.VerticalAlignment)">
+                                    <DiscreteObjectKeyFrame KeyTime="00:00:00"
+                                                            Value="{x:Static VerticalAlignment.Bottom}" />
                                 </ObjectAnimationUsingKeyFrames>
                             </Storyboard>
                         </VisualState>
-                        <VisualState x:Name="InvalidUnfocused"/>
+                        <VisualState x:Name="InvalidUnfocused" />
                     </VisualStateGroup>
                 </VisualStateManager.VisualStateGroups>
-                <ScrollViewer Style="{DynamicResource ModernScrollViewer}" Background="{TemplateBinding Background}">
+                <ScrollViewer Style="{DynamicResource ModernScrollViewer}"
+                              Background="{TemplateBinding Background}">
                     <ItemsPresenter />
                 </ScrollViewer>
             </Grid>
         </ControlTemplate>
-        <Style x:Key="ListViewItemLabelContentContainer" TargetType="{x:Type ListViewItem}">
+        <Style x:Key="ListViewItemLabelContentContainer"
+               TargetType="{x:Type ListViewItem}">
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type ListBoxItem}">
@@ -95,8 +123,9 @@
                                     <VisualState x:Name="MouseOver">
                                         <Storyboard>
                                             <ColorAnimationUsingKeyFrames Storyboard.TargetName="MouseStateVisualizeRectangle"
-                                                                      Storyboard.TargetProperty="(Fill).(SolidColorBrush.Color)">
-                                                <EasingColorKeyFrame KeyTime="0" Value="{DynamicResource ItemMouseOverBackgroundColor}"/>
+                                                                          Storyboard.TargetProperty="(Fill).(SolidColorBrush.Color)">
+                                                <EasingColorKeyFrame KeyTime="0"
+                                                                     Value="{DynamicResource ItemMouseOverBackgroundColor}" />
                                             </ColorAnimationUsingKeyFrames>
                                         </Storyboard>
                                     </VisualState>
@@ -107,18 +136,30 @@
                                     <VisualState x:Name="Selected">
                                         <Storyboard>
                                             <ColorAnimationUsingKeyFrames Storyboard.TargetName="SelectStateVisualizeRectangle"
-                                                                      Storyboard.TargetProperty="(Fill).(SolidColorBrush.Color)">
-                                                <EasingColorKeyFrame KeyTime="0" Value="{DynamicResource ItemSelectedBackgroundColor}" />
+                                                                          Storyboard.TargetProperty="(Fill).(SolidColorBrush.Color)">
+                                                <EasingColorKeyFrame KeyTime="0"
+                                                                     Value="{DynamicResource ItemSelectedBackgroundColor}" />
                                             </ColorAnimationUsingKeyFrames>
                                         </Storyboard>
                                     </VisualState>
                                 </VisualStateGroup>
                             </VisualStateManager.VisualStateGroups>
-                            <Border x:Name="Border" SnapsToDevicePixels="true" Background="Transparent">
+                            <Border x:Name="Border"
+                                    SnapsToDevicePixels="true"
+                                    Background="Transparent">
                                 <Grid>
-                                    <Rectangle x:Name="MouseStateVisualizeRectangle" Fill="Transparent" Margin="0,0,0,0" RadiusX="10" RadiusY="5"/>
-                                    <Rectangle x:Name="SelectStateVisualizeRectangle" Fill="Transparent" Margin="0,0,0,0" RadiusX="10" RadiusY="5"/>
-                                    <GridViewRowPresenter Margin="2,1,0,1"  VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                                    <Rectangle x:Name="MouseStateVisualizeRectangle"
+                                               Fill="Transparent"
+                                               Margin="0,0,0,0"
+                                               RadiusX="10"
+                                               RadiusY="5" />
+                                    <Rectangle x:Name="SelectStateVisualizeRectangle"
+                                               Fill="Transparent"
+                                               Margin="0,0,0,0"
+                                               RadiusX="10"
+                                               RadiusY="5" />
+                                    <GridViewRowPresenter Margin="2,1,0,1"
+                                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
                                 </Grid>
                             </Border>
                         </Grid>
@@ -130,13 +171,17 @@
     <Grid Background="White">
         <ListView ItemContainerStyle="{DynamicResource ListViewItemLabelContentContainer}"
                   Template="{DynamicResource ListViewTemplate1}"
-                  x:Name="ListViewTest" d:ItemsSource="{d:SampleData ItemCount=50}"
-                  SelectionMode="Single" SelectionChanged="ListViewTest_SelectionChanged"
+                  x:Name="ListViewTest"
+                  d:ItemsSource="{d:SampleData ItemCount=50}"
+                  SelectionMode="Single"
+                  SelectionChanged="ListViewTest_SelectionChanged"
                   Foreground="{Binding Foreground, ElementName=userControl}"
                   Background="{Binding Background, ElementName=userControl}">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn DisplayMemberBinding="{Binding Path=FirstName}" Header="First Name" Width="100"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=FirstName}"
+                                    Header="First Name"
+                                    Width="100" />
                 </GridView>
             </ListView.View>
         </ListView>
