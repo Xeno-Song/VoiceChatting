@@ -42,6 +42,8 @@ namespace VoiceChattingClient.CommonObjects.Log
             asyncForwarder.AddAppender(fileLogger);
 
             loggers.Add(key, asyncForwarder);
+            logger.AddAppender(asyncForwarder.Appender);
+
             return true;
         }
 
