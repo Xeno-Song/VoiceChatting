@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using VoiceChattingClient.CommonObjects;
+using VoiceChattingClient.SoundSystem;
 
 namespace VoiceChattingClient
 {
@@ -13,8 +14,7 @@ namespace VoiceChattingClient
     /// </summary>
     public partial class MainWindow : Window
     {
-        public bool IsWindowMoving { get; private set; } = false;
-
+        private MicrophoneController microphoneController;
         public MainWindow()
         {
             InitializeComponent();
@@ -80,8 +80,7 @@ namespace VoiceChattingClient
 
         private void OnButtonMicrophoneClick(object sender, RoutedEventArgs e)
         {
-            Common.Log["main"].Info("Microphone Button Clicked");
-            MessageBox.Show("Microphone Button Clicked");
+            microphoneController = new MicrophoneController();
         }
 
         private void buttonHeadset_Loaded(object sender, RoutedEventArgs e)
