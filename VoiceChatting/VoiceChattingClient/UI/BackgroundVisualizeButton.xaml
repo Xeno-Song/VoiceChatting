@@ -18,7 +18,12 @@
                    Width="{Binding Width, ElementName=userControl}"
                    Height="{Binding Height, ElementName=userControl}"
                    RadiusX="{Binding BackgroundRadius, ElementName=userControl}"
-                   RadiusY="{Binding BackgroundRadius, ElementName=userControl}" />
+                   RadiusY="{Binding BackgroundRadius, ElementName=userControl}"
+                   Panel.ZIndex="0" />
+        <Border CornerRadius="{Binding BorderRadius, ElementName=userControl}"
+                BorderBrush="{Binding BackgroundBorderBrush, ElementName=userControl}"
+                BorderThickness="{Binding BackgroundBorderThickness, ElementName=userControl}"
+                Margin="{Binding BorderMargin, ElementName=userControl}"/>
         <Button x:Name="buttonBehavior"
                 BorderBrush="{x:Null}"
                 Content="{Binding ButtonContent, ElementName=userControl}"

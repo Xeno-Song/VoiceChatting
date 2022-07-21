@@ -27,7 +27,7 @@ namespace VoiceChattingClient.UI
             InitializeComponent();
         }
 
-        private void UserControl_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        private void buttonClose_Click(object sender, RoutedEventArgs e)
         {
             OnDialogClose?.Invoke(this, null);
         }

@@ -6,8 +6,34 @@
              xmlns:local="clr-namespace:VoiceChattingClient.UI"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
-             Background="White" MouseDoubleClick="UserControl_MouseDoubleClick">
+             Background="#FF3C393C">
     <Grid>
-        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="5*" />
+            <ColumnDefinition Width="8*" />
+            <ColumnDefinition Width="55" />
+        </Grid.ColumnDefinitions>
+        <local:BackgroundVisualizeButton x:Name="buttonClose"
+                                         VerticalAlignment="Top"
+                                         Grid.Column="2"
+                                         Height="{Binding Width, RelativeSource={RelativeSource Self}}"
+                                         Margin="5,10,5,0"
+                                         BorderMargin="7,7,7,7"
+                                         HorizontalAlignment="Stretch"
+                                         BackgroundRadius="8"
+                                         BorderRadius="10"
+                                         BackgroundBorderBrush="White"
+                                         BackgroundBorderThickness="2"
+                                         ButtonBackground="#FF3C393C"
+                                         MouseClickBackground="#FF2B292B"
+                                         MouseOverBackground="#FF2B292B"
+                                         Foreground="{x:Null}"
+                                         ButtonPadding="12,12,12,12"
+                                         Click="buttonClose_Click">
+            <local:BackgroundVisualizeButton.ButtonContent>
+                <Image Source="/Resources/Assets/close.png"
+                       Stretch="Uniform"/>
+            </local:BackgroundVisualizeButton.ButtonContent>
+        </local:BackgroundVisualizeButton>
     </Grid>
 </UserControl>
