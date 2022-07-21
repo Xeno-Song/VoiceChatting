@@ -36,6 +36,7 @@ namespace VoiceChattingClient
             }
 
             Common.Log.CreateLogger("main", logBaseDirectory + "main.log");
+            SettingControl.OnDialogClose += SettingControl_OnDialogClose;
         }
 
         private void OnCloseButtonClick(object sender, RoutedEventArgs e)
@@ -68,8 +69,14 @@ namespace VoiceChattingClient
 
         private void OnButtonSettingClick(object sender, RoutedEventArgs e)
         {
-            Common.Log["main"].Info("Setting Button Clicked");
-            MessageBox.Show("Setting Button Clicked");
+            popupBackgroundMask.Visibility = Visibility.Visible;
+            SettingControl.Visibility = Visibility.Visible;
+        }
+
+        private void SettingControl_OnDialogClose(object sender, System.EventArgs e)
+        {
+            popupBackgroundMask.Visibility = Visibility.Collapsed;
+            SettingControl.Visibility = Visibility.Collapsed;
         }
 
         private void OnButtonHeadsetClick(object sender, RoutedEventArgs e)
@@ -81,10 +88,6 @@ namespace VoiceChattingClient
         private void OnButtonMicrophoneClick(object sender, RoutedEventArgs e)
         {
             microphoneController = new MicrophoneController();
-        }
-
-        private void buttonHeadset_Loaded(object sender, RoutedEventArgs e)
-        {
         }
 
         private void TextBoxIpAddress_PreviewTextInput(object sender, TextCompositionEventArgs e)

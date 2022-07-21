@@ -21,7 +21,7 @@
         <WindowChrome CaptionHeight="0"
                       ResizeBorderThickness="5" />
     </WindowChrome.WindowChrome>
-    <Grid>
+    <Grid x:Name="grid">
         <Grid.RowDefinitions>
             <RowDefinition Height="22" />
             <RowDefinition Height="1*" />
@@ -169,7 +169,6 @@
                                               ButtonPadding="6,6,6,6"
                                               BackgroundRadius="5"
                                               Click="OnButtonHeadsetClick"
-                                              Loaded="buttonHeadset_Loaded"
                                               ButtonBackground="#FF2E233A">
                     <!--ui:BackgroundVisualizeButton.ButtonForeground>
                         <ImageBrush ImageSource="/Resources/Assets/headphone-white.png" Stretch="Uniform"/>
@@ -268,6 +267,30 @@
                                                   Click="OnButtonMicrophoneClick" />
                 </Grid>
             </Grid>
+        </Grid>
+        <!-- Setting Dialog -->
+        <Grid x:Name="popupGrid"
+              Grid.RowSpan="{Binding RowDefinitions.Count, ElementName=grid, Mode=OneWay}"
+              Grid.ColumnSpan="{Binding ColumnDefinitions.Count, ElementName=grid, Mode=OneWay}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="5*" />
+                <ColumnDefinition Width="1*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="7*" />
+                <RowDefinition Height="1*" />
+            </Grid.RowDefinitions>
+            <Rectangle x:Name="popupBackgroundMask"
+                       Fill="#7F000000"
+                       Grid.RowSpan="{Binding RowDefinitions.Count, ElementName=popupGrid, Mode=OneWay}"
+                       Grid.ColumnSpan="{Binding ColumnDefinitions.Count, ElementName=popupGrid, Mode=OneWay}"
+                       Visibility="Collapsed" />
+            <ui:SettingDialog x:Name="SettingControl"
+                              Grid.Row="1"
+                              Grid.Column="1"
+                              Visibility="Collapsed" />
         </Grid>
     </Grid>
 </Window>

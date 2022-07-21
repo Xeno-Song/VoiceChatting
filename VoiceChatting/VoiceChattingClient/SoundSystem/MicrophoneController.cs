@@ -10,6 +10,21 @@ namespace VoiceChattingClient.SoundSystem
 {
     internal class MicrophoneController
     {
+        public static List<string> Microphones
+        {
+            get
+            {
+                List<string> microphones = new List<string>();
+                for (int i = 0; i < WaveIn.DeviceCount; ++i)
+                {
+                    var caps = WaveIn.GetCapabilities(i);
+                    microphones.Add(caps.ProductName);
+                }
+
+                return microphones;
+            }
+        }
+        
         private WaveInEvent waveInEvent;
         public event EventHandler OnDataAvaliable;
 
