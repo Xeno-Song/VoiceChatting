@@ -168,7 +168,7 @@
             </Setter>
         </Style>
     </UserControl.Resources>
-    <Grid Background="White">
+    <Grid>
         <ListView ItemContainerStyle="{DynamicResource ListViewItemLabelContentContainer}"
                   Template="{DynamicResource ListViewTemplate1}"
                   x:Name="ListViewTest"

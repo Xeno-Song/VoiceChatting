@@ -22,14 +22,45 @@ namespace VoiceChattingClient.UI
     {
         public event EventHandler OnDialogClose;
 
+        public class Name
+        {
+            public string FirstName { get; set; }
+            public string LastName { get; set; }
+        }
+
+        private List<Name> items = new List<Name>();
+
         public SettingDialog()
         {
             InitializeComponent();
+            AddItem("test1", "test1");
+            AddItem("test2", "test2");
+            AddItem("test3", "test3");
+            AddItem("test4", "test4");
+            AddItem("test5", "test5");
+            AddItem("test6", "test6");
+            AddItem("test7", "test7");
+            AddItem("test7", "test7");
+            AddItem("test7", "test7");
+            AddItem("test7", "test7");
+            AddItem("test7", "test7");
+            AddItem("test7", "test7");
+            AddItem("test7", "test7");
+        }
+
+        public void AddItem(string type, string value)
+        {
+            items.Add(new Name { FirstName = type, LastName = value });
         }
 
         private void buttonClose_Click(object sender, RoutedEventArgs e)
         {
             OnDialogClose?.Invoke(this, null);
+        }
+
+        private void ListViewTest_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
         }
     }
 }

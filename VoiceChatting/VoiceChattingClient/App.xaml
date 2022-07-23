@@ -7,7 +7,7 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Resources/Fonts/Fonts.xaml" />
-                <!-- ResourceDictionary Source="/UI/ListViewResourceDictionary.xaml" /-->
+                <ResourceDictionary Source="/UI/ListViewResourceDictionary.xaml" />
                 <ResourceDictionary Source="/UI/ScrollBarResourceDictionary.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
