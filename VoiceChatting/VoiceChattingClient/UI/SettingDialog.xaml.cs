@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using VoiceChattingClient.SoundSystem;
 
 namespace VoiceChattingClient.UI
 {
@@ -22,45 +23,28 @@ namespace VoiceChattingClient.UI
     {
         public event EventHandler OnDialogClose;
 
-        public class Name
-        {
-            public string FirstName { get; set; }
-            public string LastName { get; set; }
-        }
-
-        private List<Name> items = new List<Name>();
-
         public SettingDialog()
         {
             InitializeComponent();
-            AddItem("test1", "test1");
-            AddItem("test2", "test2");
-            AddItem("test3", "test3");
-            AddItem("test4", "test4");
-            AddItem("test5", "test5");
-            AddItem("test6", "test6");
-            AddItem("test7", "test7");
-            AddItem("test7", "test7");
-            AddItem("test7", "test7");
-            AddItem("test7", "test7");
-            AddItem("test7", "test7");
-            AddItem("test7", "test7");
-            AddItem("test7", "test7");
+            InitializeSettingValues();
         }
 
-        public void AddItem(string type, string value)
+        public void InitializeSettingValues()
         {
-            items.Add(new Name { FirstName = type, LastName = value });
+            ComboBoxInputDevices.Items.Clear();
+            var microphoneList = MicrophoneController.GetMicrophonesList();
+
+            foreach (var microphoneName in microphoneList)
+            {
+                var microphoneTextBlock = new TextBlock();
+                microphoneTextBlock.Text = microphoneName;
+                ComboBoxInputDevices.Items.Add(microphoneTextBlock);
+            }
         }
 
         private void buttonClose_Click(object sender, RoutedEventArgs e)
         {
             OnDialogClose?.Invoke(this, null);
-        }
-
-        private void ListViewTest_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
         }
     }
 }

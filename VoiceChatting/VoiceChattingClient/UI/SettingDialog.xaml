@@ -100,6 +100,10 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="ComboBox">
                         <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="20" />
+                            </Grid.ColumnDefinitions>
                             <VisualStateManager.VisualStateGroups>
                                 <VisualStateGroup x:Name="CommonStates">
                                     <VisualState x:Name="Normal" />
@@ -109,7 +113,7 @@
                                             <ColorAnimationUsingKeyFrames Storyboard.TargetName="PART_EditableTextBox"
                                                                           Storyboard.TargetProperty="(TextElement.Foreground).(SolidColorBrush.Color)">
                                                 <EasingColorKeyFrame KeyTime="0"
-                                                                     Value="Aqua" />
+                                                                     Value="Green" />
                                             </ColorAnimationUsingKeyFrames>
                                         </Storyboard>
                                     </VisualState>
@@ -137,14 +141,15 @@
                                           ClickMode="Press"
                                           Style="{DynamicResource ComboBoxToggleButton}"
                                           IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
-                                          Grid.ColumnSpan="2">
+                                          Grid.ColumnSpan="2" >
                             </ToggleButton>
                             <ContentPresenter x:Name="ContentSite"
                                               IsHitTestVisible="False"
                                               Content="{TemplateBinding SelectionBoxItem}"
                                               ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
                                               ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
-                                              Margin="3,3,0,3" />
+                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              Margin="6,3,0,3" />
                             <TextBox x:Name="PART_EditableTextBox"
                                      Style="{x:Null}"
                                      VerticalAlignment="Center"
@@ -169,7 +174,8 @@
                                             Background="{TemplateBinding Background}">
                                     </Border>
                                     <ScrollViewer Margin="4,6,4,6"
-                                                  SnapsToDevicePixels="True">
+                                                  SnapsToDevicePixels="True"
+                                                  HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}">
                                         <StackPanel IsItemsHost="True"
                                                     KeyboardNavigation.DirectionalNavigation="Contained" />
                                     </ScrollViewer>
@@ -266,10 +272,13 @@
         <ScrollViewer Grid.Column="1"
                       Style="{DynamicResource ScrollViewerStyle}">
             <StackPanel>
+                <Rectangle Fill="{x:Null}"
+                           Height="30" />
                 <Grid Height="50">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="100" />
-                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="10" />
+                        <ColumnDefinition />
                     </Grid.ColumnDefinitions>
                     <Label Content="Input"
                            VerticalContentAlignment="Center"
@@ -277,27 +286,15 @@
                            Foreground="White"
                            FontSize="15"
                            FontFamily="{DynamicResource NotoSansBold}" />
-                    <ComboBox Grid.Column="1"
-                              Margin="20,10,0,10"
-                              MinWidth="200"
-                              MaxWidth="300"
-                              HorizontalAlignment="Left"
+                    <ComboBox x:Name="ComboBoxInputDevices"
+                              Grid.Column="2"
+                              Margin="0,10,0,10"
+                              HorizontalAlignment="Stretch"
                               Style="{DynamicResource ComboBoxStyle}"
                               Background="#FF3C393C"
                               BorderBrush="#FFB3A6B3"
-                              Foreground="#FFE2E2E2">
-                        <ComboBoxItem>
-                            <TextBlock Text="Test1" />
-                        </ComboBoxItem>
-                        <ComboBoxItem>
-                            <TextBlock Text="Test2" />
-                        </ComboBoxItem>
-                        <ComboBoxItem>
-                            <TextBlock Text="Test3" />
-                        </ComboBoxItem>
-                        <ComboBoxItem>
-                            <TextBlock Text="Test4" />
-                        </ComboBoxItem>
+                              Foreground="#FFE2E2E2"
+                              HorizontalContentAlignment="Left" >
                     </ComboBox>
                 </Grid>
             </StackPanel>

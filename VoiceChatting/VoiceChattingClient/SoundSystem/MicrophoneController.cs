@@ -1,4 +1,5 @@
-﻿using NAudio.Wave;
+﻿using NAudio.CoreAudioApi;
+using NAudio.Wave;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -10,21 +11,21 @@ namespace VoiceChattingClient.SoundSystem
 {
     internal class MicrophoneController
     {
-        public static List<string> Microphones
+        public static List<string> GetMicrophonesList()
         {
-            get
-            {
-                List<string> microphones = new List<string>();
-                for (int i = 0; i < WaveIn.DeviceCount; ++i)
-                {
-                    var caps = WaveIn.GetCapabilities(i);
-                    microphones.Add(caps.ProductName);
-                }
+            var deviceNameList = new List<string>();
+            var enumerator = new MMDeviceEnumerator();
+            var deviceEnumerator = enumerator.EnumerateAudioEndPoints(DataFlow.Capture, DeviceState.Active);
 
-                return microphones;
+            foreach (var device in deviceEnumerator)
+            {
+                deviceNameList.Add(device.FriendlyName);
             }
+
+            enumerator.Dispose();
+            return deviceNameList;
         }
-        
+
         private WaveInEvent waveInEvent;
         public event EventHandler OnDataAvaliable;
 
