@@ -67,18 +67,19 @@
                             <Border x:Name="Border"
                                     Grid.ColumnSpan="2"
                                     CornerRadius="2"
-                                    BorderThickness="0"
+                                    BorderThickness="1"
                                     Background="Transparent"
                                     BorderBrush="#FFE8E5EC" />
                             <Border Grid.Column="0"
-                                    CornerRadius="2,0,0,2"
+                                    CornerRadius="2,2,2,2"
                                     Margin="1"
-                                    Background="Transparent">
+                                    Background="Transparent"
+                                    BorderBrush="#FFE8E5EC"
+                                    BorderThickness="0">
                             </Border>
                             <Border Grid.Column="1"
-                                    BorderBrush="#FFE8E5EC"
-                                    BorderThickness="1"
-                                    CornerRadius="5">
+                                    BorderBrush="#44E8E5EC"
+                                    BorderThickness="1,0,0,0">
                                 <Path x:Name="Arrow"
                                       HorizontalAlignment="Center"
                                       VerticalAlignment="Center"
@@ -88,6 +89,146 @@
                                     </Path.Fill>
                                 </Path>
                             </Border>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="ComboBoxStyle"
+               TargetType="ComboBox">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBox">
+                        <Grid>
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal" />
+                                    <VisualState x:Name="MouseOver" />
+                                    <VisualState x:Name="Disabled">
+                                        <Storyboard>
+                                            <ColorAnimationUsingKeyFrames Storyboard.TargetName="PART_EditableTextBox"
+                                                                          Storyboard.TargetProperty="(TextElement.Foreground).(SolidColorBrush.Color)">
+                                                <EasingColorKeyFrame KeyTime="0"
+                                                                     Value="Aqua" />
+                                            </ColorAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="EditStates">
+                                    <VisualState x:Name="Editable">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)"
+                                                                           Storyboard.TargetName="PART_EditableTextBox">
+                                                <DiscreteObjectKeyFrame KeyTime="0"
+                                                                        Value="{x:Static Visibility.Visible}" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)"
+                                                                           Storyboard.TargetName="ContentSite">
+                                                <DiscreteObjectKeyFrame KeyTime="0"
+                                                                        Value="{x:Static Visibility.Hidden}" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="Uneditable" />
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <ToggleButton x:Name="ToggleButton"
+                                          Focusable="false"
+                                          ClickMode="Press"
+                                          Style="{DynamicResource ComboBoxToggleButton}"
+                                          IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                          Grid.ColumnSpan="2">
+                            </ToggleButton>
+                            <ContentPresenter x:Name="ContentSite"
+                                              IsHitTestVisible="False"
+                                              Content="{TemplateBinding SelectionBoxItem}"
+                                              ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+                                              ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
+                                              Margin="3,3,0,3" />
+                            <TextBox x:Name="PART_EditableTextBox"
+                                     Style="{x:Null}"
+                                     VerticalAlignment="Center"
+                                     Margin="3,0,0,0"
+                                     Focusable="True"
+                                     Background="Transparent"
+                                     Visibility="Hidden"
+                                     IsReadOnly="{TemplateBinding IsReadOnly}" />
+                            <Popup x:Name="Popup"
+                                   Placement="Bottom"
+                                   IsOpen="{TemplateBinding IsDropDownOpen}"
+                                   AllowsTransparency="True"
+                                   Focusable="False"
+                                   PopupAnimation="Slide">
+                                <Grid x:Name="DropDown"
+                                      SnapsToDevicePixels="True"
+                                      MinWidth="{TemplateBinding ActualWidth}"
+                                      MaxHeight="{TemplateBinding MaxDropDownHeight}">
+                                    <Border x:Name="DropDownBorder"
+                                            BorderThickness="1"
+                                            BorderBrush="{TemplateBinding BorderBrush}"
+                                            Background="{TemplateBinding Background}">
+                                    </Border>
+                                    <ScrollViewer Margin="4,6,4,6"
+                                                  SnapsToDevicePixels="True">
+                                        <StackPanel IsItemsHost="True"
+                                                    KeyboardNavigation.DirectionalNavigation="Contained" />
+                                    </ScrollViewer>
+                                </Grid>
+                            </Popup>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="ScrollViewerStyle"
+               TargetType="ScrollViewer">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ScrollViewer">
+                        <Grid x:Name="Grid"
+                              Background="{TemplateBinding Background}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <ScrollContentPresenter x:Name="PART_ScrollContentPresenter"
+                                                    CanHorizontallyScroll="True"
+                                                    ContentTemplate="{TemplateBinding ContentTemplate}"
+                                                    CanVerticallyScroll="True"
+                                                    Grid.Column="0"
+                                                    Content="{TemplateBinding Content}"
+                                                    CanContentScroll="{TemplateBinding CanContentScroll}"
+                                                    Margin="{TemplateBinding Padding}"
+                                                    Grid.Row="0" />
+                            <ScrollBar x:Name="PART_VerticalScrollBar"
+                                       AutomationProperties.AutomationId="VerticalScrollBar"
+                                       Cursor="Arrow"
+                                       Grid.Column="1"
+                                       Maximum="{TemplateBinding ScrollableHeight}"
+                                       Minimum="0"
+                                       Grid.Row="0"
+                                       Value="{Binding VerticalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                       ViewportSize="{TemplateBinding ViewportHeight}"
+                                       Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"
+                                       Style="{DynamicResource ModernSlimScrollBar}"
+                                       Width="7" />
+                            <ScrollBar x:Name="PART_HorizontalScrollBar"
+                                       AutomationProperties.AutomationId="HorizontalScrollBar"
+                                       Cursor="Arrow"
+                                       Grid.Column="0"
+                                       Maximum="{TemplateBinding ScrollableWidth}"
+                                       Minimum="0"
+                                       Orientation="Horizontal"
+                                       Grid.Row="1"
+                                       Value="{Binding HorizontalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                       ViewportSize="{TemplateBinding ViewportWidth}"
+                                       Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}"
+                                       Style="{DynamicResource ModernSlimScrollBar}"
+                                       Height="7" />
                         </Grid>
                     </ControlTemplate>
                 </Setter.Value>
@@ -122,134 +263,8 @@
                        Stretch="Uniform" />
             </local:BackgroundVisualizeButton.ButtonContent>
         </local:BackgroundVisualizeButton>
-        <!--ListView Grid.Column="1"
-                  x:Name="ListViewTest"
-                  d:ItemsSource="{d:SampleData ItemCount=50}"
-                  SelectionMode="Single"
-                  SelectionChanged="ListViewTest_SelectionChanged"
-                  Style="{DynamicResource ModernListView}"
-                  Background="Transparent">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn>
-                        <Button Content="Fucking WPF"/>
-                    </GridViewColumn>
-                </GridView>
-            </ListView.View>
-            <ListView.ItemContainerStyle>
-                <Style TargetType="{x:Type ListViewItem}">
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="{x:Type ListBoxItem}">
-                                <Grid>
-                                    <VisualStateManager.VisualStateGroups>
-                                        <VisualStateGroup x:Name="CommonStates">
-                                            <VisualState x:Name="Normal" />
-                                            <VisualState x:Name="MouseOver">
-                                                <Storyboard>
-                                                    <ColorAnimationUsingKeyFrames Storyboard.TargetName="MouseStateVisualizeRectangle"
-                                                                                  Storyboard.TargetProperty="(Fill).(SolidColorBrush.Color)">
-                                                        <EasingColorKeyFrame KeyTime="0"
-                                                                             Value="{DynamicResource ItemMouseOverBackgroundColor}" />
-                                                    </ColorAnimationUsingKeyFrames>
-                                                </Storyboard>
-                                            </VisualState>
-                                            <VisualState x:Name="Disabled" />
-                                        </VisualStateGroup>
-                                        <VisualStateGroup x:Name="SelectionStates">
-                                            <VisualState x:Name="Unselected" />
-                                            <VisualState x:Name="Selected">
-                                                <Storyboard>
-                                                    <ColorAnimationUsingKeyFrames Storyboard.TargetName="SelectStateVisualizeRectangle"
-                                                                                  Storyboard.TargetProperty="(Fill).(SolidColorBrush.Color)">
-                                                        <EasingColorKeyFrame KeyTime="0"
-                                                                             Value="{DynamicResource ItemSelectedBackgroundColor}" />
-                                                    </ColorAnimationUsingKeyFrames>
-                                                </Storyboard>
-                                            </VisualState>
-                                        </VisualStateGroup>
-                                    </VisualStateManager.VisualStateGroups>
-                                    <Border x:Name="Border"
-                                            SnapsToDevicePixels="true"
-                                            Background="Transparent">
-                                        <Grid>
-                                            <Rectangle x:Name="MouseStateVisualizeRectangle"
-                                                       Fill="Transparent"
-                                                       Margin="0,0,0,0"
-                                                       RadiusX="10"
-                                                       RadiusY="5" />
-                                            <Rectangle x:Name="SelectStateVisualizeRectangle"
-                                                       Fill="Transparent"
-                                                       Margin="0,0,0,0"
-                                                       RadiusX="10"
-                                                       RadiusY="5" />
-                                            <GridViewRowPresenter Margin="2,1,0,1"
-                                                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
-                                        </Grid>
-                                    </Border>
-                                </Grid>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
-            </ListView.ItemContainerStyle>
-        </ListView-->
-        <ScrollViewer Grid.Column="1">
-            <ScrollViewer.Style>
-                <Style TargetType="ScrollViewer">
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="ScrollViewer">
-                                <Grid x:Name="Grid"
-                                      Background="{TemplateBinding Background}">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="Auto" />
-                                    </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="*" />
-                                        <RowDefinition Height="Auto" />
-                                    </Grid.RowDefinitions>
-                                    <ScrollContentPresenter x:Name="PART_ScrollContentPresenter"
-                                                            CanHorizontallyScroll="True"
-                                                            ContentTemplate="{TemplateBinding ContentTemplate}"
-                                                            CanVerticallyScroll="True"
-                                                            Grid.Column="0"
-                                                            Content="{TemplateBinding Content}"
-                                                            CanContentScroll="{TemplateBinding CanContentScroll}"
-                                                            Margin="{TemplateBinding Padding}"
-                                                            Grid.Row="0" />
-                                    <ScrollBar x:Name="PART_VerticalScrollBar"
-                                               AutomationProperties.AutomationId="VerticalScrollBar"
-                                               Cursor="Arrow"
-                                               Grid.Column="1"
-                                               Maximum="{TemplateBinding ScrollableHeight}"
-                                               Minimum="0"
-                                               Grid.Row="0"
-                                               Value="{Binding VerticalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
-                                               ViewportSize="{TemplateBinding ViewportHeight}"
-                                               Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"
-                                               Style="{DynamicResource ModernSlimScrollBar}"
-                                               Width="7" />
-                                    <ScrollBar x:Name="PART_HorizontalScrollBar"
-                                               AutomationProperties.AutomationId="HorizontalScrollBar"
-                                               Cursor="Arrow"
-                                               Grid.Column="0"
-                                               Maximum="{TemplateBinding ScrollableWidth}"
-                                               Minimum="0"
-                                               Orientation="Horizontal"
-                                               Grid.Row="1"
-                                               Value="{Binding HorizontalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
-                                               ViewportSize="{TemplateBinding ViewportWidth}"
-                                               Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}"
-                                               Style="{DynamicResource ModernSlimScrollBar}"
-                                               Height="7" />
-                                </Grid>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
-            </ScrollViewer.Style>
+        <ScrollViewer Grid.Column="1"
+                      Style="{DynamicResource ScrollViewerStyle}">
             <StackPanel>
                 <Grid Height="50">
                     <Grid.ColumnDefinitions>
@@ -266,98 +281,23 @@
                               Margin="20,10,0,10"
                               MinWidth="200"
                               MaxWidth="300"
-                              HorizontalAlignment="Left">
-                        <ComboBox.Style>
-                            <Style TargetType="ComboBox">
-                                <Setter Property="Template">
-                                    <Setter.Value>
-                                        <ControlTemplate TargetType="ComboBox">
-                                            <Grid>
-                                                <VisualStateManager.VisualStateGroups>
-                                                    <VisualStateGroup x:Name="CommonStates">
-                                                        <VisualState x:Name="Normal" />
-                                                        <VisualState x:Name="MouseOver" />
-                                                        <VisualState x:Name="Disabled">
-                                                            <Storyboard>
-                                                                <ColorAnimationUsingKeyFrames Storyboard.TargetName="PART_EditableTextBox"
-                                                                                              Storyboard.TargetProperty="(TextElement.Foreground).(SolidColorBrush.Color)">
-                                                                    <EasingColorKeyFrame KeyTime="0"
-                                                                                         Value="Aqua" />
-                                                                </ColorAnimationUsingKeyFrames>
-                                                            </Storyboard>
-                                                        </VisualState>
-                                                    </VisualStateGroup>
-                                                    <VisualStateGroup x:Name="EditStates">
-                                                        <VisualState x:Name="Editable">
-                                                            <Storyboard>
-                                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)"
-                                                                                               Storyboard.TargetName="PART_EditableTextBox">
-                                                                    <DiscreteObjectKeyFrame KeyTime="0"
-                                                                                            Value="{x:Static Visibility.Visible}" />
-                                                                </ObjectAnimationUsingKeyFrames>
-                                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)"
-                                                                                               Storyboard.TargetName="ContentSite">
-                                                                    <DiscreteObjectKeyFrame KeyTime="0"
-                                                                                            Value="{x:Static Visibility.Hidden}" />
-                                                                </ObjectAnimationUsingKeyFrames>
-                                                            </Storyboard>
-                                                        </VisualState>
-                                                        <VisualState x:Name="Uneditable" />
-                                                    </VisualStateGroup>
-                                                </VisualStateManager.VisualStateGroups>
-                                                <ToggleButton x:Name="ToggleButton"
-                                                              Focusable="false"
-                                                              ClickMode="Press"
-                                                              Style="{DynamicResource ComboBoxToggleButton}"
-                                                              IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
-                                                              Grid.ColumnSpan="2">
-                                                </ToggleButton>
-                                                <ContentPresenter x:Name="ContentSite"
-                                                                  IsHitTestVisible="False"
-                                                                  Content="{TemplateBinding SelectionBoxItem}"
-                                                                  ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
-                                                                  ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
-                                                                  Margin="3,3,0,3" />
-                                                <TextBox x:Name="PART_EditableTextBox"
-                                                         Style="{x:Null}"
-                                                         VerticalAlignment="Center"
-                                                         Margin="3,0,0,0"
-                                                         Focusable="True"
-                                                         Background="Transparent"
-                                                         Visibility="Hidden"
-                                                         IsReadOnly="{TemplateBinding IsReadOnly}" />
-                                                <Popup x:Name="Popup"
-                                                       Placement="Bottom"
-                                                       IsOpen="{TemplateBinding IsDropDownOpen}"
-                                                       AllowsTransparency="True"
-                                                       Focusable="False"
-                                                       PopupAnimation="Slide">
-                                                    <Grid x:Name="DropDown"
-                                                          SnapsToDevicePixels="True"
-                                                          MinWidth="{TemplateBinding ActualWidth}"
-                                                          MaxHeight="{TemplateBinding MaxDropDownHeight}">
-                                                        <Border x:Name="DropDownBorder"
-                                                                BorderThickness="1">
-                                                            <Border.BorderBrush>
-                                                                <SolidColorBrush Color="White" />
-                                                            </Border.BorderBrush>
-                                                            <Border.Background>
-                                                                <SolidColorBrush Color="White" />
-                                                            </Border.Background>
-                                                        </Border>
-                                                        <ScrollViewer Margin="4,6,4,6"
-                                                                      SnapsToDevicePixels="True">
-                                                            <StackPanel IsItemsHost="True"
-                                                                        KeyboardNavigation.DirectionalNavigation="Contained" />
-                                                        </ScrollViewer>
-                                                    </Grid>
-                                                </Popup>
-                                            </Grid>
-                                        </ControlTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                            </Style>
-                        </ComboBox.Style>
+                              HorizontalAlignment="Left"
+                              Style="{DynamicResource ComboBoxStyle}"
+                              Background="#FF3C393C"
+                              BorderBrush="#FFB3A6B3"
+                              Foreground="#FFE2E2E2">
+                        <ComboBoxItem>
+                            <TextBlock Text="Test1" />
+                        </ComboBoxItem>
+                        <ComboBoxItem>
+                            <TextBlock Text="Test2" />
+                        </ComboBoxItem>
+                        <ComboBoxItem>
+                            <TextBlock Text="Test3" />
+                        </ComboBoxItem>
+                        <ComboBoxItem>
+                            <TextBlock Text="Test4" />
+                        </ComboBoxItem>
                     </ComboBox>
                 </Grid>
             </StackPanel>
