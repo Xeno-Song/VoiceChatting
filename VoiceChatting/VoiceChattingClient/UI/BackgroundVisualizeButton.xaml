@@ -42,7 +42,7 @@
                                 <Grid>
                                     <Border x:Name="baseBorder"
                                             Background="{TemplateBinding Background}"
-                                            Margin="{TemplateBinding Padding}">
+                                            Padding="{TemplateBinding Padding}">
                                         <ContentPresenter HorizontalAlignment="Center"
                                                           VerticalAlignment="Center" />
                                     </Border>
