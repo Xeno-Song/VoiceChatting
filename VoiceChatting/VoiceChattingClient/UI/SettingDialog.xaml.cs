@@ -29,28 +29,59 @@ namespace VoiceChattingClient.UI
             InitializeComponent();
         }
 
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            InitializeInputDeviceComboBoxIndex();
+            InitializeOutputDeviceComboBoxIndex();
+        }
+
         public void InitializeInputDeviceComboBoxIndex()
         {
             ComboBoxInputDevices.Items.Clear();
-            var microphoneList = MicrophoneController.GetMicrophonesList();
+            var deviceList = MicrophoneController.GetMicrophonesList();
 
-            foreach (var microphoneName in microphoneList)
+            foreach (var devicename in deviceList)
             {
-                var microphoneTextBlock = new TextBlock();
-                microphoneTextBlock.Text = microphoneName;
-                ComboBoxInputDevices.Items.Add(microphoneTextBlock);
+                var textBlock = new TextBlock();
+                textBlock.Text = devicename;
+                ComboBoxInputDevices.Items.Add(textBlock);
             }
 
-            string usedMicrophoneDeviceName = Common.Config["Audio"]["MicrophoneDeviceName"] as string;
-            if (microphoneList.Contains(usedMicrophoneDeviceName) == false)
+            string usedDeviceName = Common.Config["Audio"]["MicrophoneDeviceName"] as string;
+            if (deviceList.Contains(usedDeviceName) == false)
             {
                 Common.Config["Audio"]["MicrophoneDeviceName"] = string.Empty;
                 Common.Config["Audio"].Save();
             }
             else
             {
-                var microphoneIndex = microphoneList.IndexOf(usedMicrophoneDeviceName);
-                ComboBoxInputDevices.SelectedIndex = microphoneIndex;
+                var deviceIndex = deviceList.IndexOf(usedDeviceName);
+                ComboBoxInputDevices.SelectedIndex = deviceIndex;
+            }
+        }
+
+        public void InitializeOutputDeviceComboBoxIndex()
+        {
+            ComboBoxOutputDevices.Items.Clear();
+            var deviceList = SpeakerController.GetSpeakerList();
+
+            foreach (var deviceName in deviceList)
+            {
+                var textBlock = new TextBlock();
+                textBlock.Text = deviceName;
+                ComboBoxOutputDevices.Items.Add(textBlock);
+            }
+
+            string usedDeviceName = Common.Config["Audio"]["SpeakerDeviceName"] as string;
+            if (deviceList.Contains(usedDeviceName) == false)
+            {
+                Common.Config["Audio"]["SpeakerDeviceName"] = string.Empty;
+                Common.Config["Audio"].Save();
+            }
+            else
+            {
+                var deviceIndex = deviceList.IndexOf(usedDeviceName);
+                ComboBoxOutputDevices.SelectedIndex = deviceIndex;
             }
         }
 
@@ -67,9 +98,12 @@ namespace VoiceChattingClient.UI
             Common.Config["Audio"].Save();
         }
 
-        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        private void ComboBoxOutputDevices_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            InitializeInputDeviceComboBoxIndex();
+            if (ComboBoxOutputDevices.SelectedIndex == -1) return;
+            TextBlock selectedTextBlock = ComboBoxOutputDevices.SelectedItem as TextBlock;
+            Common.Config["Audio"]["SpeakerDeviceName"] = selectedTextBlock.Text;
+            Common.Config["Audio"].Save();
         }
     }
 }

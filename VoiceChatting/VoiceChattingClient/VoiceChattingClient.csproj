@@ -186,6 +186,7 @@
     <Compile Include="Overlays\Settings.xaml.cs">
       <DependentUpon>Settings.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SoundSystem\SpeakerController.cs" />
     <Compile Include="UI\SettingDialog.xaml.cs">
       <DependentUpon>SettingDialog.xaml</DependentUpon>
     </Compile>
