@@ -14,7 +14,8 @@ namespace VoiceChattingClient.CommonObjects.Config
 
         [JsonIgnore]
         bool CreateIfNotExist { get; set; }
-        
+
+        [JsonIgnore]
         object this[string key] { get; set; }
 
         bool Save();

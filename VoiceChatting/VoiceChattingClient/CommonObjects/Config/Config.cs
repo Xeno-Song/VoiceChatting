@@ -17,6 +17,7 @@ namespace VoiceChattingClient.CommonObjects.Config
         [JsonIgnore]
         public bool CreateIfNotExist { get; set; }
 
+        [JsonIgnore]
         public object this[string key] {
             get {
                 if (string.IsNullOrWhiteSpace(key)) throw new ArgumentException("Invalid key value");
