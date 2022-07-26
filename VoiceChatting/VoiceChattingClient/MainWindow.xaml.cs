@@ -5,6 +5,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using VoiceChattingClient.CommonObjects;
+using VoiceChattingClient.CommonObjects.Config;
+using VoiceChattingClient.Configs;
 using VoiceChattingClient.SoundSystem;
 
 namespace VoiceChattingClient
@@ -19,6 +21,7 @@ namespace VoiceChattingClient
         {
             InitializeComponent();
             InitializeLogFiles();
+            InitializeConfigDatas();
         }
 
         private void InitializeLogFiles()
@@ -37,6 +40,33 @@ namespace VoiceChattingClient
 
             Common.Log.CreateLogger("main", logBaseDirectory + "main.log");
             SettingControl.OnDialogClose += SettingControl_OnDialogClose;
+        }
+
+        private void InitializeConfigDatas()
+        {
+            string configBaseDirectory = "../config/";
+            string configFileName;
+            IConfig config;
+
+            // Config save directory exist check
+            if (!Directory.Exists(configBaseDirectory))
+            {
+                var directory = Directory.CreateDirectory(configBaseDirectory);
+                if (directory.Exists == false)
+                {
+                    MessageBox.Show("Cannot make directory to save config in " + configBaseDirectory);
+                    return;
+                }
+            }
+
+            configFileName = "Audio.json";
+            config = new AudioConfig()
+            {
+                FilePath = configBaseDirectory + configFileName,
+                CreateIfNotExist = true
+            };
+            if (config.Load() == false) MessageBox.Show("Failed to save audio config");
+            Common.Config["Audio"] = config;
         }
 
         private void OnCloseButtonClick(object sender, RoutedEventArgs e)
@@ -88,16 +118,6 @@ namespace VoiceChattingClient
         private void OnButtonMicrophoneClick(object sender, RoutedEventArgs e)
         {
             microphoneController = new MicrophoneController();
-        }
-
-        private void TextBoxIpAddress_PreviewTextInput(object sender, TextCompositionEventArgs e)
-        {
-            string text = (sender as TextBox).Text;
-
-            if (!Regex.IsMatch(text, "^([0-9a-fA-F]{4}:){7}[0-9a-fA-F]{4}$"))
-            {
-                e.Handled = true;
-            }
         }
 
         private void buttonHostServer_Click(object sender, RoutedEventArgs e)

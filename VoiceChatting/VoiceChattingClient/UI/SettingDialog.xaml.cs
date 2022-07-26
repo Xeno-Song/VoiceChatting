@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using VoiceChattingClient.CommonObjects;
 using VoiceChattingClient.SoundSystem;
 
 namespace VoiceChattingClient.UI
@@ -26,10 +27,9 @@ namespace VoiceChattingClient.UI
         public SettingDialog()
         {
             InitializeComponent();
-            InitializeSettingValues();
         }
 
-        public void InitializeSettingValues()
+        public void InitializeInputDeviceComboBoxIndex()
         {
             ComboBoxInputDevices.Items.Clear();
             var microphoneList = MicrophoneController.GetMicrophonesList();
@@ -40,11 +40,36 @@ namespace VoiceChattingClient.UI
                 microphoneTextBlock.Text = microphoneName;
                 ComboBoxInputDevices.Items.Add(microphoneTextBlock);
             }
+
+            string usedMicrophoneDeviceName = Common.Config["Audio"]["MicrophoneDeviceName"] as string;
+            if (microphoneList.Contains(usedMicrophoneDeviceName) == false)
+            {
+                Common.Config["Audio"]["MicrophoneDeviceName"] = string.Empty;
+                Common.Config["Audio"].Save();
+            }
+            else
+            {
+                var microphoneIndex = microphoneList.IndexOf(usedMicrophoneDeviceName);
+                ComboBoxInputDevices.SelectedIndex = microphoneIndex;
+            }
         }
 
         private void buttonClose_Click(object sender, RoutedEventArgs e)
         {
             OnDialogClose?.Invoke(this, null);
+        }
+
+        private void ComboBoxInputDevices_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (ComboBoxInputDevices.SelectedIndex == -1) return;
+            TextBlock selectedTextBlock = ComboBoxInputDevices.SelectedItem as TextBlock;
+            Common.Config["Audio"]["MicrophoneDeviceName"] = selectedTextBlock.Text;
+            Common.Config["Audio"].Save();
+        }
+
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            InitializeInputDeviceComboBoxIndex();
         }
     }
 }

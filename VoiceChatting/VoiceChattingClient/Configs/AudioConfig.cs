@@ -7,7 +7,7 @@ using VoiceChattingClient.CommonObjects.Config;
 
 namespace VoiceChattingClient.Configs
 {
-    internal class AudioConfigs : Config
+    internal class AudioConfig : Config
     {
         public string MicrophoneDeviceName { get; set; }
         public string SpeakerDeviceName { get; set; }

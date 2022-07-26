@@ -7,7 +7,8 @@
              mc:Ignorable="d"
              d:DesignHeight="450"
              d:DesignWidth="800"
-             Background="#FF3C393C">
+             Background="#FF3C393C"
+             Loaded="UserControl_Loaded">
     <UserControl.Resources>
         <Color x:Key="MouseOverItemBackgroundColor">#FF888388</Color>
         <Color x:Key="SelectedItemBackgroundColor">#FF888388</Color>
@@ -403,7 +404,8 @@
                               Background="#FF3C393C"
                               BorderBrush="#FFB3A6B3"
                               Foreground="#FFE2E2E2"
-                              HorizontalContentAlignment="Left" >
+                              HorizontalContentAlignment="Left"
+                              SelectionChanged="ComboBoxInputDevices_SelectionChanged">
                     </ComboBox>
                 </Grid>
             </StackPanel>
