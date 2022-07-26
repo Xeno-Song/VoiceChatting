@@ -68,6 +68,7 @@ namespace VoiceChattingClient.UI
             foreach (var deviceName in deviceList)
             {
                 var textBlock = new TextBlock();
+                textBlock.TextWrapping = TextWrapping.Wrap;
                 textBlock.Text = deviceName;
                 ComboBoxOutputDevices.Items.Add(textBlock);
             }

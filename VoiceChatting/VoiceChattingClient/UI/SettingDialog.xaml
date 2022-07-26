@@ -169,6 +169,7 @@
                                 <Grid x:Name="DropDown"
                                       SnapsToDevicePixels="True"
                                       MinWidth="{TemplateBinding ActualWidth}"
+                                      MaxWidth="{TemplateBinding ActualWidth}"
                                       MaxHeight="{TemplateBinding MaxDropDownHeight}">
                                     <Border x:Name="DropDownBorder"
                                             BorderThickness="1"
@@ -179,7 +180,8 @@
                                                   SnapsToDevicePixels="True"
                                                   HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}">
                                         <StackPanel IsItemsHost="True"
-                                                    KeyboardNavigation.DirectionalNavigation="Contained" />
+                                                    KeyboardNavigation.DirectionalNavigation="Contained"
+                                                    MaxWidth="{TemplateBinding ActualWidth}"/>
                                     </ScrollViewer>
                                 </Grid>
                             </Popup>
@@ -198,7 +200,8 @@
                                 BorderThickness="{TemplateBinding BorderThickness}"
                                 Background="{TemplateBinding Background}"
                                 Padding="{TemplateBinding Padding}"
-                                SnapsToDevicePixels="True">
+                                SnapsToDevicePixels="True"
+                                MaxWidth="{TemplateBinding ActualWidth}">
                             <ContentPresenter ContentTemplate="{TemplateBinding ContentTemplate}"
                                               Content="{TemplateBinding Content}"
                                               ContentStringFormat="{TemplateBinding ContentStringFormat}"
