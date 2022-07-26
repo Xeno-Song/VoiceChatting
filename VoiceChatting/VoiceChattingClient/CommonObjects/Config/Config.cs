@@ -62,7 +62,8 @@ namespace VoiceChattingClient.CommonObjects.Config
             var baseDirectory = Directory.GetParent(FilePath);
             if (baseDirectory.Exists == false) return false;
 
-            File.WriteAllText(FilePath, JsonSerializer.Serialize(this));
+            var serializerOptions = new JsonSerializerOptions { WriteIndented = true };
+            File.WriteAllText(FilePath, JsonSerializer.Serialize(this, GetType(), serializerOptions));
             return true;
         }
     }
