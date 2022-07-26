@@ -1,4 +1,5 @@
-﻿using VoiceChattingClient.CommonObjects.Log;
+﻿using VoiceChattingClient.CommonObjects.Config;
+using VoiceChattingClient.CommonObjects.Log;
 
 namespace VoiceChattingClient.CommonObjects
 {
@@ -14,6 +15,17 @@ namespace VoiceChattingClient.CommonObjects
                 return log;
             }
             private set => log = value;
+        }
+
+        private static ConfigIndexer config = null;
+        internal static ConfigIndexer Config
+        {
+            get
+            {
+                if (config == null) config = new ConfigIndexer();
+                return config;
+            }
+            private set => config = value;
         }
     }
 }
