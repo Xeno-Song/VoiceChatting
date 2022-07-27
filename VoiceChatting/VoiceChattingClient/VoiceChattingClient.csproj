@@ -182,6 +182,7 @@
     <Compile Include="CommonObjects\Log\Logger\ConsoleLogger.cs" />
     <Compile Include="CommonObjects\Log\Logger\FileLogger.cs" />
     <Compile Include="CommonObjects\Log\Logger\ILogger.cs" />
+    <Compile Include="CommonObjects\MemoryPool\MemoryPool.cs" />
     <Compile Include="Configs\AudioConfig.cs" />
     <Compile Include="Overlays\Settings.xaml.cs">
       <DependentUpon>Settings.xaml</DependentUpon>
