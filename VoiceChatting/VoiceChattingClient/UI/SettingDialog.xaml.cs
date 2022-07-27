@@ -47,11 +47,14 @@ namespace VoiceChattingClient.UI
                 ComboBoxInputDevices.Items.Add(textBlock);
             }
 
-            string usedDeviceName = Common.Config["Audio"]["MicrophoneDeviceName"] as string;
+            string usedDeviceName = Common.Config["Audio"]?["MicrophoneDeviceName"] as string;
             if (deviceList.Contains(usedDeviceName) == false)
             {
-                Common.Config["Audio"]["MicrophoneDeviceName"] = string.Empty;
-                Common.Config["Audio"].Save();
+                if (usedDeviceName != null)
+                {
+                    Common.Config["Audio"]["MicrophoneDeviceName"] = string.Empty;
+                    Common.Config["Audio"].Save();
+                }
             }
             else
             {
@@ -73,11 +76,14 @@ namespace VoiceChattingClient.UI
                 ComboBoxOutputDevices.Items.Add(textBlock);
             }
 
-            string usedDeviceName = Common.Config["Audio"]["SpeakerDeviceName"] as string;
+            string usedDeviceName = Common.Config["Audio"]?["SpeakerDeviceName"] as string;
             if (deviceList.Contains(usedDeviceName) == false)
             {
-                Common.Config["Audio"]["SpeakerDeviceName"] = string.Empty;
-                Common.Config["Audio"].Save();
+                if (usedDeviceName != null)
+                {
+                    Common.Config["Audio"]["SpeakerDeviceName"] = string.Empty;
+                    Common.Config["Audio"].Save();
+                }
             }
             else
             {
