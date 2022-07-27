@@ -9,6 +9,14 @@ namespace VoiceChattingClient.CommonObjects.MemoryPool
     internal class ByteMemoryPool
     {
         private List<ByteMemoryPoolIndex> memoryPool;
+        public byte[] this[int bufferId]
+        {
+            get
+            {
+                if (!memoryPool[bufferId].IsUsing) return null;
+                return memoryPool[bufferId].Buffer;
+            }
+        }
 
         private class ByteMemoryPoolIndex
         {

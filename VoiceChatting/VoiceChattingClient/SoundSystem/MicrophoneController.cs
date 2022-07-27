@@ -60,8 +60,8 @@ namespace VoiceChattingClient.SoundSystem
             waveInEvent = new WaveInEvent
             {
                 DeviceNumber = deviceNumber,
-                WaveFormat = new WaveFormat(rate: 44100, bits: 16, channels: 1),
-                BufferMilliseconds = 16,
+                WaveFormat = new WaveFormat(rate: 48000, bits: 16, channels: 1),
+                BufferMilliseconds = 10,
                 NumberOfBuffers = 256
             };
             waveInEvent.DataAvailable += WaveInEvent_DataAvailable;
@@ -93,8 +93,8 @@ namespace VoiceChattingClient.SoundSystem
             float fraction = (float)values.Max() / 32768;
 
             Debug.WriteLine(String.Format(
-                "Voice Meter : {0:00.0} %",
-                fraction * 100));
+                "Voice Meter : {0:00.0} %, Buffer Size : {1}",
+                fraction * 100, e.Buffer.Length));
             InputLevel = fraction * 100;
         }
     }
