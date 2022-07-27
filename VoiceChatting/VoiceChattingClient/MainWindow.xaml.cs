@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows;
@@ -22,6 +23,8 @@ namespace VoiceChattingClient
             InitializeComponent();
             InitializeLogFiles();
             InitializeConfigDatas();
+
+            InitializeControlObjects();
         }
 
         private void InitializeLogFiles()
@@ -67,6 +70,17 @@ namespace VoiceChattingClient
             };
             if (config.Load() == false) MessageBox.Show("Failed to save audio config");
             Common.Config["Audio"] = config;
+        }
+
+        private void InitializeControlObjects()
+        {
+            microphoneController = new MicrophoneController();
+            microphoneController.OnDataAvaliable += MicrophoneController_OnDataReceived;
+        }
+
+        private void MicrophoneController_OnDataReceived(object sender, EventArgs e)
+        {
+            Dispatcher.Invoke(() => progressBarInputLevel.Value = microphoneController.InputLevel);
         }
 
         private void OnCloseButtonClick(object sender, RoutedEventArgs e)
@@ -117,7 +131,8 @@ namespace VoiceChattingClient
 
         private void OnButtonMicrophoneClick(object sender, RoutedEventArgs e)
         {
-            microphoneController = new MicrophoneController();
+            var isDeviceOpened = microphoneController.OpenDevice(Common.Config["Audio"]?["MicrophoneDeviceName"] as string);
+            if (!isDeviceOpened) MessageBox.Show("Inavlid device name!");
         }
 
         private void buttonHostServer_Click(object sender, RoutedEventArgs e)
@@ -128,6 +143,11 @@ namespace VoiceChattingClient
         private void Window_Closed(object sender, System.EventArgs e)
         {
             Common.Log.Dispose();
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            microphoneController.CloseDevice();
         }
     }
 }

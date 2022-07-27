@@ -26,31 +26,59 @@ namespace VoiceChattingClient.SoundSystem
             return deviceNameList;
         }
 
+        public double InputLevel { get; private set; } = 0.0;
+
         private WaveInEvent waveInEvent;
         public event EventHandler OnDataAvaliable;
 
         public MicrophoneController()
         {
-            int deviceNumber = 0;
-            for (int i = -1; i < NAudio.Wave.WaveIn.DeviceCount; i++)
+            
+        }
+
+        /// <summary>
+        /// Open microphone controller
+        /// </summary>
+        /// <param name="deviceName"></param>
+        /// <returns>If failed to find device, return <see langword="false"/>, else <see langword="true"/></returns>
+        public bool OpenDevice(string deviceName)
+        {
+            int deviceNumber = -1;
+            for (int i = 0; i < WaveIn.DeviceCount; i++)
             {
                 var caps = WaveIn.GetCapabilities(i);
-                Debug.WriteLine(String.Format("Device : {0}", caps.ProductName));
-                
-                if (caps.ProductName.StartsWith("Mic | Line 2 (4- Audient EVO4)"))
+
+                if (deviceName.StartsWith(caps.ProductName))
                 {
                     deviceNumber = i;
+                    break;
                 }
             }
+
+            if (deviceNumber == -1) return false;
 
             waveInEvent = new WaveInEvent
             {
                 DeviceNumber = deviceNumber,
                 WaveFormat = new WaveFormat(rate: 44100, bits: 16, channels: 1),
-                BufferMilliseconds = 10
+                BufferMilliseconds = 16,
+                NumberOfBuffers = 256
             };
             waveInEvent.DataAvailable += WaveInEvent_DataAvailable;
             waveInEvent.StartRecording();
+
+            return true;
+        }
+
+        public bool CloseDevice()
+        {
+            if (waveInEvent == null) return false;
+
+            waveInEvent.StopRecording();
+            waveInEvent.Dispose();
+
+            waveInEvent = null;
+            return true;
         }
 
         private void WaveInEvent_DataAvailable(object sender, WaveInEventArgs e)
@@ -67,6 +95,7 @@ namespace VoiceChattingClient.SoundSystem
             Debug.WriteLine(String.Format(
                 "Voice Meter : {0:00.0} %",
                 fraction * 100));
+            InputLevel = fraction * 100;
         }
     }
 }
