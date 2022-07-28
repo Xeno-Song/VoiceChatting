@@ -1,6 +1,8 @@
 ﻿using NAudio.CoreAudioApi;
+using NAudio.Wave;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,6 +24,59 @@ namespace VoiceChattingClient.SoundSystem
 
             enumerator.Dispose();
             return deviceNameList;
+        }
+
+        private WaveOutEvent waveOutEvent;
+        private BufferedWaveProvider waveProvider;
+
+        public bool OpenDevice(string deviceName)
+        {
+            int deviceNumber = -1;
+            for (int i = 0; i < WaveOut.DeviceCount; i++)
+            {
+                var caps = WaveOut.GetCapabilities(i);
+
+                if (deviceName.StartsWith(caps.ProductName))
+                {
+                    deviceNumber = i;
+                    break;
+                }
+            }
+
+            if (deviceNumber == -1) return false;
+
+            waveOutEvent = new WaveOutEvent
+            {
+                DeviceNumber = deviceNumber,
+                DesiredLatency = 10,
+                NumberOfBuffers = 256
+            };
+            waveProvider = new BufferedWaveProvider(new WaveFormat(48000, 16, 1));
+            waveOutEvent.Init(waveProvider);
+
+            return true;
+        }
+
+        public bool AddPlaybackBytes(byte[] datas)
+        {
+            if (waveOutEvent == null) return false;
+
+            waveProvider.AddSamples(datas, 0, datas.Length);
+            if (waveOutEvent.PlaybackState != PlaybackState.Playing)
+                waveOutEvent.Play();
+
+            return true;
+        }
+
+        public bool CloseDevice()
+        {
+            if (waveOutEvent == null) return false;
+
+            waveOutEvent.Stop();
+            waveOutEvent.Dispose();
+
+            waveOutEvent = null;
+            return true;
         }
     }
 }

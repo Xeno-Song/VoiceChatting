@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NAudio.Wave;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Text.RegularExpressions;
@@ -18,6 +19,7 @@ namespace VoiceChattingClient
     public partial class MainWindow : Window
     {
         private MicrophoneController microphoneController;
+        private SpeakerController speakerController;
         public MainWindow()
         {
             InitializeComponent();
@@ -75,12 +77,14 @@ namespace VoiceChattingClient
         private void InitializeControlObjects()
         {
             microphoneController = new MicrophoneController();
+            speakerController = new SpeakerController();
             microphoneController.OnDataAvaliable += MicrophoneController_OnDataReceived;
         }
 
-        private void MicrophoneController_OnDataReceived(object sender, EventArgs e)
+        private void MicrophoneController_OnDataReceived(object sender, WaveInEventArgs e)
         {
-            Dispatcher.Invoke(() => progressBarInputLevel.Value = microphoneController.InputLevel);
+            // Dispatcher.Invoke(() => progressBarInputLevel.Value = microphoneController.InputLevel);
+            speakerController.AddPlaybackBytes(e.Buffer);
         }
 
         private void OnCloseButtonClick(object sender, RoutedEventArgs e)
@@ -132,6 +136,9 @@ namespace VoiceChattingClient
         private void OnButtonMicrophoneClick(object sender, RoutedEventArgs e)
         {
             var isDeviceOpened = microphoneController.OpenDevice(Common.Config["Audio"]?["MicrophoneDeviceName"] as string);
+            if (!isDeviceOpened) MessageBox.Show("Inavlid device name!");
+
+            isDeviceOpened = speakerController.OpenDevice(Common.Config["Audio"]?["SpeakerDeviceName"] as string);
             if (!isDeviceOpened) MessageBox.Show("Inavlid device name!");
         }
 

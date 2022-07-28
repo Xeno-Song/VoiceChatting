@@ -29,7 +29,7 @@ namespace VoiceChattingClient.SoundSystem
         public double InputLevel { get; private set; } = 0.0;
 
         private WaveInEvent waveInEvent;
-        public event EventHandler OnDataAvaliable;
+        public event EventHandler<WaveInEventArgs> OnDataAvaliable;
 
         public MicrophoneController()
         {
@@ -83,19 +83,19 @@ namespace VoiceChattingClient.SoundSystem
 
         private void WaveInEvent_DataAvailable(object sender, WaveInEventArgs e)
         {
-            OnDataAvaliable?.Invoke(this, null);
+            OnDataAvaliable?.Invoke(this, e);
 
-            // copy buffer into an array of integers
-            Int16[] values = new Int16[e.Buffer.Length / 2];
-            Buffer.BlockCopy(e.Buffer, 0, values, 0, e.Buffer.Length);
-
-            // determine the highest value as a fraction of the maximum possible value
-            float fraction = (float)values.Max() / 32768;
-
-            Debug.WriteLine(String.Format(
-                "Voice Meter : {0:00.0} %, Buffer Size : {1}",
-                fraction * 100, e.Buffer.Length));
-            InputLevel = fraction * 100;
+            // // copy buffer into an array of integers
+            // Int16[] values = new Int16[e.Buffer.Length / 2];
+            // Buffer.BlockCopy(e.Buffer, 0, values, 0, e.Buffer.Length);
+            // 
+            // // determine the highest value as a fraction of the maximum possible value
+            // float fraction = (float)values.Max() / 32768;
+            // 
+            // Debug.WriteLine(String.Format(
+            //     "Voice Meter : {0:00.0} %, Buffer Size : {1}",
+            //     fraction * 100, e.Buffer.Length));
+            // InputLevel = fraction * 100;
         }
     }
 }
