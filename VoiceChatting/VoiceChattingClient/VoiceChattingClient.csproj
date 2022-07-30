@@ -184,6 +184,7 @@
     <Compile Include="CommonObjects\Log\Logger\ILogger.cs" />
     <Compile Include="CommonObjects\MemoryPool\ByteMemoryPool.cs" />
     <Compile Include="Configs\AudioConfig.cs" />
+    <Compile Include="Connection\VoiceClient.cs" />
     <Compile Include="Overlays\Settings.xaml.cs">
       <DependentUpon>Settings.xaml</DependentUpon>
     </Compile>
@@ -191,7 +192,6 @@
     <Compile Include="UI\SettingDialog.xaml.cs">
       <DependentUpon>SettingDialog.xaml</DependentUpon>
     </Compile>
-    <None Include="Connection\SocketServer.cs" />
     <Compile Include="SoundSystem\MicrophoneController.cs" />
     <Compile Include="UI\BackgroundVisualizeButton.xaml.cs">
       <DependentUpon>BackgroundVisualizeButton.xaml</DependentUpon>
