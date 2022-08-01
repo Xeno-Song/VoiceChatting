@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Net;
 using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -29,6 +31,7 @@ namespace VoiceChattingClient.Connection
         private UdpClient socket = null;
         private Thread socketReceiveThread;
         private bool isClosing = false;
+        private List<IPEndPoint> clientList = new List<IPEndPoint>();
 
         public VoiceClient(string hostname, int port)
         {
@@ -43,6 +46,12 @@ namespace VoiceChattingClient.Connection
         {
             socket.Connect(HostName, Port);
             socketReceiveThread.Start();
+
+            var hostEntry = Dns.GetHostEntry(HostName);
+            if (hostEntry.AddressList.Length != 0)
+            {
+                clientList.Add(new IPEndPoint(IPAddress.Parse(HostName), Port));
+            }
         }
 
         public void Bind()
@@ -54,12 +63,16 @@ namespace VoiceChattingClient.Connection
             }
 
             socket = new UdpClient(Port);
+            socketReceiveThread.Start();
         }
 
         public void Disconnect()
         {
             isClosing = true;
-            socketReceiveThread.Join();
+
+            if (socketReceiveThread != null && socketReceiveThread.IsAlive)
+                socketReceiveThread.Join();
+
             socket.Close();
         }
 
@@ -80,6 +93,7 @@ namespace VoiceChattingClient.Connection
             Marshal.FreeHGlobal(ptr);
 
             Array.Copy(datas, 0, data, headerSize, datas.Length);
+            socket.SendAsync(data, data.Length).Wait();
         }
 
         private void VoiceDataReceiveThread()
@@ -98,10 +112,16 @@ namespace VoiceChattingClient.Connection
                 VoiceDataHeader header = Marshal.PtrToStructure<VoiceDataHeader>(ptr);
                 Marshal.FreeHGlobal(ptr);
 
+                if (!clientList.Contains(receiveTask.Result.RemoteEndPoint))
+                    clientList.Add(receiveTask.Result.RemoteEndPoint);
+
                 VoiceDataFormat data = new VoiceDataFormat();
                 data.Header = header;
                 data.Data = new byte[header.Length];
-                receiveTask.Result.Buffer.CopyTo(data.Data, headerSize);
+                Array.Copy(receiveTask.Result.Buffer, headerSize, data.Data, 0, header.Length);
+                // receiveTask.Result.Buffer.CopyTo(data.Data, headerSize);
+
+                Debug.WriteLine("UDP Packet Received");
 
                 OnVoiceDataReceived?.Invoke(this, receiveTask.Result.Buffer);
             }

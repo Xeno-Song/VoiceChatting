@@ -266,7 +266,7 @@
                                                   MouseOverBackground="#FF62487D"
                                                   Foreground="White"
                                                   FontFamily="{DynamicResource NotoSansBold}"
-                                                  Click="OnButtonMicrophoneClick" />
+                                                  Click="buttonConnectToServer_Click" />
                 </Grid>
             </Grid>
         </Grid>

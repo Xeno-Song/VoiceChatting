@@ -9,6 +9,7 @@ using System.Windows.Input;
 using VoiceChattingClient.CommonObjects;
 using VoiceChattingClient.CommonObjects.Config;
 using VoiceChattingClient.Configs;
+using VoiceChattingClient.Connection;
 using VoiceChattingClient.SoundSystem;
 
 namespace VoiceChattingClient
@@ -20,6 +21,8 @@ namespace VoiceChattingClient
     {
         private MicrophoneController microphoneController;
         private SpeakerController speakerController;
+        private VoiceClient voiceClient;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -78,7 +81,12 @@ namespace VoiceChattingClient
         {
             microphoneController = new MicrophoneController();
             speakerController = new SpeakerController();
+            voiceClient = new VoiceClient("127.0.0.1", 11024);
             microphoneController.OnDataAvaliable += MicrophoneController_OnDataReceived;
+            microphoneController.OnDataAvaliable += (object sender, WaveInEventArgs e) =>
+            {
+                voiceClient.SendVoiceData(e.Buffer);
+            };
         }
 
         private void MicrophoneController_OnDataReceived(object sender, WaveInEventArgs e)
@@ -144,7 +152,7 @@ namespace VoiceChattingClient
 
         private void buttonHostServer_Click(object sender, RoutedEventArgs e)
         {
-            Debug.WriteLine("Button Clicked");
+            voiceClient.Bind();
         }
 
         private void Window_Closed(object sender, System.EventArgs e)
@@ -155,6 +163,11 @@ namespace VoiceChattingClient
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             microphoneController.CloseDevice();
+        }
+
+        private void buttonConnectToServer_Click(object sender, RoutedEventArgs e)
+        {
+            voiceClient.Connect();
         }
     }
 }
