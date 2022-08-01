@@ -10,6 +10,7 @@ using VoiceChattingClient.CommonObjects;
 using VoiceChattingClient.CommonObjects.Config;
 using VoiceChattingClient.Configs;
 using VoiceChattingClient.Connection;
+using VoiceChattingClient.Connection.Model;
 using VoiceChattingClient.SoundSystem;
 
 namespace VoiceChattingClient
@@ -81,11 +82,19 @@ namespace VoiceChattingClient
         {
             microphoneController = new MicrophoneController();
             speakerController = new SpeakerController();
+
+            var isDeviceOpened = speakerController.OpenDevice(Common.Config["Audio"]?["SpeakerDeviceName"] as string);
+            if (!isDeviceOpened) MessageBox.Show("Inavlid device name!");
+
             voiceClient = new VoiceClient("127.0.0.1", 11024);
-            microphoneController.OnDataAvaliable += MicrophoneController_OnDataReceived;
+            //microphoneController.OnDataAvaliable += MicrophoneController_OnDataReceived;
             microphoneController.OnDataAvaliable += (object sender, WaveInEventArgs e) =>
             {
                 voiceClient.SendVoiceData(e.Buffer);
+            };
+            voiceClient.OnVoiceDataReceived += (object sender, VoiceData data) =>
+            {
+                speakerController.AddPlaybackBytes(data.Data, data.Header.Length);
             };
         }
 
@@ -144,9 +153,6 @@ namespace VoiceChattingClient
         private void OnButtonMicrophoneClick(object sender, RoutedEventArgs e)
         {
             var isDeviceOpened = microphoneController.OpenDevice(Common.Config["Audio"]?["MicrophoneDeviceName"] as string);
-            if (!isDeviceOpened) MessageBox.Show("Inavlid device name!");
-
-            isDeviceOpened = speakerController.OpenDevice(Common.Config["Audio"]?["SpeakerDeviceName"] as string);
             if (!isDeviceOpened) MessageBox.Show("Inavlid device name!");
         }
 

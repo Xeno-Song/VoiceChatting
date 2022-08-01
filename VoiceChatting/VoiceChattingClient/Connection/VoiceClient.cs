@@ -8,6 +8,8 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using VoiceChattingClient.CommonObjects.MemoryPool;
+using VoiceChattingClient.Connection.Model;
 
 namespace VoiceChattingClient.Connection
 {
@@ -27,16 +29,27 @@ namespace VoiceChattingClient.Connection
     {
         public string HostName { get; private set; }
         public int Port { get; private set; }
-        public event EventHandler<byte[]> OnVoiceDataReceived;
+        public event EventHandler<VoiceData> OnVoiceDataReceived;
+
         private UdpClient socket = null;
         private Thread socketReceiveThread;
         private bool isClosing = false;
         private List<IPEndPoint> clientList = new List<IPEndPoint>();
+        
+        
+        private ByteMemoryPool byteMemoryPool;
+        private int sendBufferMemoryPoolIndex;
+        private object sendLock = new object();
+        private byte[] SendBuffer { get => byteMemoryPool[sendBufferMemoryPoolIndex]; }
+
 
         public VoiceClient(string hostname, int port)
         {
             HostName = hostname;
             Port = port;
+
+            byteMemoryPool = new ByteMemoryPool(2048, 10);
+            sendBufferMemoryPoolIndex = byteMemoryPool.LockBuffer();
 
             socket = new UdpClient();
             socketReceiveThread = new Thread(VoiceDataReceiveThread);
@@ -78,22 +91,16 @@ namespace VoiceChattingClient.Connection
 
         public void SendVoiceData(byte[] datas)
         {
-            var header = new VoiceDataHeader
+            lock(sendLock)
             {
-                Command = 0,
-                Length = datas.Length
-            };
-            int headerSize = Marshal.SizeOf(typeof(VoiceDataHeader));
+                VoiceData voiceData = new VoiceData(byteMemoryPool);
+                voiceData.CopyVoiceData(datas);
 
-            byte[] data = new byte[headerSize + datas.Length];
-            
-            IntPtr ptr = Marshal.AllocHGlobal(headerSize);
-            Marshal.StructureToPtr(header, ptr, true);
-            Marshal.Copy(ptr, data, 0, headerSize);
-            Marshal.FreeHGlobal(ptr);
-
-            Array.Copy(datas, 0, data, headerSize, datas.Length);
-            socket.SendAsync(data, data.Length).Wait();
+                byte[] sendBuffer = SendBuffer;
+                int dataSize = voiceData.ToBytes(buffer: ref sendBuffer);
+                socket.SendAsync(sendBuffer, dataSize).Wait();
+                voiceData.Dispose();
+            }
         }
 
         private void VoiceDataReceiveThread()
@@ -106,24 +113,17 @@ namespace VoiceChattingClient.Connection
                     receiveTask = socket.ReceiveAsync();
                 if (!receiveTask.Wait(10)) continue;
 
-                int headerSize = Marshal.SizeOf(typeof(VoiceDataHeader));
-                IntPtr ptr = Marshal.AllocHGlobal(headerSize);
-                Marshal.Copy(receiveTask.Result.Buffer, 0, ptr, headerSize);
-                VoiceDataHeader header = Marshal.PtrToStructure<VoiceDataHeader>(ptr);
-                Marshal.FreeHGlobal(ptr);
-
                 if (!clientList.Contains(receiveTask.Result.RemoteEndPoint))
                     clientList.Add(receiveTask.Result.RemoteEndPoint);
 
-                VoiceDataFormat data = new VoiceDataFormat();
-                data.Header = header;
-                data.Data = new byte[header.Length];
-                Array.Copy(receiveTask.Result.Buffer, headerSize, data.Data, 0, header.Length);
-                // receiveTask.Result.Buffer.CopyTo(data.Data, headerSize);
-
                 Debug.WriteLine("UDP Packet Received");
 
-                OnVoiceDataReceived?.Invoke(this, receiveTask.Result.Buffer);
+                var voiceData = VoiceData.FromBytes(byteMemoryPool, receiveTask.Result.Buffer);
+                OnVoiceDataReceived?.Invoke(this, voiceData);
+                voiceData.Dispose();
+
+                receiveTask.Dispose();
+                receiveTask = null;
             }
         }
     }

@@ -184,6 +184,7 @@
     <Compile Include="CommonObjects\Log\Logger\ILogger.cs" />
     <Compile Include="CommonObjects\MemoryPool\ByteMemoryPool.cs" />
     <Compile Include="Configs\AudioConfig.cs" />
+    <Compile Include="Connection\Model\VoiceData.cs" />
     <Compile Include="Connection\VoiceClient.cs" />
     <Compile Include="Overlays\Settings.xaml.cs">
       <DependentUpon>Settings.xaml</DependentUpon>

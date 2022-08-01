@@ -6,7 +6,51 @@ using System.Threading.Tasks;
 
 namespace VoiceChattingClient.CommonObjects.MemoryPool
 {
-    internal class ByteMemoryPool
+    public class ByteMemoryPoolIndex
+    {
+        public byte[] Buffer { get; set; }
+        public bool IsUsing { get; private set; }
+        private object useLock = new object();
+        private readonly int initialSize;
+
+        public ByteMemoryPoolIndex(int size)
+        {
+            initialSize = size;
+            Buffer = new byte[size];
+            ClearBuffer();
+        }
+
+        public bool LockMemory()
+        {
+            lock (useLock)
+            {
+                if (IsUsing == false)
+                {
+                    IsUsing = true;
+                    return true;
+                }
+
+                return false;
+            }
+        }
+        public void UnlockMemory()
+        {
+            lock (useLock)
+            {
+                if (Buffer.Length != initialSize)
+                    Buffer = new byte[initialSize];
+
+                ClearBuffer();
+                IsUsing = false;
+            }
+        }
+        private void ClearBuffer()
+        {
+            Array.Clear(Buffer, 0, Buffer.Length);
+        }
+    }
+
+    public class ByteMemoryPool
     {
         private List<ByteMemoryPoolIndex> memoryPool;
         public byte[] this[int bufferId]
@@ -17,50 +61,8 @@ namespace VoiceChattingClient.CommonObjects.MemoryPool
                 return memoryPool[bufferId].Buffer;
             }
         }
-
-        private class ByteMemoryPoolIndex
-        {
-            public byte[] Buffer { get; set; }
-            public bool IsUsing { get; private set; }
-            private object useLock = new object();
-            private readonly int initialSize;
-
-            public ByteMemoryPoolIndex(int size)
-            {
-                initialSize = size;
-                Buffer = new byte[size];
-                ClearBuffer();
-            }
-
-            public bool LockMemory()
-            {
-                lock (useLock)
-                {
-                    if (IsUsing == false)
-                    {
-                        IsUsing = true;
-                        return true;
-                    }
-
-                    return false;
-                }
-            }
-            public void UnlockMemory()
-            {
-                lock (useLock)
-                {
-                    if (Buffer.Length != initialSize)
-                        Buffer = new byte[initialSize];
-
-                    ClearBuffer();
-                    IsUsing = false;
-                }
-            }
-            private void ClearBuffer()
-            {
-                Array.Clear(Buffer, 0, Buffer.Length);
-            }
-        }
+        public int Size { get; private set; }
+        public int Count { get; private set; }
 
         public ByteMemoryPool(int size, int count)
         {
@@ -68,6 +70,9 @@ namespace VoiceChattingClient.CommonObjects.MemoryPool
 
             for (int i = 0; i < count; ++i)
                 memoryPool.Add(new ByteMemoryPoolIndex(size));
+
+            Size = size;
+            Count = count;
         }
 
         public int LockBuffer()

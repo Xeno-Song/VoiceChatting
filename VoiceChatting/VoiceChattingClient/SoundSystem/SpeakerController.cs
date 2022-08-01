@@ -57,11 +57,13 @@ namespace VoiceChattingClient.SoundSystem
             return true;
         }
 
-        public bool AddPlaybackBytes(byte[] datas)
+        public bool AddPlaybackBytes(byte[] datas) => AddPlaybackBytes(datas, datas.Length);
+
+        public bool AddPlaybackBytes(byte[] datas, int length)
         {
             if (waveOutEvent == null) return false;
 
-            waveProvider.AddSamples(datas, 0, datas.Length);
+            waveProvider.AddSamples(datas, 0, length);
             if (waveOutEvent.PlaybackState != PlaybackState.Playing)
                 waveOutEvent.Play();
 
