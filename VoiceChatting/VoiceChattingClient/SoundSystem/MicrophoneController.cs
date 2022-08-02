@@ -30,6 +30,7 @@ namespace VoiceChattingClient.SoundSystem
 
         private WaveInEvent waveInEvent;
         public event EventHandler<WaveInEventArgs> OnDataAvaliable;
+        private WasapiCapture wasapiCapture;
 
         public MicrophoneController()
         {
@@ -55,17 +56,34 @@ namespace VoiceChattingClient.SoundSystem
                 }
             }
 
+            var enumerator = new MMDeviceEnumerator();
+            var deviceEnumerator = enumerator.EnumerateAudioEndPoints(DataFlow.Capture, DeviceState.Active);
+            MMDevice targetDevice = null;
+            foreach (var device in deviceEnumerator)
+            {
+                if (device.FriendlyName.Equals(deviceName))
+                {
+                    targetDevice = device;
+                    break;
+                }
+            }
+
             if (deviceNumber == -1) return false;
 
-            waveInEvent = new WaveInEvent
-            {
-                DeviceNumber = deviceNumber,
-                WaveFormat = new WaveFormat(rate: 48000, bits: 16, channels: 1),
-                BufferMilliseconds = 10,
-                NumberOfBuffers = 256
-            };
-            waveInEvent.DataAvailable += WaveInEvent_DataAvailable;
-            waveInEvent.StartRecording();
+            wasapiCapture = new WasapiCapture(targetDevice, true, 10);
+            wasapiCapture.WaveFormat = new WaveFormat(rate: 48000, bits: 16, channels: 1);
+            wasapiCapture.DataAvailable += WaveInEvent_DataAvailable;
+            wasapiCapture.StartRecording();
+
+            // waveInEvent = new WaveInEvent
+            // {
+            //     DeviceNumber = deviceNumber,
+            //     WaveFormat = new WaveFormat(rate: 9600, bits: 16, channels: 1),
+            //     BufferMilliseconds = 10,
+            //     NumberOfBuffers = 16
+            // };
+            // waveInEvent.DataAvailable += WaveInEvent_DataAvailable;
+            // waveInEvent.StartRecording();
 
             return true;
         }
@@ -83,7 +101,11 @@ namespace VoiceChattingClient.SoundSystem
 
         private void WaveInEvent_DataAvailable(object sender, WaveInEventArgs e)
         {
+            DateTime startTime = DateTime.Now;
             OnDataAvaliable?.Invoke(this, e);
+            DateTime endTime = DateTime.Now;
+
+            Debug.WriteLine("Latency : " + (endTime - startTime).TotalMilliseconds);
 
             // // copy buffer into an array of integers
             // Int16[] values = new Int16[e.Buffer.Length / 2];

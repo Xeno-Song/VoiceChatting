@@ -23,6 +23,7 @@ namespace VoiceChattingClient
         private MicrophoneController microphoneController;
         private SpeakerController speakerController;
         private VoiceClient voiceClient;
+        private AsioOut asioOut;
 
         public MainWindow()
         {
@@ -87,21 +88,21 @@ namespace VoiceChattingClient
             if (!isDeviceOpened) MessageBox.Show("Inavlid device name!");
 
             voiceClient = new VoiceClient("127.0.0.1", 11024);
-            //microphoneController.OnDataAvaliable += MicrophoneController_OnDataReceived;
-            microphoneController.OnDataAvaliable += (object sender, WaveInEventArgs e) =>
-            {
-                voiceClient.SendVoiceData(e.Buffer);
-            };
-            voiceClient.OnVoiceDataReceived += (object sender, VoiceData data) =>
-            {
-                speakerController.AddPlaybackBytes(data.Data, data.Header.Length);
-            };
+            microphoneController.OnDataAvaliable += MicrophoneController_OnDataReceived;
+            // microphoneController.OnDataAvaliable += (object sender, WaveInEventArgs e) =>
+            // {
+            //     voiceClient.SendVoiceData(e.Buffer);
+            // };
+            // voiceClient.OnVoiceDataReceived += (object sender, VoiceData data) =>
+            // {
+            //     speakerController.AddPlaybackBytes(data.Data, data.Header.Length);
+            // };
         }
 
         private void MicrophoneController_OnDataReceived(object sender, WaveInEventArgs e)
         {
             // Dispatcher.Invoke(() => progressBarInputLevel.Value = microphoneController.InputLevel);
-            speakerController.AddPlaybackBytes(e.Buffer);
+            speakerController.AddPlaybackBytes(e.Buffer, e.BytesRecorded);
         }
 
         private void OnCloseButtonClick(object sender, RoutedEventArgs e)
@@ -146,8 +147,21 @@ namespace VoiceChattingClient
 
         private void OnButtonHeadsetClick(object sender, RoutedEventArgs e)
         {
-            Common.Log["main"].Info("Headset Button Clicked");
-            MessageBox.Show("Headset Button Clicked");
+            var deviceList = AsioOut.GetDriverNames();
+            asioOut = new AsioOut(Common.Config["Audio"]?["MicrophoneDeviceName"] as string);
+            var inputChannels = asioOut.DriverInputChannelCount;
+
+            asioOut.InputChannelOffset = 4;
+            var recordChannelCount = 2;
+            var sampleRate = 44100;
+            asioOut.InitRecordAndPlayback(null, recordChannelCount, sampleRate);
+            asioOut.AudioAvailable += Asio_OnDataReceived;
+        }
+
+        private void Asio_OnDataReceived(object sender, AsioAudioAvailableEventArgs e)
+        {
+            // var sample = e.GetAsInterleavedSamples();
+            // speakerController.AddPlaybackBytes()
         }
 
         private void OnButtonMicrophoneClick(object sender, RoutedEventArgs e)

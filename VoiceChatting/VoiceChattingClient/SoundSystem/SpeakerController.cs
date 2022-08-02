@@ -2,6 +2,7 @@
 using NAudio.Wave;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -64,6 +65,7 @@ namespace VoiceChattingClient.SoundSystem
             if (waveOutEvent == null) return false;
 
             waveProvider.AddSamples(datas, 0, length);
+            Debug.WriteLine(waveProvider.BufferedDuration.ToString());
             if (waveOutEvent.PlaybackState != PlaybackState.Playing)
                 waveOutEvent.Play();
 
