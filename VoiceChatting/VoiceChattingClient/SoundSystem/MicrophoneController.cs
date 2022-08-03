@@ -71,7 +71,7 @@ namespace VoiceChattingClient.SoundSystem
             if (deviceNumber == -1) return false;
 
             wasapiCapture = new WasapiCapture(targetDevice, true, 10);
-            wasapiCapture.WaveFormat = new WaveFormat(rate: 48000, bits: 16, channels: 1);
+            wasapiCapture.WaveFormat = new WaveFormat(rate: 96000, bits: 16, channels: 1);
             wasapiCapture.DataAvailable += WaveInEvent_DataAvailable;
             wasapiCapture.StartRecording();
 
@@ -102,22 +102,24 @@ namespace VoiceChattingClient.SoundSystem
         private void WaveInEvent_DataAvailable(object sender, WaveInEventArgs e)
         {
             DateTime startTime = DateTime.Now;
+
+            // copy buffer into an array of integers
+            Int16[] values = new Int16[e.Buffer.Length / 2];
+            Buffer.BlockCopy(e.Buffer, 0, values, 0, e.Buffer.Length);
+
+            // determine the highest value as a fraction of the maximum possible value
+            float fraction = (float)values.Max() / 32768;
+
+            //Debug.WriteLine(String.Format(
+            //    "Voice Meter : {0:00.0} %, Buffer Size : {1}",
+            //    fraction * 100, e.Buffer.Length));
+            InputLevel = fraction * 100;
+
             OnDataAvaliable?.Invoke(this, e);
             DateTime endTime = DateTime.Now;
 
-            Debug.WriteLine("Latency : " + (endTime - startTime).TotalMilliseconds);
+            //Debug.WriteLine("Latency : " + (endTime - startTime).TotalMilliseconds);
 
-            // // copy buffer into an array of integers
-            // Int16[] values = new Int16[e.Buffer.Length / 2];
-            // Buffer.BlockCopy(e.Buffer, 0, values, 0, e.Buffer.Length);
-            // 
-            // // determine the highest value as a fraction of the maximum possible value
-            // float fraction = (float)values.Max() / 32768;
-            // 
-            // Debug.WriteLine(String.Format(
-            //     "Voice Meter : {0:00.0} %, Buffer Size : {1}",
-            //     fraction * 100, e.Buffer.Length));
-            // InputLevel = fraction * 100;
         }
     }
 }

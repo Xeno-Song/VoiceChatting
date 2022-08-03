@@ -49,10 +49,11 @@ namespace VoiceChattingClient.SoundSystem
             waveOutEvent = new WaveOutEvent
             {
                 DeviceNumber = deviceNumber,
-                DesiredLatency = 10,
-                NumberOfBuffers = 256
+                DesiredLatency = 40,
+                NumberOfBuffers = 3
             };
-            waveProvider = new BufferedWaveProvider(new WaveFormat(48000, 16, 1));
+            waveProvider = new BufferedWaveProvider(new WaveFormat(96000, 16, 1));
+            waveProvider.ReadFully = false;
             waveOutEvent.Init(waveProvider);
 
             return true;
@@ -64,7 +65,8 @@ namespace VoiceChattingClient.SoundSystem
         {
             if (waveOutEvent == null) return false;
 
-            waveProvider.AddSamples(datas, 0, length);
+            if (waveProvider.BufferedDuration.TotalMinutes < 100)
+                waveProvider.AddSamples(datas, 0, length);
             Debug.WriteLine(waveProvider.BufferedDuration.ToString());
             if (waveOutEvent.PlaybackState != PlaybackState.Playing)
                 waveOutEvent.Play();
