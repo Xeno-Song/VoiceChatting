@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using VoiceChattingClient.Codec;
 using VoiceChattingClient.CommonObjects;
 using VoiceChattingClient.CommonObjects.Config;
 using VoiceChattingClient.Configs;
@@ -24,6 +25,7 @@ namespace VoiceChattingClient
         private SpeakerController speakerController;
         private VoiceClient voiceClient;
         private AsioOut asioOut;
+        private OpusCodec codec;
 
         public MainWindow()
         {
@@ -83,6 +85,7 @@ namespace VoiceChattingClient
         {
             microphoneController = new MicrophoneController();
             speakerController = new SpeakerController();
+            codec = new OpusCodec();
 
             var isDeviceOpened = speakerController.OpenDevice(Common.Config["Audio"]?["SpeakerDeviceName"] as string);
             if (!isDeviceOpened) MessageBox.Show("Inavlid device name!");
@@ -102,6 +105,14 @@ namespace VoiceChattingClient
         private void MicrophoneController_OnDataReceived(object sender, WaveInEventArgs e)
         {
             // Dispatcher.Invoke(() => progressBarInputLevel.Value = microphoneController.InputLevel);
+            byte[] byteArray = new byte[e.Buffer.Length];
+            int encodedSize = codec.Encode(e.Buffer, e.BytesRecorded, byteArray);
+
+            Debug.WriteLine(String.Format(
+                "Encoded Size : {0}, Changed : {1}, Ratio : {2:0.00} %",
+                encodedSize,
+                e.BytesRecorded - encodedSize,
+                ((double)encodedSize / e.BytesRecorded) * 100));
             speakerController.AddPlaybackBytes(e.Buffer, e.BytesRecorded);
         }
 

@@ -52,7 +52,7 @@ namespace VoiceChattingClient.SoundSystem
                 DesiredLatency = 40,
                 NumberOfBuffers = 3
             };
-            waveProvider = new BufferedWaveProvider(new WaveFormat(96000, 16, 1));
+            waveProvider = new BufferedWaveProvider(new WaveFormat(48000, 16, 1));
             waveProvider.ReadFully = false;
             waveOutEvent.Init(waveProvider);
 

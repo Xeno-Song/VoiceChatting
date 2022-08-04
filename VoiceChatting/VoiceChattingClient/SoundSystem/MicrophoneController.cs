@@ -71,7 +71,7 @@ namespace VoiceChattingClient.SoundSystem
             if (deviceNumber == -1) return false;
 
             wasapiCapture = new WasapiCapture(targetDevice, true, 10);
-            wasapiCapture.WaveFormat = new WaveFormat(rate: 96000, bits: 16, channels: 1);
+            wasapiCapture.WaveFormat = new WaveFormat(rate: 48000, bits: 16, channels: 1);
             wasapiCapture.DataAvailable += WaveInEvent_DataAvailable;
             wasapiCapture.StartRecording();
 
@@ -118,7 +118,7 @@ namespace VoiceChattingClient.SoundSystem
             OnDataAvaliable?.Invoke(this, e);
             DateTime endTime = DateTime.Now;
 
-            //Debug.WriteLine("Latency : " + (endTime - startTime).TotalMilliseconds);
+            Debug.WriteLine("Latency : " + (endTime - startTime).TotalMilliseconds);
 
         }
     }

@@ -172,7 +172,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Codec\VoiceEncoder.cs" />
+    <Compile Include="Codec\OpusCodec.cs" />
     <Compile Include="CommonObjects\Common.cs" />
     <Compile Include="CommonObjects\Config\Config.cs" />
     <Compile Include="CommonObjects\Config\ConfigIndexer.cs" />
