@@ -77,13 +77,17 @@ namespace VoiceChattingClient.CommonObjects.MemoryPool
 
         public int LockBuffer()
         {
-            var memoryIndex = memoryPool.First((x) =>
+            for (int i = 0; i < memoryPool.Count; ++i)
             {
-                if (x.IsUsing) return false;
-                return x.LockMemory();
-            });
-            if (memoryIndex == null) return -1;
-            return memoryPool.IndexOf(memoryIndex);
+                var index = memoryPool[i];
+                if (!index.IsUsing)
+                {
+                    index.LockMemory();
+                    return i;
+                }
+            }
+
+            return -1;
         }
 
         public void UnlockBuffer(int bufferId)
