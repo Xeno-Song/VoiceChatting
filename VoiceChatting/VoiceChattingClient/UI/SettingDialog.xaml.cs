@@ -12,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using VoiceChattingClient.CommonObjects;
+using CommonObjects;
 using VoiceChattingClient.SoundSystem;
 
 namespace VoiceChattingClient.UI

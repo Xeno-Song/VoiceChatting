@@ -70,20 +70,20 @@ namespace VoiceChattingClient.SoundSystem
 
             if (deviceNumber == -1) return false;
 
-            wasapiCapture = new WasapiCapture(targetDevice, true, 10);
-            wasapiCapture.WaveFormat = new WaveFormat(rate: 48000, bits: 16, channels: 1);
-            wasapiCapture.DataAvailable += WaveInEvent_DataAvailable;
-            wasapiCapture.StartRecording();
+            // wasapiCapture = new WasapiCapture(targetDevice, true, 10);
+            // wasapiCapture.WaveFormat = new WaveFormat(rate: 48000, bits: 16, channels: 1);
+            // wasapiCapture.DataAvailable += WaveInEvent_DataAvailable;
+            // wasapiCapture.StartRecording();
 
-            // waveInEvent = new WaveInEvent
-            // {
-            //     DeviceNumber = deviceNumber,
-            //     WaveFormat = new WaveFormat(rate: 9600, bits: 16, channels: 1),
-            //     BufferMilliseconds = 10,
-            //     NumberOfBuffers = 16
-            // };
-            // waveInEvent.DataAvailable += WaveInEvent_DataAvailable;
-            // waveInEvent.StartRecording();
+            waveInEvent = new WaveInEvent
+            {
+                DeviceNumber = deviceNumber,
+                WaveFormat = new WaveFormat(rate: 48000, bits: 16, channels: 1),
+                BufferMilliseconds = 10,
+                NumberOfBuffers = 16
+            };
+            waveInEvent.DataAvailable += WaveInEvent_DataAvailable;
+            waveInEvent.StartRecording();
 
             return true;
         }
@@ -110,15 +110,15 @@ namespace VoiceChattingClient.SoundSystem
             // determine the highest value as a fraction of the maximum possible value
             float fraction = (float)values.Max() / 32768;
 
-            //Debug.WriteLine(String.Format(
-            //    "Voice Meter : {0:00.0} %, Buffer Size : {1}",
-            //    fraction * 100, e.Buffer.Length));
+            Debug.WriteLine(String.Format(
+                "Voice Meter : {0:00.0} %, Buffer Size : {1}",
+                fraction * 100, e.BytesRecorded));
             InputLevel = fraction * 100;
 
             OnDataAvaliable?.Invoke(this, e);
             DateTime endTime = DateTime.Now;
 
-            Debug.WriteLine("Latency : " + (endTime - startTime).TotalMilliseconds);
+            // Debug.WriteLine("Latency : " + (endTime - startTime).TotalMilliseconds);
 
         }
     }

@@ -7,12 +7,12 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using VoiceChattingClient.Codec;
-using VoiceChattingClient.CommonObjects;
-using VoiceChattingClient.CommonObjects.Config;
+using CommonObjects;
+using CommonObjects.Config;
 using VoiceChattingClient.Configs;
 using VoiceChattingClient.Connection;
-using VoiceChattingClient.Connection.Model;
 using VoiceChattingClient.SoundSystem;
+using CommonObjects.DataModels.VoiceData.Model;
 
 namespace VoiceChattingClient
 {
@@ -91,15 +91,15 @@ namespace VoiceChattingClient
             if (!isDeviceOpened) MessageBox.Show("Inavlid device name!");
 
             voiceClient = new VoiceClient("127.0.0.1", 11024);
-            microphoneController.OnDataAvaliable += MicrophoneController_OnDataReceived;
-            // microphoneController.OnDataAvaliable += (object sender, WaveInEventArgs e) =>
-            // {
-            //     voiceClient.SendVoiceData(e.Buffer);
-            // };
-            // voiceClient.OnVoiceDataReceived += (object sender, VoiceData data) =>
-            // {
-            //     speakerController.AddPlaybackBytes(data.Data, data.Header.Length);
-            // };
+            // microphoneController.OnDataAvaliable += MicrophoneController_OnDataReceived;
+            microphoneController.OnDataAvaliable += (object sender, WaveInEventArgs e) =>
+            {
+                voiceClient.SendVoiceData(e.Buffer);
+            };
+            voiceClient.OnVoiceDataReceived += (object sender, VoiceData data) =>
+            {
+                speakerController.AddPlaybackBytes(data.Data, data.Header.Length);
+            };
         }
 
         private void MicrophoneController_OnDataReceived(object sender, WaveInEventArgs e)
@@ -108,11 +108,11 @@ namespace VoiceChattingClient
             byte[] byteArray = new byte[e.Buffer.Length];
             int encodedSize = codec.Encode(e.Buffer, e.BytesRecorded, byteArray);
 
-            Debug.WriteLine(String.Format(
-                "Encoded Size : {0}, Changed : {1}, Ratio : {2:0.00} %",
-                encodedSize,
-                e.BytesRecorded - encodedSize,
-                ((double)encodedSize / e.BytesRecorded) * 100));
+            // Debug.WriteLine(String.Format(
+            //     "Encoded Size : {0}, Changed : {1}, Ratio : {2:0.00} %",
+            //     encodedSize,
+            //     e.BytesRecorded - encodedSize,
+            //     ((double)encodedSize / e.BytesRecorded) * 100));
             speakerController.AddPlaybackBytes(e.Buffer, e.BytesRecorded);
         }
 

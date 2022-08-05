@@ -1,17 +1,14 @@
 ﻿using log4net.Appender;
 using Log4Net.Async;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace VoiceChattingClient.CommonObjects.Log.Logger
+namespace CommonObjects.Log.Logger
 {
     internal class AsyncForwarder : ILogger
     {
         public IAppender Appender { get => asyncForwardingAppender; }
-        public IReadOnlyList<ILogger> FowardingAppenders {
+        public IReadOnlyList<ILogger> FowardingAppenders
+        {
             get => forwardingAppenders.AsReadOnly();
         }
         public bool IsDisposed { get; private set; } = false;

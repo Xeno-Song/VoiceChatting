@@ -1,7 +1,7 @@
 ﻿using OpusDotNet;
 using System;
 using System.Diagnostics;
-using VoiceChattingClient.CommonObjects.MemoryPool;
+using CommonObjects.MemoryPool;
 
 namespace VoiceChattingClient.Codec
 {

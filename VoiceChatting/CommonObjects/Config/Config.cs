@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
-namespace VoiceChattingClient.CommonObjects.Config
+namespace CommonObjects.Config
 {
     internal class Config : IConfig
     {
@@ -18,8 +15,10 @@ namespace VoiceChattingClient.CommonObjects.Config
         public bool CreateIfNotExist { get; set; }
 
         [JsonIgnore]
-        public object this[string key] {
-            get {
+        public object this[string key]
+        {
+            get
+            {
                 if (string.IsNullOrWhiteSpace(key)) throw new ArgumentException("Invalid key value");
 
                 var propertyInfo = GetType().GetProperties().First(x => x.Name == key);
@@ -27,7 +26,8 @@ namespace VoiceChattingClient.CommonObjects.Config
 
                 return propertyInfo.GetValue(this);
             }
-            set {
+            set
+            {
                 if (string.IsNullOrWhiteSpace(key)) throw new ArgumentException("Invalid key value");
 
                 var propertyInfo = GetType().GetProperties().First(x => x.Name == key);

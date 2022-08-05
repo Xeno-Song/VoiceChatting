@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>cb04d2df-472e-4bb4-a16e-c1695d7f06fb</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>CommonObjects</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Common.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Config\Config.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Config\ConfigIndexer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Config\IConfig.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Log\Log.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Log\Logger\AsyncForwarder.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Log\Logger\ConsoleLogger.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Log\Logger\FileLogger.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Log\Logger\ILogger.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)MemoryPool\ByteMemoryPool.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DataModels\VoiceData\VoiceData.cs" />
+  </ItemGroup>
+</Project>

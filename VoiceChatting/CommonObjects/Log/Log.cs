@@ -5,9 +5,9 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using VoiceChattingClient.CommonObjects.Log.Logger;
+using CommonObjects.Log.Logger;
 
-namespace VoiceChattingClient.CommonObjects.Log
+namespace CommonObjects.Log
 {
     internal class Logging : IDisposable
     {

@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using CommonObjects.MemoryPool;
+using System;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using VoiceChattingClient.CommonObjects.MemoryPool;
 
-namespace VoiceChattingClient.Connection.Model
+namespace CommonObjects.DataModels.VoiceData.Model
 {
     internal struct VoiceDataHeader
     {
@@ -23,7 +19,8 @@ namespace VoiceChattingClient.Connection.Model
     internal class VoiceData : IDisposable
     {
         public VoiceDataHeader Header;
-        public byte[] Data {
+        public byte[] Data
+        {
             get
             {
                 if (memoryPoolIndex == -1) return null;

@@ -8,8 +8,8 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using VoiceChattingClient.CommonObjects.MemoryPool;
-using VoiceChattingClient.Connection.Model;
+using CommonObjects.MemoryPool;
+using CommonObjects.DataModels.VoiceData.Model;
 
 namespace VoiceChattingClient.Connection
 {

@@ -1,8 +1,7 @@
 ﻿using log4net.Appender;
 using log4net.Layout;
-using System;
 
-namespace VoiceChattingClient.CommonObjects.Log
+namespace CommonObjects.Log
 {
     internal class ConsoleLogger : ILogger
     {
