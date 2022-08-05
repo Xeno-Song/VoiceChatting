@@ -63,7 +63,7 @@ namespace CommonObjects.DataModels.VoiceData.Model
         {
             int headerSize = Marshal.SizeOf(typeof(VoiceDataHeader));
             if (buffer.Length < headerSize + Header.Length)
-                throw new Exception("Buffer size is too small");
+                throw new Exception("Buffer size is too small, Excepcted : " + headerSize + Header.Length + " Real : " + buffer.Length);
 
             IntPtr ptr = Marshal.AllocHGlobal(headerSize);
             Marshal.StructureToPtr(Header, ptr, true);
@@ -82,6 +82,16 @@ namespace CommonObjects.DataModels.VoiceData.Model
             Array.Copy(datas, 0, Data, 0, datas.Length);
             Header.Length = datas.Length;
             return datas.Length;
+        }
+
+        public int CopyVoiceData(byte[] datas, int length)
+        {
+            if (Data.Length < length)
+                throw new Exception("Data is too long");
+
+            Array.Copy(datas, 0, Data, 0, length);
+            Header.Length = length;
+            return length;
         }
 
         public void Dispose()

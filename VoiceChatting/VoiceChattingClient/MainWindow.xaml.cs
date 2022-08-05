@@ -90,7 +90,7 @@ namespace VoiceChattingClient
             var isDeviceOpened = speakerController.OpenDevice(Common.Config["Audio"]?["SpeakerDeviceName"] as string);
             if (!isDeviceOpened) MessageBox.Show("Inavlid device name!");
 
-            voiceClient = new VoiceClient("127.0.0.1", 11024);
+            voiceClient = new VoiceClient("127.0.0.1", 11523);
             // microphoneController.OnDataAvaliable += MicrophoneController_OnDataReceived;
             microphoneController.OnDataAvaliable += (object sender, WaveInEventArgs e) =>
             {
