@@ -13,6 +13,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)Config\Config.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Config\ConfigIndexer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Config\IConfig.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DataModels\VoiceData\IVoiceData.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DataModels\VoiceData\VoiceDataHeader.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DataModels\VoiceData\VoiceHostData.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DataModels\VoiceData\VoiceWaveData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Log\Log.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Log\Logger\AsyncForwarder.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Log\Logger\ConsoleLogger.cs" />

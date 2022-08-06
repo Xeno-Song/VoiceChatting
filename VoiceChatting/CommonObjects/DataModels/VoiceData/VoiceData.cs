@@ -6,18 +6,6 @@ using System.Runtime.InteropServices;
 
 namespace CommonObjects.DataModels.VoiceData.Model
 {
-    internal struct VoiceDataHeader
-    {
-        public int Command { get; set; }
-        public int Length { get; set; }
-
-        public void CopyFrom(VoiceDataHeader from)
-        {
-            Command = from.Command;
-            Length = from.Length;
-        }
-    }
-
     internal class SocketVoiceDataParser : IDisposable
     {
         public VoiceDataHeader Header;
@@ -87,7 +75,7 @@ namespace CommonObjects.DataModels.VoiceData.Model
                 throw new Exception("Data is too long");
 
             Array.Copy(datas, 0, Data, 0, datas.Length);
-            Header.Length = datas.Length;
+            Header.Length = (short)datas.Length;
             return datas.Length;
         }
 
@@ -97,7 +85,7 @@ namespace CommonObjects.DataModels.VoiceData.Model
                 throw new Exception("Data is too long");
 
             Array.Copy(datas, 0, Data, 0, length);
-            Header.Length = length;
+            Header.Length = (short)length;
             return length;
         }
 
