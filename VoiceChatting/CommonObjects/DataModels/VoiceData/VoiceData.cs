@@ -1,5 +1,7 @@
 ﻿using CommonObjects.MemoryPool;
 using System;
+using System.Collections.Generic;
+using System.Net;
 using System.Runtime.InteropServices;
 
 namespace CommonObjects.DataModels.VoiceData.Model
@@ -16,7 +18,7 @@ namespace CommonObjects.DataModels.VoiceData.Model
         }
     }
 
-    internal class VoiceData : IDisposable
+    internal class SocketVoiceDataParser : IDisposable
     {
         public VoiceDataHeader Header;
         public byte[] Data
@@ -27,18 +29,20 @@ namespace CommonObjects.DataModels.VoiceData.Model
                 return memoryPool[memoryPoolIndex];
             }
         }
+        public List<IPEndPoint> EndPointList { get; internal set; } = new List<IPEndPoint>();
+        public IPEndPoint ReceiveFrom;
 
         private ByteMemoryPool memoryPool;
         private int memoryPoolIndex;
 
-        public VoiceData(ByteMemoryPool memoryPool)
+        public SocketVoiceDataParser(ByteMemoryPool memoryPool)
         {
             Header = new VoiceDataHeader();
             this.memoryPool = memoryPool;
             memoryPoolIndex = memoryPool.LockBuffer();
         }
 
-        public static VoiceData FromBytes(ByteMemoryPool memoryPool, byte[] data)
+        public static SocketVoiceDataParser FromBytes(ByteMemoryPool memoryPool, byte[] data)
         {
             // Convert header data as structure
             int headerSize = Marshal.SizeOf(typeof(VoiceDataHeader));
@@ -47,14 +51,17 @@ namespace CommonObjects.DataModels.VoiceData.Model
             VoiceDataHeader header = Marshal.PtrToStructure<VoiceDataHeader>(ptr);
             Marshal.FreeHGlobal(ptr);
 
-            VoiceData voiceData = new VoiceData(memoryPool);
+            // Create data parser object using memory pool
+            SocketVoiceDataParser voiceData = new SocketVoiceDataParser(memoryPool);
             voiceData.Header.CopyFrom(header);
 
+            // Memory size check
             if (memoryPool.Size < header.Length)
                 throw new Exception("Data size is logger than memory pool size");
             if (header.Length + headerSize != data.Length)
                 throw new Exception("Data size mismatch");
 
+            // Copy voice data to byte array
             Array.Copy(data, headerSize, voiceData.Data, 0, voiceData.Header.Length);
             return voiceData;
         }

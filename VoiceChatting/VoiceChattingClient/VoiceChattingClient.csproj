@@ -192,6 +192,7 @@
     <Compile Include="UI\ScrollLayout.xaml.cs">
       <DependentUpon>ScrollLayout.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Voice\VoiceController.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

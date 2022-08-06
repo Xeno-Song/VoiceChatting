@@ -13,6 +13,7 @@ using VoiceChattingClient.Configs;
 using VoiceChattingClient.Connection;
 using VoiceChattingClient.SoundSystem;
 using CommonObjects.DataModels.VoiceData.Model;
+using System.Net;
 
 namespace VoiceChattingClient
 {
@@ -90,13 +91,15 @@ namespace VoiceChattingClient
             var isDeviceOpened = speakerController.OpenDevice(Common.Config["Audio"]?["SpeakerDeviceName"] as string);
             if (!isDeviceOpened) MessageBox.Show("Inavlid device name!");
 
-            voiceClient = new VoiceClient("127.0.0.1", 11523);
+            voiceClient = new VoiceClient(2048);
             // microphoneController.OnDataAvaliable += MicrophoneController_OnDataReceived;
             microphoneController.OnDataAvaliable += (object sender, WaveInEventArgs e) =>
             {
-                voiceClient.SendVoiceData(e.Buffer);
+                voiceClient.SendVoiceData(
+                    new IPEndPoint(IPAddress.Parse("127.0.0.1"), 11523),
+                    e.Buffer, e.BytesRecorded);
             };
-            voiceClient.OnVoiceDataReceived += (object sender, VoiceData data) =>
+            voiceClient.OnVoiceDataReceived += (object sender, SocketVoiceDataParser data) =>
             {
                 speakerController.AddPlaybackBytes(data.Data, data.Header.Length);
             };
@@ -105,8 +108,7 @@ namespace VoiceChattingClient
         private void MicrophoneController_OnDataReceived(object sender, WaveInEventArgs e)
         {
             // Dispatcher.Invoke(() => progressBarInputLevel.Value = microphoneController.InputLevel);
-            byte[] byteArray = new byte[e.Buffer.Length];
-            int encodedSize = codec.Encode(e.Buffer, e.BytesRecorded, byteArray);
+            
 
             // Debug.WriteLine(String.Format(
             //     "Encoded Size : {0}, Changed : {1}, Ratio : {2:0.00} %",
@@ -183,7 +185,7 @@ namespace VoiceChattingClient
 
         private void buttonHostServer_Click(object sender, RoutedEventArgs e)
         {
-            voiceClient.Bind();
+            voiceClient.Bind(11523);
         }
 
         private void Window_Closed(object sender, System.EventArgs e)
@@ -198,7 +200,6 @@ namespace VoiceChattingClient
 
         private void buttonConnectToServer_Click(object sender, RoutedEventArgs e)
         {
-            voiceClient.Connect();
         }
     }
 }

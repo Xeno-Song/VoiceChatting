@@ -12,124 +12,155 @@ namespace VoiceChattingServer.Connection
 {
     internal class VoiceServer
     {
-        public string HostName { get; private set; }
+        /// <summary>
+        /// Binded port number
+        /// </summary>
         public int Port { get; private set; }
-        public event EventHandler<VoiceData> OnVoiceDataReceived;
 
+        public event EventHandler<SocketVoiceDataParser> OnVoiceDataReceived;
+
+        // Socket send/receive objects
         private UdpClient socket = null;
+        public ByteMemoryPool dataCodingBufferPool;
+        private int dataSendBufferMemoryPoolIndex;
+        private byte[] DataSendBuffer { get => dataCodingBufferPool[dataSendBufferMemoryPoolIndex]; }
+
+        // Data receive thread objcets
         private Thread socketReceiveThread;
-        private bool isClosing = false;
-        private List<IPEndPoint> clientList = new List<IPEndPoint>();
+        private bool isSocketClosing = false;
+        private CancellationTokenSource dataReceiveCancellationTokenSource;
 
 
-        private ByteMemoryPool byteMemoryPool;
-        private int sendBufferMemoryPoolIndex;
-        private object sendLock = new object();
-        private byte[] SendBuffer { get => byteMemoryPool[sendBufferMemoryPoolIndex]; }
-        private CancellationTokenSource cancellationTokenSource;
-        private CancellationToken cancellationToken;
-
-        public VoiceServer(string hostname, int port)
+        public VoiceServer(int bufferSize)
         {
-            HostName = hostname;
+            dataCodingBufferPool = new ByteMemoryPool(bufferSize, 10);
+            dataSendBufferMemoryPoolIndex = dataCodingBufferPool.LockBuffer();
+        }
+
+        /// <summary>
+        /// Open udp socket
+        /// </summary>
+        /// <param name="port">Bind target port</param>
+        /// <returns>If success to open socket, return <see langword="true"/>,
+        /// but if socket was already opened or failed to create socket, return <see langword="false"/></returns>
+        public bool Bind(int port)
+        {
             Port = port;
-
-            byteMemoryPool = new ByteMemoryPool(2048, 10);
-            sendBufferMemoryPoolIndex = byteMemoryPool.LockBuffer();
-
-            socket = new UdpClient();
-            socketReceiveThread = new Thread(VoiceDataReceiveThread);
-        }
-
-        public void Connect()
-        {
-            socket.Connect(HostName, Port);
-            socketReceiveThread.Start();
-
-            var hostEntry = Dns.GetHostEntry(HostName);
-            if (hostEntry.AddressList.Length != 0)
-            {
-                clientList.Add(new IPEndPoint(IPAddress.Parse(HostName), Port));
-            }
-        }
-
-        public void Bind()
-        {
-            if (socket != null)
-            {
-                Disconnect();
-                socket.Dispose();
-            }
-            isClosing = false;
+            if (socket != null) return false;
 
             socket = new UdpClient(Port);
+            socketReceiveThread = new Thread(VoiceDataReceiveThread);
             socketReceiveThread.Start();
+
+            return true;
         }
 
-        public void Disconnect()
+        /// <summary>
+        /// Close opened socket
+        /// </summary>
+        public void Close()
         {
-            isClosing = true;
+            // Stop running data receive thread
+            isSocketClosing = true;
+            StopVoiceDataReceiveThread();
 
-            if (cancellationTokenSource != null)
-            {
-                cancellationTokenSource.Cancel();
-                cancellationTokenSource.Dispose();
-            }
-
-            if (socketReceiveThread != null && socketReceiveThread.IsAlive)
-                socketReceiveThread.Join();
-
+            // Disconnect socket and dispose
             socket.Close();
+            socket.Dispose();
+            socket = null;
         }
 
-        public void SendVoiceData(byte[] datas)
+        /// <summary>
+        /// Send voice data to endpoint
+        /// </summary>
+        /// <param name="endPoint">Target point for data send</param>
+        /// <param name="voiceData">Voice data as byte array</param>
+        /// <param name="voiceDataLen">Voice data len</param>
+        public void SendVoiceData(IPEndPoint endPoint, byte[] voiceData, int voiceDataLen)
         {
-            lock (sendLock)
-            {
-                VoiceData voiceData = new VoiceData(byteMemoryPool);
-                voiceData.CopyVoiceData(datas);
+            var voiceDataParser = new SocketVoiceDataParser(dataCodingBufferPool);
+            voiceDataParser.CopyVoiceData(voiceData, voiceDataLen);
 
-                byte[] sendBuffer = SendBuffer;
-                int dataSize = voiceData.ToBytes(buffer: ref sendBuffer);
+            lock (socket)
+            {
+                byte[] sendBuffer = DataSendBuffer;
+                int dataSize = voiceDataParser.ToBytes(buffer: ref sendBuffer);
                 socket.SendAsync(sendBuffer, dataSize).Wait();
-                voiceData.Dispose();
             }
+
+            voiceDataParser.Dispose();
         }
 
-        public void SendVoiceData(IPEndPoint endPoint, byte[] datas, int length)
+        public void SendHostList(IPEndPoint endPoint, List<IPEndPoint> endPointList)
         {
-            lock (sendLock)
-            {
-                VoiceData voiceData = new VoiceData(byteMemoryPool);
-                voiceData.CopyVoiceData(datas, length);
+            var voiceDataParser = new SocketVoiceDataParser(dataCodingBufferPool);
+            voiceDataParser.EndPointList = endPointList;
 
-                byte[] sendBuffer = SendBuffer;
-                int dataSize = voiceData.ToBytes(buffer: ref sendBuffer);
-                socket.SendAsync(sendBuffer, dataSize, endPoint).Wait();
-                voiceData.Dispose();
+            lock (socket)
+            {
+                byte[] sendBuffer = DataSendBuffer;
+                int dataSize = voiceDataParser.ToBytes(buffer: ref sendBuffer);
+                socket.SendAsync(sendBuffer, dataSize).Wait();
             }
+
+            voiceDataParser.Dispose();
         }
 
+        /// <summary>
+        /// Stop data receive thread
+        /// </summary>
+        /// <param name="timeout">Thread join time when cancellation token active</param>
+        /// <returns>If success to stop, return <see langword="true"/>, otherwise <see langword="false"/></returns>
+        /// <exception cref="Exception"></exception>
+        private bool StopVoiceDataReceiveThread(int timeout = 10)
+        {
+            if (socketReceiveThread != null && socketReceiveThread.IsAlive)
+            {
+                // Thread is running but cancellation token was not define
+                // In this case, cannot abort thread job
+                if (dataReceiveCancellationTokenSource == null)
+                    throw new Exception("Thread is running but cancellation token was not defined!");
+
+                dataReceiveCancellationTokenSource.Cancel();
+                socketReceiveThread.Join(timeout);
+
+                dataReceiveCancellationTokenSource = null;
+                socketReceiveThread = null;
+
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Voice data receive thread job
+        /// </summary>
         private void VoiceDataReceiveThread()
         {
-            cancellationTokenSource = new CancellationTokenSource();
-            cancellationToken = cancellationTokenSource.Token;
+            // Reset cancellation token to abort receive job
+            dataReceiveCancellationTokenSource = new CancellationTokenSource();
+            var dataReceiveCancellationToken = dataReceiveCancellationTokenSource.Token;
 
             try
             {
-                using (cancellationToken.Register(Thread.CurrentThread.Abort))
+                // Register data receive statement to cancellation exception hanlder
+                using (dataReceiveCancellationToken.Register(Thread.CurrentThread.Abort))
                 {
-                    while (!isClosing)
+                    while (!isSocketClosing)
                     {
                         IPEndPoint endPoint = new IPEndPoint(IPAddress.Any, Port);
                         var buffer = socket.Receive(ref endPoint);
-                        var voiceData = VoiceData.FromBytes(byteMemoryPool, buffer);
-                        OnVoiceDataReceived?.Invoke(endPoint, voiceData);
+
+                        var voiceData = SocketVoiceDataParser.FromBytes(dataCodingBufferPool, buffer);
+                        voiceData.ReceiveFrom = endPoint;
+
+                        OnVoiceDataReceived?.Invoke(this, voiceData);
                         voiceData.Dispose();
                     }
                 }
             }
-            catch (OperationCanceledException ex)
+            catch (OperationCanceledException)
             {
                 Console.WriteLine("Read thread job cancelled!");
             }
