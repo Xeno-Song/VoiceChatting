@@ -14,6 +14,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Config\ConfigIndexer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Config\IConfig.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DataModels\VoiceData\IVoiceData.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DataModels\VoiceData\VoiceData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DataModels\VoiceData\VoiceDataHeader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DataModels\VoiceData\VoiceHostData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DataModels\VoiceData\VoiceWaveData.cs" />
@@ -23,6 +24,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Log\Logger\FileLogger.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Log\Logger\ILogger.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MemoryPool\ByteMemoryPool.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)DataModels\VoiceData\VoiceData.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DataModels\VoiceData\SocketVoiceDataParser.cs" />
   </ItemGroup>
 </Project>

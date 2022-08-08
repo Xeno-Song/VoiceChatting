@@ -5,11 +5,25 @@ using System.Text;
 
 namespace CommonObjects.DataModels.VoiceData
 {
-    internal struct VoiceDataHeader
+    internal class VoiceDataHeader
     {
+        public static int HeaderLength { get => Marshal.SizeOf(typeof(VoiceDataHeader)); }
+
+        /// <summary>
+        /// Data type command
+        /// </summary>
         public short Command { get; set; }
+        /// <summary>
+        /// Data Length
+        /// </summary>
         public short Length { get; set; }
+        /// <summary>
+        /// Reserved
+        /// </summary>
         public int Reserved_1 { get; set; }
+        /// <summary>
+        /// Reserved
+        /// </summary>
         public int Reserved_2 { get; set; }
 
         public void CopyFrom(VoiceDataHeader from)
