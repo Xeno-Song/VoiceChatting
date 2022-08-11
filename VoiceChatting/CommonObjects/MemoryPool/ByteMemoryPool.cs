@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace CommonObjects.MemoryPool
 {
-    public class ByteMemoryPoolIndex
+    public class ByteMemoryPoolIndexes
     {
         public byte[] Buffer { get; set; }
         public bool IsUsing { get; private set; }
         private object useLock = new object();
         private readonly int initialSize;
 
-        public ByteMemoryPoolIndex(int size)
+        public ByteMemoryPoolIndexes(int size)
         {
             initialSize = size;
             Buffer = new byte[size];
@@ -52,7 +52,7 @@ namespace CommonObjects.MemoryPool
 
     public class ByteMemoryPool
     {
-        private List<ByteMemoryPoolIndex> memoryPool;
+        private List<ByteMemoryPoolIndexes> memoryPool;
         public byte[] this[int bufferId]
         {
             get
@@ -66,10 +66,10 @@ namespace CommonObjects.MemoryPool
 
         public ByteMemoryPool(int size, int count)
         {
-            memoryPool = new List<ByteMemoryPoolIndex>();
+            memoryPool = new List<ByteMemoryPoolIndexes>();
 
             for (int i = 0; i < count; ++i)
-                memoryPool.Add(new ByteMemoryPoolIndex(size));
+                memoryPool.Add(new ByteMemoryPoolIndexes(size));
 
             Size = size;
             Count = count;

@@ -1,5 +1,7 @@
-﻿using System;
+﻿using CommonObjects.MemoryPool;
+using System;
 using System.Collections.Generic;
+using System.ServiceModel.Channels;
 using System.Text;
 
 namespace CommonObjects.DataModels.VoiceData
@@ -36,15 +38,29 @@ namespace CommonObjects.DataModels.VoiceData
             }
         }
 
-        public void Parse(byte[] datas, int offset, int count)
+        public bool Parse(byte[] datas, int offset, int count, ByteMemoryPool byteMemoryPool)
         {
             Header = VoiceDataHeader.Parse(datas, offset);
             var headerLength = VoiceDataHeader.HeaderLength;
 
             switch (Header.Command)
             {
-
+                case 0:
+                    {
+                        Data = new VoiceWaveData(Common.BufferManager.TakeBuffer(count - headerLength));
+                        Data.CopyFrom(datas, offset + headerLength, count - headerLength);
+                        break;
+                    }
+                case 1:
+                    {
+                        Data = new VoiceHostData();
+                        Data.CopyFrom(datas, offset + headerLength, count - headerLength);
+                    }
+                    break;
+                default: return false;
             }
+
+            return true;
         }
     }
 }

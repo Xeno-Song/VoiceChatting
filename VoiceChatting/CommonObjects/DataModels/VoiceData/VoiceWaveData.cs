@@ -40,6 +40,7 @@ namespace CommonObjects.DataModels.VoiceData
 
         public void Dispose()
         {
+            Common.BufferManager.ReturnBuffer(WaveData);
         }
     }
 }
