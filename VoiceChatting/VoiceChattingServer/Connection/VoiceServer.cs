@@ -1,4 +1,5 @@
-﻿using CommonObjects.DataModels.VoiceData.Model;
+﻿using CommonObjects.DataModels.VoiceData;
+using CommonObjects.DataModels.VoiceData.Model;
 using CommonObjects.MemoryPool;
 using System;
 using System.Collections.Generic;
@@ -17,7 +18,7 @@ namespace VoiceChattingServer.Connection
         /// </summary>
         public int Port { get; private set; }
 
-        public event EventHandler<SocketVoiceDataParser> OnVoiceDataReceived;
+        public event EventHandler<VoiceData> OnVoiceDataReceived;
 
         // Socket send/receive objects
         private UdpClient socket = null;
@@ -152,11 +153,11 @@ namespace VoiceChattingServer.Connection
                         IPEndPoint endPoint = new IPEndPoint(IPAddress.Any, Port);
                         var buffer = socket.Receive(ref endPoint);
 
-                        var voiceData = SocketVoiceDataParser.FromBytes(dataCodingBufferPool, buffer);
-                        voiceData.ReceiveFrom = endPoint;
+                        var data = VoiceData.Parse(buffer, 0, buffer.Length);
+                        data.Sender = endPoint;
 
-                        OnVoiceDataReceived?.Invoke(this, voiceData);
-                        voiceData.Dispose();
+                        OnVoiceDataReceived?.Invoke(this, data);
+                        data.Dispose();
                     }
                 }
             }

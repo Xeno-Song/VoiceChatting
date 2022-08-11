@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 
 namespace CommonObjects.DataModels.VoiceData.Model
 {
+    [Obsolete]
     internal class SocketVoiceDataParser : IDisposable
     {
         public VoiceDataHeader Header;

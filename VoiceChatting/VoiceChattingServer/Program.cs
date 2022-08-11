@@ -24,19 +24,19 @@ namespace VoiceChattingServer
             server.Close();
         }
 
-        private static void Server_OnVoiceDataReceived(object sender, CommonObjects.DataModels.VoiceData.Model.SocketVoiceDataParser e)
+        private static void Server_OnVoiceDataReceived(object sender, CommonObjects.DataModels.VoiceData.VoiceData e)
         {
             Console.WriteLine(String.Format("Data Received! : [ Length : {0} ]", e.Header.Length));
             if (e.Header.Command == 1)
             {
                 var endPointList = new List<IPEndPoint>();
                 endPointList.Add(new IPEndPoint(IPAddress.Loopback, 11523));
-                server.SendHostList(e.ReceiveFrom, endPointList);
+                server.SendHostList(e.Sender, endPointList);
             }
 
             IPEndPoint dataSender = sender as IPEndPoint;
 
-            server.SendVoiceData(dataSender, e.Data, e.Header.Length);
+            server.SendVoiceData(dataSender, e.WaveData.WaveData, e.Header.Length);
         }
     }
 }

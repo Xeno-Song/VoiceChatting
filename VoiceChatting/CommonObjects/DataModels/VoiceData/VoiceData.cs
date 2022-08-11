@@ -1,15 +1,17 @@
 ﻿using CommonObjects.MemoryPool;
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.ServiceModel.Channels;
 using System.Text;
 
 namespace CommonObjects.DataModels.VoiceData
 {
-    internal class VoiceData
+    internal class VoiceData : IDisposable
     {
         public VoiceDataHeader Header { get; set; }
         public IVoiceData Data { get; set; }
+        public IPEndPoint Sender { get; set; }
         
         /// <summary>
         /// <br>If data type is wave data, return WaveData</br>
@@ -38,29 +40,38 @@ namespace CommonObjects.DataModels.VoiceData
             }
         }
 
-        public bool Parse(byte[] datas, int offset, int count, ByteMemoryPool byteMemoryPool)
+        public void Dispose()
         {
-            Header = VoiceDataHeader.Parse(datas, offset);
+            Header = null;
+            Sender = null;
+            Data.Dispose();
+        }
+
+        public static VoiceData Parse(byte[] datas, int offset, int count)
+        {
+            VoiceData voiceData = new VoiceData();
+            voiceData.Header = VoiceDataHeader.Parse(datas, offset);
             var headerLength = VoiceDataHeader.HeaderLength;
 
-            switch (Header.Command)
+            switch (voiceData.Header.Command)
             {
                 case 0:
                     {
-                        Data = new VoiceWaveData(Common.BufferManager.TakeBuffer(count - headerLength));
-                        Data.CopyFrom(datas, offset + headerLength, count - headerLength);
+                        voiceData.Data = new VoiceWaveData(Common.BufferManager.TakeBuffer(count - headerLength));
+                        voiceData.Data.CopyFrom(datas, offset + headerLength, count - headerLength);
                         break;
                     }
                 case 1:
                     {
-                        Data = new VoiceHostData();
-                        Data.CopyFrom(datas, offset + headerLength, count - headerLength);
+                        voiceData.Data = new VoiceHostData();
+                        voiceData.Data.CopyFrom(datas, offset + headerLength, count - headerLength);
                     }
                     break;
-                default: return false;
+                default:
+                    throw new NotSupportedException("Header command number is invalid");
             }
 
-            return true;
+            return voiceData;
         }
     }
 }

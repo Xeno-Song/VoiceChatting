@@ -50,6 +50,7 @@ namespace CommonObjects.MemoryPool
         }
     }
 
+    [Obsolete]
     public class ByteMemoryPool
     {
         private List<ByteMemoryPoolIndexes> memoryPool;
