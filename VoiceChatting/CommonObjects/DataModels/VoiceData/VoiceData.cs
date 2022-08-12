@@ -73,5 +73,16 @@ namespace CommonObjects.DataModels.VoiceData
 
             return voiceData;
         }
+
+        public int ToBytes(byte[] buffer, int length)
+        {
+            if (VoiceDataHeader.HeaderLength + Data.Length > length)
+                throw new OutOfMemoryException("Buffer size is smaller than data size");
+
+            Header.CopyTo(ref buffer, 0);
+            Data.CopyTo(buffer, VoiceDataHeader.HeaderLength);
+
+            return VoiceDataHeader.HeaderLength + Data.Length;
+        }
     }
 }

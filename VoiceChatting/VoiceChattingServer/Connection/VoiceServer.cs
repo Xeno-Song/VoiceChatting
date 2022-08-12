@@ -1,4 +1,5 @@
-﻿using CommonObjects.DataModels.VoiceData;
+﻿using CommonObjects;
+using CommonObjects.DataModels.VoiceData;
 using CommonObjects.DataModels.VoiceData.Model;
 using CommonObjects.MemoryPool;
 using System;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace VoiceChattingServer.Connection
 {
-    internal class VoiceServer
+    internal class VoiceServer : IDisposable
     {
         /// <summary>
         /// Binded port number
@@ -24,13 +25,12 @@ namespace VoiceChattingServer.Connection
         private UdpClient socket = null;
         public ByteMemoryPool dataCodingBufferPool;
         private int dataSendBufferMemoryPoolIndex;
-        private byte[] DataSendBuffer { get => dataCodingBufferPool[dataSendBufferMemoryPoolIndex]; }
+        private byte[] DataSendBuffer { get; set; } = Common.BufferManager.TakeBuffer(4096);
 
         // Data receive thread objcets
         private Thread socketReceiveThread;
         private bool isSocketClosing = false;
         private CancellationTokenSource dataReceiveCancellationTokenSource;
-
 
         public VoiceServer(int bufferSize)
         {
@@ -75,21 +75,21 @@ namespace VoiceChattingServer.Connection
         /// Send voice data to endpoint
         /// </summary>
         /// <param name="endPoint">Target point for data send</param>
-        /// <param name="voiceData">Voice data as byte array</param>
-        /// <param name="voiceDataLen">Voice data len</param>
-        public void SendVoiceData(IPEndPoint endPoint, byte[] voiceData, int voiceDataLen)
+        /// <param name="data">Voice data as byte array</param>
+        /// <param name="length">Voice data len</param>
+        public void SendVoiceData(IPEndPoint endPoint, byte[] data, int length)
         {
-            var voiceDataParser = new SocketVoiceDataParser(dataCodingBufferPool);
-            voiceDataParser.CopyVoiceData(voiceData, voiceDataLen);
+            var voiceData = new VoiceData();
+            voiceData.Data = new VoiceWaveData(Common.BufferManager.TakeBuffer(length));
+            voiceData.WaveData.CopyFrom(data, 0, length);
 
             lock (socket)
             {
-                byte[] sendBuffer = DataSendBuffer;
-                int dataSize = voiceDataParser.ToBytes(buffer: ref sendBuffer);
-                socket.SendAsync(sendBuffer, dataSize).Wait();
+                int dataLength = voiceData.ToBytes(DataSendBuffer, DataSendBuffer.Length);
+                socket.SendAsync(DataSendBuffer, dataLength).Wait();
             }
 
-            voiceDataParser.Dispose();
+            voiceData.Dispose();
         }
 
         public void SendHostList(IPEndPoint endPoint, List<IPEndPoint> endPointList)
@@ -165,6 +165,11 @@ namespace VoiceChattingServer.Connection
             {
                 Console.WriteLine("Read thread job cancelled!");
             }
+        }
+
+        public void Dispose()
+        {
+            Common.BufferManager.ReturnBuffer(DataSendBuffer);
         }
     }
 }
