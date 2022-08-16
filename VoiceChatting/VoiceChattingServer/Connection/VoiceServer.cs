@@ -94,17 +94,17 @@ namespace VoiceChattingServer.Connection
 
         public void SendHostList(IPEndPoint endPoint, List<IPEndPoint> endPointList)
         {
-            var voiceDataParser = new SocketVoiceDataParser(dataCodingBufferPool);
-            voiceDataParser.EndPointList = endPointList;
+            var voiceData = new VoiceData();
+            voiceData.Data = new VoiceHostData();
+            voiceData.HostData.EndPoints = endPointList;
 
             lock (socket)
             {
-                byte[] sendBuffer = DataSendBuffer;
-                int dataSize = voiceDataParser.ToBytes(buffer: ref sendBuffer);
-                socket.SendAsync(sendBuffer, dataSize).Wait();
+                int dataSize = voiceData.ToBytes(DataSendBuffer, DataSendBuffer.Length);
+                socket.SendAsync(DataSendBuffer, dataSize).Wait();
             }
 
-            voiceDataParser.Dispose();
+            voiceData.Dispose();
         }
 
         /// <summary>

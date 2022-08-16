@@ -9,7 +9,7 @@ namespace CommonObjects.DataModels.VoiceData
     internal class VoiceHostData : IVoiceData
     {
         public int Length { get => EndPoints.Count * HostDataSize; }
-        public List<IPEndPoint> EndPoints { get; } = new List<IPEndPoint>();
+        public List<IPEndPoint> EndPoints { get; set; } = new List<IPEndPoint>();
         private readonly int HostDataSize = Marshal.SizeOf<HostDataFormat>();
 
         private struct HostDataFormat
