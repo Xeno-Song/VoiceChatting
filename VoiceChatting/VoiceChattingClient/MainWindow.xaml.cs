@@ -14,6 +14,7 @@ using VoiceChattingClient.Connection;
 using VoiceChattingClient.SoundSystem;
 using CommonObjects.DataModels.VoiceData.Model;
 using System.Net;
+using CommonObjects.DataModels.VoiceData;
 
 namespace VoiceChattingClient
 {
@@ -99,9 +100,12 @@ namespace VoiceChattingClient
                     new IPEndPoint(IPAddress.Parse("127.0.0.1"), 11523),
                     e.Buffer, e.BytesRecorded);
             };
-            voiceClient.OnVoiceDataReceived += (object sender, SocketVoiceDataParser data) =>
+            voiceClient.OnVoiceDataReceived += (object sender, VoiceData data) =>
             {
-                speakerController.AddPlaybackBytes(data.Data, data.Header.Length);
+                if (data.Header.Command == 0)
+                {
+                    speakerController.AddPlaybackBytes(data.WaveData.WaveData, data.Header.Length);
+                }
             };
         }
 
