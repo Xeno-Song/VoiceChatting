@@ -23,8 +23,6 @@ namespace VoiceChattingServer.Connection
 
         // Socket send/receive objects
         private UdpClient socket = null;
-        public ByteMemoryPool dataCodingBufferPool;
-        private int dataSendBufferMemoryPoolIndex;
         private byte[] DataSendBuffer { get; set; } = Common.BufferManager.TakeBuffer(4096);
 
         // Data receive thread objcets
@@ -32,10 +30,8 @@ namespace VoiceChattingServer.Connection
         private bool isSocketClosing = false;
         private CancellationTokenSource dataReceiveCancellationTokenSource;
 
-        public VoiceServer(int bufferSize)
+        public VoiceServer()
         {
-            dataCodingBufferPool = new ByteMemoryPool(bufferSize, 10);
-            dataSendBufferMemoryPoolIndex = dataCodingBufferPool.LockBuffer();
         }
 
         /// <summary>

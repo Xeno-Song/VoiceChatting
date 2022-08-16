@@ -13,7 +13,7 @@ namespace VoiceChattingServer
 
         static void Main(string[] args)
         {
-            server = new VoiceServer(2048);
+            server = new VoiceServer();
             server.Bind(11523);
             server.OnVoiceDataReceived += Server_OnVoiceDataReceived;
 

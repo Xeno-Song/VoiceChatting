@@ -2,13 +2,13 @@
 using System;
 using System.Diagnostics;
 using CommonObjects.MemoryPool;
+using CommonObjects;
 
 namespace VoiceChattingClient.Codec
 {
     internal class OpusCodec
     {
         private OpusEncoder opusEncoder = null;
-        private ByteMemoryPool memoryPool = null;
         private readonly int bufferSize;
 
         public OpusCodec()
@@ -19,19 +19,17 @@ namespace VoiceChattingClient.Codec
 
             opusEncoder = new OpusEncoder(Application.Audio, sampleRate, channels);
             opusEncoder.VBR = true;
-            memoryPool = new ByteMemoryPool(bufferSize, 16);
         }
 
         public int Encode(byte[] rawDatas, int rawCount, byte[] encodedDatas)
         {
-            int bufferId = memoryPool.LockBuffer();
-            if (bufferId == -1) return -1;
+            var buffer = Common.BufferManager.TakeBuffer(bufferSize);
             int dataLength = 0;
 
             try
             {
-                dataLength = opusEncoder.Encode(rawDatas, 960, memoryPool[bufferId], bufferSize);
-                Array.Copy(encodedDatas, memoryPool[bufferId], dataLength);
+                dataLength = opusEncoder.Encode(rawDatas, 960, buffer, bufferSize);
+                Array.Copy(encodedDatas, buffer, dataLength);
             }
             catch (Exception e)
             {
@@ -39,7 +37,7 @@ namespace VoiceChattingClient.Codec
             }
             finally
             {
-                memoryPool.UnlockBuffer(bufferId);
+                Common.BufferManager.ReturnBuffer(buffer);
             }
 
             return dataLength;
