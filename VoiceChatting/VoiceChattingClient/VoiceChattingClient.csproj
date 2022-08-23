@@ -203,7 +203,7 @@
     <Compile Include="UI\ScrollLayout.xaml.cs">
       <DependentUpon>ScrollLayout.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Voice\VoiceController.cs" />
+    <Compile Include="Voice\VoiceChatController.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
