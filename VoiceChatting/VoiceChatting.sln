@@ -7,7 +7,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VoiceChattingClient", "Voic
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "CommonObjects", "CommonObjects\CommonObjects.shproj", "{CB04D2DF-472E-4BB4-A16E-C1695D7F06FB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VoiceChattingServer", "VoiceChattingServer\VoiceChattingServer.csproj", "{E6B0F3C8-BCC6-46D7-A733-B37FCC7FB690}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VoiceChattingServer", "VoiceChattingServer\VoiceChattingServer.csproj", "{E6B0F3C8-BCC6-46D7-A733-B37FCC7FB690}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VoiceChattingManagementServer", "VoiceChattingManagementServer\VoiceChattingManagementServer.csproj", "{2191A397-DEF8-45D1-AF52-ECB4F2B1B314}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,6 +45,18 @@ Global
 		{E6B0F3C8-BCC6-46D7-A733-B37FCC7FB690}.Release|x64.Build.0 = Release|Any CPU
 		{E6B0F3C8-BCC6-46D7-A733-B37FCC7FB690}.Release|x86.ActiveCfg = Release|Any CPU
 		{E6B0F3C8-BCC6-46D7-A733-B37FCC7FB690}.Release|x86.Build.0 = Release|Any CPU
+		{2191A397-DEF8-45D1-AF52-ECB4F2B1B314}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2191A397-DEF8-45D1-AF52-ECB4F2B1B314}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2191A397-DEF8-45D1-AF52-ECB4F2B1B314}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{2191A397-DEF8-45D1-AF52-ECB4F2B1B314}.Debug|x64.Build.0 = Debug|Any CPU
+		{2191A397-DEF8-45D1-AF52-ECB4F2B1B314}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{2191A397-DEF8-45D1-AF52-ECB4F2B1B314}.Debug|x86.Build.0 = Debug|Any CPU
+		{2191A397-DEF8-45D1-AF52-ECB4F2B1B314}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2191A397-DEF8-45D1-AF52-ECB4F2B1B314}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2191A397-DEF8-45D1-AF52-ECB4F2B1B314}.Release|x64.ActiveCfg = Release|Any CPU
+		{2191A397-DEF8-45D1-AF52-ECB4F2B1B314}.Release|x64.Build.0 = Release|Any CPU
+		{2191A397-DEF8-45D1-AF52-ECB4F2B1B314}.Release|x86.ActiveCfg = Release|Any CPU
+		{2191A397-DEF8-45D1-AF52-ECB4F2B1B314}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -15,6 +15,6 @@ namespace VoiceChattingClient.Voice
         public MicrophoneController microphoneController;
         public SpeakerController speakerController;
 
-
+        
     }
 }
