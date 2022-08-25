@@ -4,5 +4,7 @@
     {
         public string uuid;
         public string name;
+        public string hostAddress;
+        public int hostPort;
     }
 }
