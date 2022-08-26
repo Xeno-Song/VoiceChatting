@@ -53,5 +53,25 @@ namespace VoiceChattingManagementServer.Core.Database
 
             return true;
         }
+
+        public int ExecuteNonQuery(string query)
+        {
+            var command = new MySqlCommand(query);
+            return command.ExecuteNonQuery();
+        }
+
+        public bool ExecuteQuery(string query)
+        {
+            MySqlCommand command = new MySqlCommand(query, connection);
+            MySqlDataReader reader = command.ExecuteReader();
+
+            while (reader.Read())
+            {
+                Console.WriteLine("{0}: {1}", reader["Id"], reader["Name"]);
+            }
+            reader.Close();
+
+            return true;
+        }
     }
 }

@@ -11,8 +11,6 @@ namespace VoiceChattingManagementServer.Core.Database
         public static string UserName = "root";
         public static string Password = "12345678";
 
-
-
         private bool CreateNewPoolIndex()
         {
             string connectionString = string.Format(
@@ -32,5 +30,7 @@ namespace VoiceChattingManagementServer.Core.Database
 
             return true;
         }
+
+        
     }
 }
