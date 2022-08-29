@@ -1,6 +1,10 @@
 ﻿using MySql.Data.MySqlClient;
 using System;
+using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics;
+using System.Reflection;
+using VoiceChattingManagementServer.Core.Database.Attributes;
 
 namespace VoiceChattingManagementServer.Core.Database
 {
@@ -72,6 +76,50 @@ namespace VoiceChattingManagementServer.Core.Database
             reader.Close();
 
             return true;
+        }
+
+        public List<Entity> ExcuteQuery<Entity>(string query)
+            where Entity : Database.Entity, new()
+        {
+            DataSet dataSet = new DataSet();
+            MySqlDataAdapter adapter = new MySqlDataAdapter(query, connection);
+            adapter.Fill(dataSet);
+
+            var propertyList = new List<PropertyInfo>(typeof(Entity).GetProperties());
+            var sortedPropertyList = new List<Tuple<PropertyInfo, ColumnAttribute>>();
+
+            if (dataSet.Tables.Count == 0) return null;
+            if (dataSet.Tables[0].Rows.Count == 0) return null;
+            if (dataSet.Tables[0].Rows[0].Table.Columns.Count == 0) return null;
+
+            foreach (var index in dataSet.Tables[0].Rows[0].Table.Columns)
+            {
+                int propertyIndex = propertyList.FindIndex((info) => {
+                    var columnAtrribute = info.GetCustomAttribute<ColumnAttribute>();
+                    if (columnAtrribute != null && columnAtrribute.Name == index.ToString())
+                        return true;
+
+                    return false;
+                });
+
+                if (propertyIndex == -1) sortedPropertyList.Add(null);
+                else sortedPropertyList.Add(new Tuple<PropertyInfo, ColumnAttribute>(
+                    propertyList[propertyIndex],
+                    propertyList[propertyIndex].GetCustomAttribute<ColumnAttribute>()));
+            }
+
+            List<Entity> entityList = new List<Entity>();
+            foreach (DataRow row in dataSet.Tables[0].Rows)
+            {
+                Entity value = new Entity();
+
+                foreach (var propertyInfo in sortedPropertyList)
+                    propertyInfo.Item1.SetValue(value, row[propertyInfo.Item2.Name]);
+
+                entityList.Add(value);
+            }
+
+            return entityList;
         }
     }
 }
