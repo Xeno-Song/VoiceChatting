@@ -75,11 +75,11 @@ namespace VoiceChattingManagementServer.Core.Database
             }
             reader.Close();
 
-            return true;
+            throw new NotImplementedException();
         }
 
         public List<Entity> ExcuteQuery<Entity>(string query)
-            where Entity : Database.Entity, new()
+            where Entity, new()
         {
             DataSet dataSet = new DataSet();
             MySqlDataAdapter adapter = new MySqlDataAdapter(query, connection);

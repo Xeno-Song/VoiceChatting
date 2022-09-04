@@ -1,5 +1,4 @@
-﻿using VoiceChattingManagementServer.Core.Database;
-using VoiceChattingManagementServer.Core.Database.Attributes;
+﻿using VoiceChattingManagementServer.Core.Database.Attributes;
 
 namespace VoiceChattingManagementServer.Model
 {

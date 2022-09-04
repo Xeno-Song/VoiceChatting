@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <Folder Include="Controllers\" />
+    <Folder Include="Core\Database\Controller\" />
     <Folder Include="Service\" />
   </ItemGroup>
 
