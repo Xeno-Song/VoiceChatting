@@ -31,7 +31,7 @@ namespace VoiceChattingManagementServer.Core.Database.Builder
             properties.AddRange(typeof(Model).GetProperties());
         }
 
-        public void AddCondition(string propertyName, Comparator comparator, int value)
+        public void AddCondition<Type>(string propertyName, Comparator comparator, Type value)
         {
             int propertyIndex = properties.FindIndex((propertyInfo) => propertyInfo.Name == propertyName);
             if (propertyIndex == -1) // Could not found property name in target model
@@ -46,9 +46,14 @@ namespace VoiceChattingManagementServer.Core.Database.Builder
                 throw new ArgumentException($"This property doesn't defined column name [{propertyName}]");
             }
 
+            if (typeof(Type).Equals(propertyInfo.PropertyType))
+            {
+                throw new ArgumentException($"Incorrect type [expected : {propertyInfo.PropertyType.ToString()}, real : {typeof(Type).ToString()}");
+            }
+
             string conditionQuery = propertyName;
             conditionQuery += ConvertComparatorToString(comparator);
-            conditionQuery += value;
+            conditionQuery += value.ToString();
 
             conditions.Add(conditionQuery);
         }
