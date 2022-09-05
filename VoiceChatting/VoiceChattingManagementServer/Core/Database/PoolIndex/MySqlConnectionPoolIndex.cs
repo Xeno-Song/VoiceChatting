@@ -6,18 +6,20 @@ using System.Diagnostics;
 using System.Reflection;
 using VoiceChattingManagementServer.Core.Database.Attributes;
 
-namespace VoiceChattingManagementServer.Core.Database
+namespace VoiceChattingManagementServer.Core.Database.PoolIndex
 {
-    public class DBConnectionPoolIndex
+
+    public class MySqlConnectionPoolIndex : DatabaseConnectionPoolIndex
     {
         /// <summary>
         /// Check database is connected
         /// </summary>
-        public bool IsConnected {
+        public override bool IsConnected
+        {
             get
             {
                 if (connection == null) return false;
-                return connection.State == System.Data.ConnectionState.Open;
+                return connection.State == ConnectionState.Open;
             }
         }
         private MySqlConnection connection = null;
@@ -31,7 +33,7 @@ namespace VoiceChattingManagementServer.Core.Database
         /// <param name="password">access user password</param>
         /// <returns>If success return <see langword="true"/>, otherwise <see langword="false"/></returns>
         /// <exception cref="ArgumentException"></exception>
-        private bool ConnectToDatabase(string serverAddress, string databaseName, string userName, string password)
+        public override bool ConnectToDatabase(string serverAddress, string databaseName, string userName, string password)
         {
             if (string.IsNullOrEmpty(serverAddress)) throw new ArgumentException("Database server address cannot be null or empty");
             if (string.IsNullOrEmpty(databaseName)) throw new ArgumentException("Database name cannot be null or empty");
@@ -58,28 +60,27 @@ namespace VoiceChattingManagementServer.Core.Database
             return true;
         }
 
-        public int ExecuteNonQuery(string query)
+        public override int ExecuteNonQuery(string query)
         {
             var command = new MySqlCommand(query);
             return command.ExecuteNonQuery();
         }
 
-        public bool ExecuteQuery(string query)
-        {
-            MySqlCommand command = new MySqlCommand(query, connection);
-            MySqlDataReader reader = command.ExecuteReader();
+        // public bool ExecuteQuery(string query)
+        // {
+        //     MySqlCommand command = new MySqlCommand(query, connection);
+        //     MySqlDataReader reader = command.ExecuteReader();
+        // 
+        //     while (reader.Read())
+        //     {
+        //         Console.WriteLine("{0}: {1}", reader["Id"], reader["Name"]);
+        //     }
+        //     reader.Close();
+        // 
+        //     throw new NotImplementedException();
+        // }
 
-            while (reader.Read())
-            {
-                Console.WriteLine("{0}: {1}", reader["Id"], reader["Name"]);
-            }
-            reader.Close();
-
-            throw new NotImplementedException();
-        }
-
-        public List<Entity> ExcuteQuery<Entity>(string query)
-            where Entity : new()
+        public override List<Entity> ExcuteQuery<Entity>(string query)
         {
             DataSet dataSet = new DataSet();
             MySqlDataAdapter adapter = new MySqlDataAdapter(query, connection);
@@ -94,7 +95,8 @@ namespace VoiceChattingManagementServer.Core.Database
 
             foreach (var index in dataSet.Tables[0].Rows[0].Table.Columns)
             {
-                int propertyIndex = propertyList.FindIndex((info) => {
+                int propertyIndex = propertyList.FindIndex((info) =>
+                {
                     var columnAtrribute = info.GetCustomAttribute<ColumnAttribute>();
                     if (columnAtrribute != null && columnAtrribute.Name == index.ToString())
                         return true;
