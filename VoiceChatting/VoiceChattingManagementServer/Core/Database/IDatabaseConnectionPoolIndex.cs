@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace VoiceChattingManagementServer.Core.Database
 {
-    public interface IDatabaseConnectionPoolIndex
+    public interface IDatabaseConnectionPoolIndex : IDisposable
     {
         /// <summary>
         /// Check database is connected

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
 using System.Reflection;
+using System.Threading;
 using VoiceChattingManagementServer.Core.Database.Attributes;
 
 namespace VoiceChattingManagementServer.Core.Database.PoolIndex
@@ -35,26 +36,29 @@ namespace VoiceChattingManagementServer.Core.Database.PoolIndex
         /// <exception cref="ArgumentException"></exception>
         public override bool ConnectToDatabase(string serverAddress, string databaseName, string userName, string password)
         {
-            if (string.IsNullOrEmpty(serverAddress)) throw new ArgumentException("Database server address cannot be null or empty");
-            if (string.IsNullOrEmpty(databaseName)) throw new ArgumentException("Database name cannot be null or empty");
-            if (string.IsNullOrEmpty(userName)) throw new ArgumentException("Database access username cannot be null or empty");
-
-            // Create MariaDB conection message
-            string connectionString = string.Format(
-                "Server={0};Database={1};Uid={2};Pwd={3};",
-                serverAddress, databaseName, userName, password);
-
-            // Try connection
-            try
+            lock (this)
             {
-                connection = new MySqlConnection(connectionString);
-                connection.Open();
-            }
-            catch (Exception e)
-            {
-                // If failed to connection
-                Debug.WriteLine(e.ToString());
-                return false;
+                try {
+
+                    if (string.IsNullOrEmpty(serverAddress)) throw new ArgumentException("Database server address cannot be null or empty");
+                    if (string.IsNullOrEmpty(databaseName)) throw new ArgumentException("Database name cannot be null or empty");
+                    if (string.IsNullOrEmpty(userName)) throw new ArgumentException("Database access username cannot be null or empty");
+
+                    // Create MariaDB conection message
+                    string connectionString = string.Format(
+                        "Server={0};Database={1};Uid={2};Pwd={3};",
+                        serverAddress, databaseName, userName, password);
+
+                    // Try connection
+                    connection = new MySqlConnection(connectionString);
+                    connection.Open();
+                }
+                catch (Exception e)
+                {
+                    // If failed to connection
+                    Debug.WriteLine(e.ToString());
+                    return false;
+                }
             }
 
             return true;
@@ -62,8 +66,22 @@ namespace VoiceChattingManagementServer.Core.Database.PoolIndex
 
         public override int ExecuteNonQuery(string query)
         {
-            var command = new MySqlCommand(query);
-            return command.ExecuteNonQuery();
+            lock (this)
+            {
+                try
+                {
+                    if (!IsConnected)
+                        throw new InvalidOperationException("Database wans't connected");
+
+                    var command = new MySqlCommand(query);
+                    return command.ExecuteNonQuery();
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine(e.ToString());
+                    return Int32.MinValue;
+                }
+            }
         }
 
         // public bool ExecuteQuery(string query)
@@ -83,8 +101,22 @@ namespace VoiceChattingManagementServer.Core.Database.PoolIndex
         public override List<Entity> ExcuteQuery<Entity>(string query)
         {
             DataSet dataSet = new DataSet();
-            MySqlDataAdapter adapter = new MySqlDataAdapter(query, connection);
-            adapter.Fill(dataSet);
+            
+            lock (this)
+            {
+                try
+                {
+                    if (!IsConnected)
+                        throw new InvalidOperationException("Database wans't connected");
+
+                    MySqlDataAdapter adapter = new MySqlDataAdapter(query, connection);
+                    adapter.Fill(dataSet);
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine($"Failed to execute query : {query}");
+                }
+            }
 
             var propertyList = new List<PropertyInfo>(typeof(Entity).GetProperties());
             var sortedPropertyList = new List<Tuple<PropertyInfo, ColumnAttribute>>();
@@ -122,6 +154,18 @@ namespace VoiceChattingManagementServer.Core.Database.PoolIndex
             }
 
             return entityList;
+        }
+
+        public override void Dispose()
+        {
+            lock (this)
+            {
+                if (connection != null)
+                {
+                    connection.Close();
+                    connection.Dispose();
+                }
+            }
         }
     }
 }

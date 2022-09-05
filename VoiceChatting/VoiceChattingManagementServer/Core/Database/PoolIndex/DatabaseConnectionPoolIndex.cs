@@ -31,5 +31,6 @@ namespace VoiceChattingManagementServer.Core.Database.PoolIndex
         public abstract List<Entity> ExcuteQuery<Entity>(string query) where Entity : new();
 
         public abstract int ExecuteNonQuery(string query);
+        public abstract void Dispose();
     }
 }
