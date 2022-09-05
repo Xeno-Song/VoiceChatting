@@ -79,7 +79,7 @@ namespace VoiceChattingManagementServer.Core.Database
         }
 
         public List<Entity> ExcuteQuery<Entity>(string query)
-            where Entity, new()
+            where Entity : new()
         {
             DataSet dataSet = new DataSet();
             MySqlDataAdapter adapter = new MySqlDataAdapter(query, connection);
