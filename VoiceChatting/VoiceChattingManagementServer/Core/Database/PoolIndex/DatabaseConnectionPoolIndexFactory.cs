@@ -2,14 +2,14 @@
 
 namespace VoiceChattingManagementServer.Core.Database.PoolIndex
 {
+    public enum DBType
+    {
+        MySQL,
+        MariaDB,
+    }
+
     public class DatabaseConnectionPoolIndexFactory
     {
-        public enum DBType
-        {
-            MySQL,
-            MariaDB,
-        }
-
         public static IDatabaseConnectionPoolIndex Create(DBType type)
         {
             return type switch
